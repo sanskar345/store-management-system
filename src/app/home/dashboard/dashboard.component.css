@@ -1,0 +1,33 @@
+
+
+.btn-area {
+  /* background-color: blue; */
+  padding: 20px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+
+}
+
+.btn-area span button {
+  margin: 7px;
+}
+
+.collapsing{
+  -webkit-transition: none;
+        transition: none;
+}
+
+.modal {
+  position: relative;
+  top: 10%;
+
+}
+
+.section-content {
+  padding: 20px;
+}
+
+fa-icon {
+  margin-right: 0.5em;
+}

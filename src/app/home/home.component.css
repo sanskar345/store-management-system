@@ -1,0 +1,21 @@
+
+mat-drawer {
+  width: 300px;
+}
+
+mat-drawer-container {
+  height: 83vh;
+}
+
+mat-drawer-content {
+  /* padding: 20px; */
+}
+
+
+@media only screen and (max-width: 480px) {
+  mat-drawer {
+    width: 100vw;
+  }
+}
+
+

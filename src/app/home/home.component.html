@@ -1,0 +1,16 @@
+<app-header (toggleSideBarEvent) = "sideBarToggler()" ></app-header>
+<mat-divider></mat-divider>
+<mat-drawer-container>
+    <mat-drawer mode="side" [opened] = "sideBarOpen">
+        <app-sidebar></app-sidebar>
+    </mat-drawer>
+    <mat-drawer-content>
+        <router-outlet></router-outlet>
+    </mat-drawer-content>
+</mat-drawer-container>
+
+<app-footer></app-footer>
+
+<app-modals></app-modals>
+
+

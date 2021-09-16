@@ -1,0 +1,28 @@
+
+
+.mat-icon {
+  vertical-align: middle;
+  margin-right: 20px;
+}
+.company-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 15px;
+
+}
+
+img {
+  width: 60px;
+  height: 60px;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+.company-name {
+  margin-top: 10px;
+}
+
+

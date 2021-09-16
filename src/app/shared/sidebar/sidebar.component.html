@@ -1,0 +1,23 @@
+<mat-nav-list>
+    <div class="company-card">
+      <div class="">
+        <img src="https://material.angular.io/assets/img/examples/shiba2.jpg" alt="">
+      </div>
+
+      <h2 class="company-name">Store Name</h2>
+
+    </div>
+
+    <mat-divider></mat-divider>
+
+    <a mat-list-item routerLinkActive="list-item-active" [routerLink]="['dashboard']" routerLinkActive="active">
+        <mat-icon>dashboard</mat-icon>
+        Dashboard
+    </a>
+
+    <a mat-list-item routerLinkActive="list-item-active" [routerLink]="['test']" routerLinkActive="active">
+        <mat-icon>people</mat-icon>
+        Customers
+    </a>
+
+</mat-nav-list>
