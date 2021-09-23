@@ -17,6 +17,9 @@ import { HomeComponent } from "./home.component";
 import { TestComponent } from "./test/test.component";
 import { FontAwesomeModule } from "@fortawesome/angular-fontawesome";
 import { ModalsModule } from "../modals/modals.module";
+import { HomeHeaderComponent } from './home-header/home-header.component';
+import { SettingsComponent } from './settings/settings.component';
+
 
 
 @NgModule({
@@ -24,6 +27,8 @@ import { ModalsModule } from "../modals/modals.module";
     HomeComponent,
     TestComponent,
     DashboardComponent,
+    HomeHeaderComponent,
+    SettingsComponent,
 
   ],
   imports: [

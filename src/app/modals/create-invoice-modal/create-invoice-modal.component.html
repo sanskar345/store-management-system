@@ -270,11 +270,243 @@
               </table>
               </div>
             </div>
+            <div class="row top-buffer">
+              <div class="col-lg-8">
+
+              </div>
+              <div class="col-lg-4">
+                <div class="form-check form-switch mb-4">
+                  <input
+                  style="height: 25px;width: 50px; "
+                  (click) = "toggleInstantPayment()"
+                  class="form-check-input"
+                  type="checkbox"
+                  id="flexSwitchCheckDefault">
+                  <label
+                  style="margin-left: 10px;"
+                  class="form-check-label mt-1"
+                  for="flexSwitchCheckDefault">Credit</label>
+                </div>
+                <div class="input-group mb-3">
+                  <span class="input-group-text">Discount</span>
+                  <input
+                  value="{{ discountInPercentage }}"
+                  readonly
+                  type="text"
+                  class="form-control">
+                  <span class="input-group-text">%</span>
+                </div>
+                <div class="input-group mb-3">
+                  <span class="input-group-text">Total Discount</span>
+                  <span class="input-group-text"><fa-icon [icon]="faRupeeSign"></fa-icon></span>
+                  <input
+                  readonly
+                  value="{{ discountInAmount }}"
+                  type="text"
+                  class="form-control">
+
+                </div>
+
+                <div class="input-group mb-3">
+                  <label class="input-group-text" for="inputGroupSelect01">Payment Type</label>
+                  <select [disabled] = "!instantPayment" class="form-select" id="inputGroupSelect01">
+                    <option selected>Choose</option>
+                    <option value="1">By Cash</option>
+                    <option value="1">Online</option>
+                  </select>
+                </div>
+                <div class="form-check">
+                  <input
+                  formControlName="roundOff"
+                  class="form-check-input"
+                  type="checkbox"
+                  id="flexCheckDefault">
+                  <label class="form-check-label" for="flexCheckDefault">
+                    Round Off
+                  </label>
+                </div>
+                <div class="input-group mb-3">
+                  <span class="input-group-text">Total Amount</span>
+                  <span class="input-group-text"><fa-icon [icon]="faRupeeSign"></fa-icon></span>
+                  <input
+                  readonly type="text"
+                  class="form-control"
+                  value = "{{ invoiceTotalAmountByTotalItems }}">
+                </div>
+                <div class="input-group mb-3">
+                  <span class="input-group-text">Payment Received</span>
+                  <span class="input-group-text"><fa-icon [icon]="faRupeeSign"></fa-icon></span>
+                  <input
+                  formControlName = "paymentReceived"
+                  value="{{ instantPayment? invoiceTotalAmountByTotalItems : 0 }}"
+                  readonly type="text"
+                  class="form-control">
+                </div>
+
+              </div>
+            </div>
           </form>
         </div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <!-- <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button> -->
+        <button
+        [disabled] = "items.controls.length === 0 || invoiceDetail.customer.name === null"
+        (click) = "onGoToSecondModal()"
+        data-bs-toggle="modal"
+        data-bs-target="#createInvoiceModalSecond"
+        data-bs-whatever="@mdo"
+        class="btn btn-primary">Confirm and Preview</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- invoce preview modal -->
+
+<div class="modal fade" id="createInvoiceModalSecond" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-xl">
+    <div class="modal-content">
+      <div class="modal-header alert alert-warning">
+        <h2 class="modal-title" id="exampleModalLabel">Give Payment</h2>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="container">
+          <h2 class="preview-heading alert alert-info pt-1 pb-1">Invoice Preview</h2>
+          <div class="invoice-preview-container">
+            <div class="row">
+              <div class="col-lg-5">
+                  <h3 class="heading-center"><span class="badge bg-secondary">Customer Details:</span></h3>
+                  <div class="detail-wrapper">
+                    <p class="mt-1 align-text-center font-weight-bold preview-text"><fa-icon [icon]="faUserTie" style="margin-right: 0.5em;" class="mr-10"></fa-icon>Name : {{ invoiceDetail.customer.name }}</p>
+                    <p class="align-text-center preview-text"><fa-icon [icon]="faPhoneAlt" style="margin-right: 0.5em;" class="mr-10"></fa-icon>Mobile Number : {{ invoiceDetail.customer.mobileNumber }}</p>
+                    <p class="align-text-center preview-text"><fa-icon [icon]="faMapMarkerAlt" style="margin-right: 0.5em;" class="mr-10"></fa-icon>Address : {{ invoiceDetail.customer.address }}</p>
+                  </div>
+              </div>
+              <div class="col-lg-2">
+
+              </div>
+              <div class="col-lg-5">
+                  <h3 class="heading-center"><span class="badge bg-secondary">Invoice Details:</span></h3>
+                  <div class="detail-wrapper">
+                    <p class="mt-1 align-text-center preview-text"><fa-icon [icon]="faHashtag" style="margin-right: 0.5em;" class="mr-10"></fa-icon>Invoice Number : {{ invoicePreviewData?.invoiceNumber }}</p>
+                    <p class="align-text-center preview-text"><fa-icon [icon]="faCalendarAlt" style="margin-right: 0.5em;" class="mr-10"></fa-icon>Invoice Date : {{ invoicePreviewData?.invoiceDate }}</p>
+                  </div>
+              </div>
+
+            </div>
+            <div class="row">
+              <h3 class="heading-center"><span class="badge bg-secondary">Items: </span></h3>
+              <div class="col-lg-12">
+                <div class="table-responsive">
+                <table class="table table-borderless">
+                  <thead class="table-secondary">
+                    <tr>
+                      <th scope="col">#</th>
+                      <th scope="col">Item Name</th>
+                      <!-- <th scope="col">Brand</th> -->
+                      <th scope="col">Size</th>
+                      <!-- <th scope="col">Category</th> -->
+                      <th scope="col">Rate</th>
+                      <th scope="col">MRP</th>
+                      <!-- <th scope="col">Stock Quantity [ Limit ]</th> -->
+                      <th scope="col">Quantity</th>
+                      <!-- <th scope="col"></th> -->
+                    </tr>
+                  </thead>
+                  <tbody>
+
+                    <tr *ngFor = "let item of invoicePreviewData?.items; index as i" >
+
+                        <th scope="row"><span class="">{{ i + 1 }}</span></th>
+                        <td>
+                          {{ item.name }}
+                        </td>
+                        <!-- <td>
+                          <div class="mt-auto">
+
+                            <input
+                            formControlName = "brand"
+                            type="text"
+                            class="form-control"
+                            id=""
+                            placeholder=""
+                            readonly
+                            autocomplete="off">
+                          </div>
+                        </td> -->
+                        <td>
+                          {{ item.size }}
+                        </td>
+                        <td>
+                          {{ item.rate }}
+                        </td>
+                        <td>
+                          {{ item.mrp }}
+                        </td>
+                        <td>
+                          {{ item.quantity }}
+                        </td>
+                    </tr>
+
+                  </tbody>
+                  <tfoot>
+                    <tr>
+                      <td>
+                        <p class="preview-text">Grand Total :</p>
+                      </td>
+                      <td colspan="5">
+                        <p class="preview-text"><fa-icon [icon]="faRupeeSign"></fa-icon> {{ invoiceTotalMrpByTotalItems }} </p>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <p class="preview-text">Discount :</p>
+                      </td>
+                      <td colspan="5">
+                        <p class="preview-text"><fa-icon [icon]="faRupeeSign"></fa-icon> {{ discountInAmount }}</p>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <p class="preview-text">Discount in Percentage :</p>
+                      </td>
+                      <td colspan="5">
+                        <p class="preview-text">{{ discountInPercentage }} %</p>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <p class="preview-text">Net Amount :</p>
+                      </td>
+                      <td colspan="5">
+                        <p class="preview-text"><fa-icon [icon]="faRupeeSign"></fa-icon> {{ invoiceTotalAmountByTotalItems }}</p>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <p class="preview-text">Payment Received :</p>
+                      </td>
+                      <td colspan="5">
+                        <p class="preview-text"><fa-icon [icon]="faRupeeSign"></fa-icon> {{ paymentReceived }}</p>
+                      </td>
+                    </tr>
+                  </tfoot>
+
+                </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <!-- <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button> -->
+        <button
+        (click) = "generatePDF()"
+        data-bs-dismiss="modal"
+        class="btn btn-primary">Comfirm and Generate Invoice</button>
       </div>
     </div>
   </div>

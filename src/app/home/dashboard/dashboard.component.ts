@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { faHome, faUser, faSquare, faEllipsisV, faFileInvoice } from '@fortawesome/free-solid-svg-icons';
+import { faHome, faUser, faSquare, faEllipsisV, faFileInvoice, faMoneyBillWave, faMoneyBill, faHandHolding, faMoneyBillWaveAlt } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-dashboard',
@@ -13,6 +13,9 @@ export class DashboardComponent implements OnInit {
   faSquare = faSquare;
   faEllipsisV = faEllipsisV;
   faFileInvoice = faFileInvoice;
+  faMoneyBillWave = faMoneyBillWave;
+  faMoneyBill = faMoneyBill;
+  faMoneyBillWaveAlt = faMoneyBillWaveAlt;
 
   constructor() { }
 

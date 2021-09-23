@@ -12,8 +12,8 @@ export class ModalsService {
       name: 'item1',
       size: 'big',
       brand: 'brand1',
-      rate: '822',
-      mrp: '822',
+      rate: '822.22',
+      mrp: '900',
       stockQuantity: 5582,
       id: '59656',
       category: 'fygy'
@@ -23,7 +23,7 @@ export class ModalsService {
       size: 'big',
       brand: 'brand1',
       rate: '822',
-      mrp: '822',
+      mrp: '920',
       stockQuantity: 777,
       id: '59656',
       category: 'fygy'
@@ -32,8 +32,8 @@ export class ModalsService {
       name: 'item3',
       size: 'big',
       brand: 'brand1',
-      rate: '822',
-      mrp: '822',
+      rate: '822.9',
+      mrp: '999',
       stockQuantity: 523,
       id: '59656',
       category: 'fygy'
@@ -43,7 +43,7 @@ export class ModalsService {
       size: 'big',
       brand: 'brand1',
       rate: '822',
-      mrp: '822',
+      mrp: '999',
       stockQuantity: 66,
       id: '59656',
       category: 'fygy'
@@ -53,7 +53,7 @@ export class ModalsService {
       size: 'big',
       brand: 'brand1',
       rate: '822',
-      mrp: '822',
+      mrp: '888',
       stockQuantity: 55,
       id: '59656',
       category: 'fygy'
@@ -63,7 +63,7 @@ export class ModalsService {
       size: 'big',
       brand: 'brand1',
       rate: '822',
-      mrp: '822',
+      mrp: '888',
       stockQuantity: 9,
       id: '59656',
       category: 'fygy'
@@ -73,7 +73,7 @@ export class ModalsService {
       size: 'big',
       brand: 'brand1',
       rate: '822',
-      mrp: '822',
+      mrp: '882',
       stockQuantity: 8,
       id: '59656',
       category: 'fygy'
@@ -83,7 +83,7 @@ export class ModalsService {
       size: 'big',
       brand: 'brand1',
       rate: '822',
-      mrp: '822',
+      mrp: '862',
       stockQuantity: 77,
       id: '59656',
       category: 'fygy'

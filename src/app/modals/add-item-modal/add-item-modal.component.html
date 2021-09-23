@@ -56,6 +56,42 @@
             <label for="item-quantity" class="col-form-label">Item Quantity:</label>
             <input type="text" class="form-control" id="item-quantity">
           </div>
+          <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
+            <label style="margin-right: 10px;" for="item-quantity" class="col-form-label">Add Expiry and Manufature Date</label>
+            <input
+            (click) = "makeShowAddExpiryAndManufacturingDetailFalse()"
+            type="radio"
+            class="btn-check"
+            name="btnradio"
+            id="btnradio1"
+            autocomplete="off">
+            <label class="btn btn-outline-primary" for="btnradio1">No</label>
+
+            <input
+            (click) = "makeShowAddExpiryAndManufacturingDetailTrue()"
+            type="radio"
+            class="btn-check"
+            name="btnradio"
+            id="btnradio2"
+            autocomplete="off">
+            <label class="btn btn-outline-primary" for="btnradio2">Yes</label>
+          </div>
+          <div class="mb-3">
+            <label for="item-expiry" class="col-form-label">Item Expiry:</label>
+            <input
+            [disabled] = "!showAddExpiryAndManufacturingDetail"
+            type="date"
+            class="form-control"
+            id="item-expiry">
+          </div>
+          <div class="mb-3">
+            <label for="item-manufactury-date" class="col-form-label">Item Manufacture Date:</label>
+            <input
+            [disabled] = "!showAddExpiryAndManufacturingDetail"
+            type="date"
+            class="form-control"
+            id="item-manufactury-date">
+          </div>
         </form>
       </div>
       <div class="modal-footer">

@@ -1,8 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
+import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { faBraille, faCalendarAlt, faHashtag, faInfo, faMapMarkerAlt, faPhoneAlt, faPlus, faPlusSquare, faRupeeSign, faSquare, faTimes, faUser, faUserPlus, faUserTie } from '@fortawesome/free-solid-svg-icons';
 import { ModalsService } from '../modals.service';
+import pdfMake from "pdfmake/build/pdfmake";
 import { MatSnackBar } from '@angular/material/snack-bar';
+import pdfFonts from "pdfmake/build/vfs_fonts";
+pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
 @Component({
   selector: 'app-create-invoice-modal',
@@ -24,6 +27,13 @@ export class CreateInvoiceModalComponent implements OnInit {
   faInfo = faInfo;
   faHashtag = faHashtag;
   invoiceTotalAmountByTotalItems: number = 0;
+  invoiceTotalMrpByTotalItems: number = 0;
+
+  paymentReceived: number;
+
+  discountInAmount: number = 0;
+  discountInPercentage: number = 0;
+
   invoiceForm: FormGroup;
   today : any;
   item: {
@@ -42,8 +52,7 @@ export class CreateInvoiceModalComponent implements OnInit {
       mobileNumber: null,
       address: null,
       id: null
-    },
-    items: [],
+    }
   };
   customers = [
     {
@@ -90,6 +99,9 @@ export class CreateInvoiceModalComponent implements OnInit {
 
   itemSuggestions = [];
 
+  instantPayment: boolean = true;
+
+  invoicePreviewData: any;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -111,15 +123,28 @@ export class CreateInvoiceModalComponent implements OnInit {
     this.invoiceForm.get('items').valueChanges
       .subscribe((value) => {
         this.calculateInvoiceTotalAmountByTotalItems();
+        this.calculateInvoiceTotalMrpByTotalItems();
+        this.calculateDiscountInAmount();
+        this.calculateDiscountInPercentage();
+      });
+
+      this.invoiceForm.get('roundOff').valueChanges
+      .subscribe((value) => {
+        if(value === true){
+          this.roundOffTotalAmount();
+        }
+
       });
   }
 
   buildForms(){
     this.invoiceForm = this.formBuilder.group({
       customerMobileNumberInput: [''],
-      invoiceNumber: ['45'],
-      invoiceDate: [ this.today.toLocaleDateString()],
+      invoiceNumber: ['45', Validators.required],
+      invoiceDate: [ this.today.toLocaleDateString(), Validators.required],
       items: this.formBuilder.array([]),
+      paymentReceived: ['', Validators.required],
+      roundOff: []
     })
   };
 
@@ -278,6 +303,207 @@ export class CreateInvoiceModalComponent implements OnInit {
         this.invoiceTotalAmountByTotalItems += Number(item.rate);
       }
     });
+    this.invoiceTotalAmountByTotalItems = Number(this.invoiceTotalAmountByTotalItems.toFixed(2));
+  };
+
+  calculateInvoiceTotalMrpByTotalItems(){
+    this.invoiceTotalMrpByTotalItems = 0;
+    this.invoiceForm.get('items').value.forEach( (item) => {
+      for(let i=1; i<=Number(item.quantity); i++){
+        this.invoiceTotalMrpByTotalItems += Number(item.mrp);
+      }
+    });
+    this.invoiceTotalMrpByTotalItems = Number(this.invoiceTotalMrpByTotalItems.toFixed(2));
+  };
+
+  toggleInstantPayment(){
+    this.instantPayment = !this.instantPayment;
+  }
+
+  roundOffTotalAmount(){
+    this.invoiceTotalAmountByTotalItems = Math.round(this.invoiceTotalAmountByTotalItems);
+
+  }
+
+
+  //discount ----
+
+  calculateDiscountInAmount(){
+    this.discountInAmount = this.invoiceTotalMrpByTotalItems - this.invoiceTotalAmountByTotalItems;
+    this.discountInAmount = Number(this.discountInAmount.toFixed(2));
+  }
+
+  calculateDiscountInPercentage(){
+    const n = this.discountInAmount / this.invoiceTotalMrpByTotalItems;
+    this.discountInPercentage = n*100;
+    this.discountInPercentage = Number(this.discountInPercentage.toFixed(2));
+  }
+
+  //........
+
+
+
+  // pdf make
+
+  generatePDF() {
+    const products = [
+      {
+        name: 'dasd',
+        price: 88,
+        qty: 9
+      }
+    ]
+
+    let docDefinition = {
+      content: [
+        {
+          text: 'Store Name',
+          fontSize: 16,
+          alignment: 'center',
+          color: '#047886',
+          decoration: 'underline'
+        },
+        {
+          text: 'INVOICE',
+          fontSize: 20,
+          bold: true,
+          alignment: 'center',
+          decoration: 'underline',
+        },
+        {
+          text: 'Customer Details',
+          style: 'sectionHeader'
+        },
+        {
+          columns: [
+            [
+              {
+                text: 'Name : Sanskar Soni',
+                bold:true
+              },
+              { text: 'Mobile : 8823078781' },
+              { text: 'Address : Bamhori' },
+
+            ],
+            [
+              {
+                text: 'Invoice Date : 09/17/2021',
+                alignment: 'right'
+              },
+              {
+                text: `Invoice Number : 8785`,
+                alignment: 'right'
+              }
+            ]
+          ]
+        },
+        {
+          text: '',
+          style: 'sectionHeader'
+        },
+        {
+          table: {
+            headerRows: 1,
+            widths: ['auto','*', 'auto', 'auto', 'auto', 'auto'],
+            body: [
+              [ { text: 'S.No.', bold: true }, { text: 'Item Name', bold: true }, { text: 'Quantity', bold: true }, { text: 'MRP', bold: true }, { text: 'Rate', bold: true }, { text: 'Amount', bold: true } ],
+              ['1', 'item1', 8, '₹ 855', '₹ 852', '₹ 895' ],
+              ['2', 'item1', 8, 888, 852, 895 ],
+              ['3', 'item1', 8, 888, 852, 895 ],
+              ['4', 'item1', 8, 888, 852, 895 ],
+              ['5', 'item1', 8, 888, 852, 895 ],
+
+            ]
+          }
+        },
+        {
+          table: {
+            headerRows: 1,
+            widths: ['auto','*'],
+            body: [
+              [ { text: 'Grand Total', bold: true }, '₹ 888'],
+              [ { text: 'Discount', bold: true }, '₹ 87'],
+              [ { text: 'Net Amount', bold: true }, '₹ 888'],
+              [ { text: 'Paid', bold: true }, '₹ 888'],
+
+
+            ],
+            margin: [0, 20],
+          }
+        },
+
+        {
+          text: '',
+          style: 'sectionHeader'
+        },
+
+        {
+          columns: [
+
+            [{ text: 'Authorised Signature', alignment: 'right', italics: true}],
+          ]
+        },
+        {
+          text: 'Terms and Conditions',
+          style: 'sectionHeader'
+        },
+        {
+            ul: [
+              'Warrenty of the product will be subject to the manufacturer terms and conditions.',
+              'This is system generated invoice.',
+            ],
+        },
+        {
+          text: 'Complaint Number: 8852852852',
+          style: 'sectionHeader',
+          alignment: 'center'
+        },
+        {
+          text: [
+            'Thank You Visit Again'
+            ],
+          style: 'header',
+          bold: false ,
+          alignment: 'center'
+        }
+      ],
+      styles: {
+        sectionHeader: {
+          bold: true,
+          decoration: 'underline',
+          fontSize: 14,
+          margin: [0, 15,0, 15]
+        }
+      }
+    };
+
+    pdfMake.createPdf(docDefinition).print();
+
+    this.invoiceForm.reset();
+    this.items.clear();
+    this.invoiceDetail.customer = {
+      name: null,
+      mobileNumber: null,
+      address: null,
+      id: null
+    }
+
+  };
+
+  //.......
+
+  onGoToSecondModal(){
+    this.invoicePreviewData = this.invoiceForm.value;
+    if(this.instantPayment === true){
+      this.paymentReceived = this.invoiceTotalAmountByTotalItems;
+    }
+    else if(this.instantPayment === false){
+      this.paymentReceived = 0;
+    }
+
   };
 
 }
+
+
+

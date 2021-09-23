@@ -1,0 +1,125 @@
+<div class="modal fade" id="receivePaymentModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header alert alert-success">
+        <h2 class="modal-title" id="exampleModalLabel">Receive Payment</h2>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col-lg-6">
+              <div class="mb-3">
+                <label for="partyName" class="form-label">Party Name</label>
+                <input type="text" class="form-control" id="partyName">
+              </div>
+              <div class="mb-3">
+                <label for="partyMobileNumber" class="form-label">Mobile Number</label>
+                <input type="text" class="form-control" id="partyMobileNumber">
+              </div>
+              <div class="mb-3">
+                <label for="paymentReceiveDescription" class="form-label">Description</label>
+                <textarea class="form-control" id="paymentReceiveDescription" rows="3"></textarea>
+              </div>
+
+            </div>
+            <div class="col-lg-1">
+
+            </div>
+            <div class="col-lg-5">
+              <div class="input-group mb-3">
+                <span class="input-group-text"><fa-icon style="margin-right: 0.5em;" [icon]="faHashtag"></fa-icon>Bill Number</span>
+                <input
+                value = "23"
+                readonly
+                type="text"
+                class="form-control"
+                aria-label="Username"
+                aria-describedby="basic-addon1">
+              </div>
+              <div class="input-group mb-3">
+                <span class="input-group-text"><fa-icon style="margin-right: 0.5em;" [icon]="faCalendarAlt"></fa-icon>Date</span>
+                <input
+                value="{{ today }}"
+                readonly
+                type="text"
+                class="form-control"
+                aria-label="Username"
+                aria-describedby="basic-addon1">
+              </div>
+              <div class="input-group mb-3">
+                <span class="input-group-text">Payment In</span>
+                <span class="input-group-text"><fa-icon [icon]="faRupeeSign"></fa-icon></span>
+                <input
+                (input) = "onPaymentInInput($event)"
+                type="text"
+                class="form-control" >
+              </div>
+              <div class="input-group mb-3">
+                <label class="input-group-text" for="receivePaymentType">Payment Type</label>
+                <select class="form-select" id="receivePaymentType">
+                  <option selected>Cash</option>
+                  <option value="1">Online</option>
+                </select>
+              </div>
+              <div class="input-group mb-3">
+                <span class="input-group-text">Total Amount</span>
+                <span class="input-group-text"><fa-icon [icon]="faRupeeSign"></fa-icon></span>
+                <input
+                value = "{{ totalAmount }}"
+                readonly
+                type="text"
+                class="form-control" >
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button
+        data-bs-toggle="modal"
+        data-bs-target="#receivePaymentModalSecond"
+        data-bs-whatever="@mdo"
+        type="button"
+        class="btn btn-primary"
+        >Confirm Payment</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="receivePaymentModalSecond" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header alert alert-success">
+        <h2 class="modal-title" id="exampleModalLabel">Receive Payment</h2>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="container">
+          <h3 class="heading-center"><span class="badge bg-secondary">Payment Summary</span></h3>
+          <div class="summary-wrapper">
+            <ul class="list-group">
+              <li class="list-group-item list-group-item-secondary"><fa-icon [icon]="faCalendarAlt" style="margin-right: 0.5em;" class="mr-10"></fa-icon>Date :  </li>
+              <li class="list-group-item list-group-item-secondary"><fa-icon [icon]="faHashtag" style="margin-right: 0.5em;" class="mr-10"></fa-icon>Bill Number :  </li>
+              <li class="list-group-item list-group-item-secondary"><fa-icon [icon]="faUserTie" style="margin-right: 0.5em;" class="mr-10"></fa-icon>Name : Sanskar Soni </li>
+              <li class="list-group-item list-group-item-secondary"><fa-icon [icon]="faPhoneAlt" style="margin-right: 0.5em;" class="mr-10"></fa-icon>Mob : 8585858625 </li>
+              <li class="list-group-item list-group-item-secondary"><fa-icon [icon]="faInfo" style="margin-right: 0.5em;" class="mr-10"></fa-icon>Description :  </li>
+              <li class="list-group-item list-group-item-secondary"><fa-icon [icon]="faFileInvoice" style="margin-right: 0.5em;" class="mr-10"></fa-icon>Payment Type :  </li>
+              <li class="list-group-item list-group-item-secondary"><fa-icon [icon]="faRupeeSign" style="margin-right: 0.5em;" class="mr-10"></fa-icon>Payment In :  </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button
+        data-bs-dismiss="modal"
+        type="button"
+        class="btn btn-primary"
+        >Confirm Payment</button>
+      </div>
+    </div>
+  </div>
+</div>

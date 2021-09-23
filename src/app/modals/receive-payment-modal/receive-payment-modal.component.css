@@ -1,0 +1,10 @@
+.badge {
+  letter-spacing: 2px;
+  font-family: sans-serif;
+  font-size: 14px;
+  line-height: 20px;
+}
+
+.heading-center {
+  text-align: center;
+}

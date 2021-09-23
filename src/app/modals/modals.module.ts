@@ -9,6 +9,10 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { AddItemCategoryModalComponent } from './add-item-category-modal/add-item-category-modal.component';
+import { ReceivePaymentModalComponent } from './receive-payment-modal/receive-payment-modal.component';
+import { GivePaymentModalComponent } from './give-payment-modal/give-payment-modal.component';
+
 
 
 
@@ -18,6 +22,9 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
     AddCustomerModalComponent,
     AddItemModalComponent,
     CreateInvoiceModalComponent,
+    AddItemCategoryModalComponent,
+    ReceivePaymentModalComponent,
+    GivePaymentModalComponent
 
   ],
   imports: [

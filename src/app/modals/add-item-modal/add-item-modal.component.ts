@@ -7,13 +7,24 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AddItemModalComponent implements OnInit {
 
-  constructor() { }
+  showAddExpiryAndManufacturingDetail: boolean = false;
+
+  constructor(
+  ) { }
 
   ngOnInit(): void {
   }
 
   onAddItem(){
-    
+
+  }
+
+  makeShowAddExpiryAndManufacturingDetailTrue(){
+    this.showAddExpiryAndManufacturingDetail = true;
+  }
+
+  makeShowAddExpiryAndManufacturingDetailFalse(){
+    this.showAddExpiryAndManufacturingDetail = false;
   }
 
 }
