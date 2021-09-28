@@ -12,6 +12,8 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { AddItemCategoryModalComponent } from './add-item-category-modal/add-item-category-modal.component';
 import { ReceivePaymentModalComponent } from './receive-payment-modal/receive-payment-modal.component';
 import { GivePaymentModalComponent } from './give-payment-modal/give-payment-modal.component';
+import { ReceiveCustomerCreditModalComponent } from './receive-customer-credit-modal/receive-customer-credit-modal.component';
+import { ChangeStorePhotoModalComponent } from './change-store-photo-modal/change-store-photo-modal.component';
 
 
 
@@ -24,7 +26,9 @@ import { GivePaymentModalComponent } from './give-payment-modal/give-payment-mod
     CreateInvoiceModalComponent,
     AddItemCategoryModalComponent,
     ReceivePaymentModalComponent,
-    GivePaymentModalComponent
+    GivePaymentModalComponent,
+    ReceiveCustomerCreditModalComponent,
+    ChangeStorePhotoModalComponent
 
   ],
   imports: [

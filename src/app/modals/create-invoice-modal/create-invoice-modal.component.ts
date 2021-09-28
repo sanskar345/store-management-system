@@ -54,48 +54,11 @@ export class CreateInvoiceModalComponent implements OnInit {
       id: null
     }
   };
-  customers = [
-    {
-      name: 'sanskar',
-      address: 'bamhori',
-      mobileNumber: '85858585852',
-      id: '789'
-    },
-    {
-      name: 'trilok',
-      address: 'indore',
-      mobileNumber: '8823078781',
-      id: '456'
-    },
-    {
-      name: 'trilok',
-      address: 'indore',
-      mobileNumber: '78787878789',
-      id: '456'
-    },
-    {
-      name: 'trilok',
-      address: 'indore',
-      mobileNumber: '78787878789',
-      id: '456'
-    },
-    {
-      name: 'trilok singh tikambar khan rajput',
-      address: 'indore',
-      mobileNumber: '9696969696',
-      id: '456'
-    },
-    {
-      name: 'trilok singh tikambar khan rajput',
-      address: 'indore',
-      mobileNumber: '9696969696',
-      id: '456'
-    }
-  ];
+  customers = [];
 
   itemsData = [];
 
-  suggestions = this.customers.slice(0, 2);
+  suggestions = [];
 
   itemSuggestions = [];
 
@@ -105,11 +68,13 @@ export class CreateInvoiceModalComponent implements OnInit {
 
   constructor(
     private formBuilder: FormBuilder,
-    private madalsService: ModalsService,
+    private modalsService: ModalsService,
   ) { }
 
   ngOnInit(): void {
-    this.itemsData = this.madalsService.itemsData;
+    this.customers = this.modalsService.customers;
+    this.suggestions = this.customers.slice(0, 2);
+    this.itemsData = this.modalsService.itemsData;
     this.itemSuggestions = this.itemsData.slice(0,5);
     this.today = new Date;
     this.buildForms();

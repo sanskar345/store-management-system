@@ -113,6 +113,45 @@ export class ModalsService {
 
   //......
 
+  customers = [
+    {
+      name: 'sanskar',
+      address: 'bamhori',
+      mobileNumber: '85858585852',
+      id: '789'
+    },
+    {
+      name: 'trilok',
+      address: 'indore',
+      mobileNumber: '8823078781',
+      id: '456'
+    },
+    {
+      name: 'trilok',
+      address: 'indore',
+      mobileNumber: '78787878789',
+      id: '456'
+    },
+    {
+      name: 'trilok',
+      address: 'indore',
+      mobileNumber: '78787878789',
+      id: '456'
+    },
+    {
+      name: 'trilok singh tikambar khan rajput',
+      address: 'indore',
+      mobileNumber: '9696969696',
+      id: '456'
+    },
+    {
+      name: 'trilok singh tikambar khan rajput',
+      address: 'indore',
+      mobileNumber: '9696969696',
+      id: '456'
+    }
+  ];
+
   constructor(
 
   ) { }

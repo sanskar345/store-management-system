@@ -1,0 +1,134 @@
+<app-home-header [title] = "'Customers'"></app-home-header>
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-lg-3 sidebar">
+      <mat-card class="sidebar-container">
+        <div class="sidebar-top-btn-wrapper" *ngIf = "!showSearchInput">
+        <button
+        (click) = "onClickSearchBtn()"
+        class="search-btn"
+        mat-mini-fab
+        aria-label="Example icon button with a home icon">
+          <mat-icon style="color: black;">search</mat-icon>
+        </button>
+        <button class="btn btn-warning">
+          <fa-icon [icon] = "faPlus" class="icon-mr" ></fa-icon>
+          Add Customer
+        </button>
+        </div>
+        <div class="input-group mb-3" *ngIf = "showSearchInput">
+          <span class="input-group-text">
+            <mat-icon>search</mat-icon>
+          </span>
+          <input (change) = "searchInput($event)" type="text" class="form-control" aria-label="Amount (to the nearest dollar)">
+          <span class="input-group-text close-search-input-btn">
+            <mat-icon  (click) = "closeSearchInput()">close</mat-icon>
+          </span>
+        </div>
+        <div class="mt-3 mb-5">
+          <mat-divider></mat-divider>
+        </div>
+
+        <div>
+          <mat-card class="mb-2 alert alert-info customer-selector">
+            <div class="customer-selector-inside">
+              <span>Sanskar</span>
+              <mat-icon>chevron_right</mat-icon>
+            </div>
+          </mat-card>
+          <mat-card class="mb-2 alert alert-info customer-selector">
+            <div class="customer-selector-inside">
+              <span>Sanskar</span>
+              <mat-icon>chevron_right</mat-icon>
+            </div>
+          </mat-card>
+          <mat-card class="mb-2 alert alert-info customer-selector">
+            <div class="customer-selector-inside">
+              <span>Sanskar</span>
+              <mat-icon>chevron_right</mat-icon>
+            </div>
+          </mat-card>
+        </div>
+
+      </mat-card>
+    </div>
+    <div class="col-lg-9">
+      <div class="row">
+        <div class="col-lg-12 content-wrapper">
+          <mat-card class="content-container">
+            <div class="container-fluid">
+              <div class="content-header">
+                <div class="mb-1">
+                  <p class="customer-name">Sanskar Soni</p>
+                </div>
+                <div>
+                  <p>btn</p>
+                </div>
+              </div>
+              <div class="content-body">
+                <div>
+                  <p class="mb-1">Mobile: 8823078781</p>
+                  <p>Address: Vijay Nagar(Indore)</p>
+                </div>
+                <div>
+
+                </div>
+              </div>
+            </div>
+          </mat-card>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-lg-12 list-wrapper">
+          <mat-card class="list-container">
+            <h2>Transactions</h2>
+            <div>
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th scope="col"></th>
+                    <th scope="col">Type</th>
+                    <th scope="col">Number</th>
+                    <th scope="col">Date</th>
+                    <th scope="col">Net Amount</th>
+                    <th scope="col">Balance</th>
+                    <th scope="col"></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <th scope="row"><fa-icon [icon] = "faDotCircle" class="text-info"></fa-icon></th>
+                    <td>Sale</td>
+                    <td>45</td>
+                    <td>28/09/2021</td>
+                    <td><fa-icon [icon] = "faRupeeSign"></fa-icon> 909</td>
+                    <td><fa-icon [icon] = "faRupeeSign"></fa-icon> 0</td>
+                    <td>
+                      <button class="trans-more-detail-btn" mat-button [matMenuTriggerFor]="transaction">
+                        <fa-icon [icon] = "faEllipsisV"></fa-icon>
+                      </button>
+                      <mat-menu #transaction="matMenu">
+                        <button mat-menu-item>
+                            <!-- <mat-icon>View</mat-icon> -->
+                            View
+                        </button>
+                      </mat-menu>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <footer class="list-footer">
+              <mat-paginator [length]="100"
+              [pageSize]="10"
+              [pageSizeOptions]="[5, 10, 25, 100]"
+              aria-label="Select page">
+              </mat-paginator>
+            </footer>
+          </mat-card>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -19,10 +19,15 @@ img {
   height: 60px;
   object-fit: cover;
   border-radius: 50%;
+  cursor: pointer ;
 }
 
 .company-name {
   margin-top: 10px;
+}
+
+.active {
+  background-color: #E2E3E5;
 }
 
 

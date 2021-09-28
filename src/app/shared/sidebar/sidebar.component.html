@@ -1,9 +1,9 @@
 <mat-nav-list>
     <div class="company-card">
-      <div class="">
-        <img src="https://material.angular.io/assets/img/examples/shiba2.jpg" alt="">
-      </div>
-
+        <img
+        data-bs-toggle="modal"
+        data-bs-target="#changeStorePhotoModal"
+        src="https://material.angular.io/assets/img/examples/shiba2.jpg" alt="">
       <h2 class="company-name">Store Name</h2>
 
     </div>
@@ -15,9 +15,33 @@
         Dashboard
     </a>
 
-    <a mat-list-item routerLinkActive="list-item-active" [routerLink]="['test']" routerLinkActive="active">
+    <a mat-list-item routerLinkActive="list-item-active" [routerLink]="['s']" routerLinkActive="active">
+      <mat-icon>receipt</mat-icon>
+      Create Invoice
+    </a>
+
+    <a mat-list-item routerLinkActive="list-item-active" [routerLink]="['customers']" routerLinkActive="active">
         <mat-icon>people</mat-icon>
         Customers
     </a>
 
+    <a mat-list-item routerLinkActive="list-item-active" [routerLink]="['df']" routerLinkActive="active">
+      <mat-icon>receipt_long</mat-icon>
+      Transactions
+    </a>
+
+    <a mat-list-item routerLinkActive="list-item-active" [routerLink]="['sds']" routerLinkActive="active">
+      <mat-icon>credit_card</mat-icon>
+      Credits
+    </a>
+
+    <a mat-list-item routerLinkActive="list-item-active" [routerLink]="['sdw']" routerLinkActive="active">
+      <mat-icon>summarize</mat-icon>
+      Reports
+    </a>
+
+    <a mat-list-item routerLinkActive="list-item-active" [routerLink]="['sdw']" routerLinkActive="active">
+      <mat-icon>inventory_2</mat-icon>
+      Inventory
+    </a>
 </mat-nav-list>

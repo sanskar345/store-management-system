@@ -1,0 +1,49 @@
+/* sidebar */
+
+.sidebar {
+  height: 83vh;
+  padding: 10px;
+}
+
+.sidebar-container {
+  height: 100%;
+}
+
+/* content */
+
+.content-wrapper {
+  height: 20vh;
+  padding: 10px;
+}
+
+.content-header {
+  display: flex;
+  justify-content: space-between;
+}
+
+.content-container {
+  height: 100%;
+}
+
+/* list */
+
+.list-wrapper {
+  height: 63vh;
+}
+
+
+.list-wrapper {
+  padding: 10px;
+}
+
+.list-container {
+  height: 100%;
+}
+
+/* all */
+
+mat-card:not([class*=mat-elevation-z]) {
+  box-shadow: 0 2px 1px -1px #779574,
+              0 1px 1px 0 #779574,
+              0 1px 8px 0 #779574;
+}

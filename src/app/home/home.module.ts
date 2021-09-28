@@ -19,8 +19,12 @@ import { FontAwesomeModule } from "@fortawesome/angular-fontawesome";
 import { ModalsModule } from "../modals/modals.module";
 import { HomeHeaderComponent } from './home-header/home-header.component';
 import { SettingsComponent } from './settings/settings.component';
-
-
+import { MatGridListModule } from '@angular/material/grid-list';
+import { CustomersComponent } from './customers/customers.component';
+import {MatCardModule} from '@angular/material/card';
+import { InventoryComponent } from './inventory/inventory.component';
+import {MatPaginatorModule} from '@angular/material/paginator';
+import { MatMenuModule } from '@angular/material/menu';
 
 @NgModule({
   declarations: [
@@ -29,6 +33,8 @@ import { SettingsComponent } from './settings/settings.component';
     DashboardComponent,
     HomeHeaderComponent,
     SettingsComponent,
+    CustomersComponent,
+    InventoryComponent,
 
   ],
   imports: [
@@ -45,7 +51,11 @@ import { SettingsComponent } from './settings/settings.component';
     MatSnackBarModule,
     MatIconModule,
     FontAwesomeModule,
-    ModalsModule
+    ModalsModule,
+    MatGridListModule,
+    MatCardModule,
+    MatPaginatorModule,
+    MatMenuModule
   ]
 })
 
