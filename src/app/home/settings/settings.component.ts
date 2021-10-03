@@ -7,9 +7,15 @@ import { Component, OnInit } from '@angular/core';
 })
 export class SettingsComponent implements OnInit {
 
+  showStoreNameChange = false;
+
   constructor() { }
 
   ngOnInit(): void {
+  }
+
+  toggleShowStoreNameChange() {
+    this.showStoreNameChange = !this.showStoreNameChange;
   }
 
 }

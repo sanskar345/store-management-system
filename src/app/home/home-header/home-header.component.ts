@@ -9,9 +9,12 @@ export class HomeHeaderComponent implements OnInit {
 
   @Input() title: string;
 
+  today: Date;
+
   constructor() { }
 
   ngOnInit(): void {
+    this.today = new Date();
   }
 
 }

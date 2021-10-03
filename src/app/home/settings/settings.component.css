@@ -1,0 +1,41 @@
+section {
+  padding: 20px;
+}
+
+.content {
+  display: flex;
+  justify-content: space-between;
+}
+
+.heading {
+  margin-bottom: 0;
+}
+
+.divider{
+  margin: 10px 0;
+}
+
+.input {
+  width:100%;
+  border: 1px solid;
+  border-radius: 4px;
+  padding: 5px;
+  height: 100%;
+}
+
+.cancel-btn {
+  margin-left: 0;
+  margin-right: 10px;
+}
+
+.btn-area-change{
+  padding: 0;
+}
+
+h3 {
+  margin: 0;
+}
+
+.input-width {
+  width: 77%;
+}
