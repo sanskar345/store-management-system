@@ -1,0 +1,81 @@
+.container-fluid {
+  margin: 0;
+  padding: 0 1rem 1rem 1rem;
+}
+
+.credits-wrapper {
+  width: 100%;
+  min-height: 70vh;
+}
+
+.search-input-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.search-input {
+  width: 40vw;
+  border: 3px solid #FFC107;
+  border-radius: 6px;
+  padding: 10px 32px;
+}
+
+.input-box {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.input-box .left-icon {
+  position: absolute;
+  left: 8px;
+}
+
+.input-box .right-icon {
+  position: absolute;
+  right: 8px;
+}
+
+.credit-card {
+  /* border: 2px solid #007BFF; */
+  border: 1.5px solid #E2E3E5;
+  margin-top: 15px;
+  font-size: 15px;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+  padding: 10px;
+}
+
+.detail-wrapper {
+  /* display: flex;
+  align-items: center;
+  justify-content: center; */
+
+}
+
+.detail-wrapper span {
+  margin-right: 10px;
+}
+
+.btns-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.btns-wrapper .right .btn {
+  margin-right: 10px;
+}
+
+.btns-wrapper .left .red{
+  color: #FF0000;
+}
+
+
+
+/* all */
+
+.credits-wrapper:not([class*="mat-elevation-z"]) {
+  box-shadow: 0 2px 1px -1px #779574, 0 1px 1px 0 #779574, 0 1px 8px 0 #779574;
+}

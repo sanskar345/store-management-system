@@ -1,0 +1,70 @@
+.container-fluid {
+  margin: 0;
+  padding: 0 1rem 1rem 1rem;
+}
+
+.reports-wrapper {
+  width: 100%;
+  min-height: 70vh;
+  padding: 10px;
+}
+
+.info-card .upper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 28px;
+  font-weight: 600;
+  letter-spacing: 2px;
+}
+
+.info-card .lower {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 10px;
+  font-size: 15px;
+}
+
+.bar-chart-wrapper {
+  padding: 20px 10px 10px 10px;
+  border: 1px solid #e2e3e5;
+}
+
+.bar-chart {
+}
+
+.bar-chart-row {
+  padding: 12px;
+}
+
+
+.bar-form-field {
+  width: 100%;
+}
+
+.bar-chart-heading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 22px;
+  font-weight: 500;
+  letter-spacing: 1px;
+}
+
+.bar-chart-action {
+  margin-bottom: 10px;
+}
+
+.bar-chart-fields {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+
+/* all */
+
+.reports-wrapper:not([class*="mat-elevation-z"]) {
+  box-shadow: 0 2px 1px -1px #779574, 0 1px 1px 0 #779574, 0 1px 8px 0 #779574;
+}

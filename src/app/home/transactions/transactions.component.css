@@ -1,62 +1,41 @@
-section {
-  padding: 10px;
+.container-fluid {
+  margin: 0;
+  padding: 0 1rem 1rem 1rem;
 }
 
-.btn-area {
-  /* background-color: blue; */
-  padding:  0 0 20px 16px;
+.transactions-wrapper {
+  width: 100%;
+  min-height: 70vh;
+}
+
+.search-input-wrapper {
   display: flex;
-  flex-wrap: wrap;
+  justify-content: center;
   align-items: center;
-
 }
 
-.btn-area span button {
-  margin: 7px;
+.search-input {
+  width: 40vw;
+  border: 3px solid #FFC107;
+  border-radius: 6px;
+  padding: 10px 32px;
 }
 
-.collapsing{
-  -webkit-transition: none;
-        transition: none;
-}
-
-.modal {
+.input-box {
   position: relative;
-  top: 10%;
-
-}
-
-.section-content {
-  padding: 20px;
-}
-
-.info-card-wrapper {
-  padding: 20px;
-}
-
-.info-card .upper {
   display: flex;
-  justify-content: center;
   align-items: center;
-  font-size: 28px;
-  font-weight: 600;
-  letter-spacing: 2px;
 }
 
-.info-card .lower {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-top: 10px;
-  font-size: 15px;
+.input-box .left-icon {
+  position: absolute;
+  left: 8px;
 }
 
-fa-icon {
-  margin-right: 0.5em;
+.input-box .right-icon {
+  position: absolute;
+  right: 8px;
 }
-
-/* transaction card */
-
 
 .transaction-card {
   /* border: 2px solid #007BFF; */
@@ -93,4 +72,11 @@ fa-icon {
 
 .transaction-card .inside .left span{
   margin-left: 10px;
+}
+
+
+/* all */
+
+.transactions-wrapper:not([class*="mat-elevation-z"]) {
+  box-shadow: 0 2px 1px -1px #779574, 0 1px 1px 0 #779574, 0 1px 8px 0 #779574;
 }

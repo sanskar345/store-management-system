@@ -15,7 +15,11 @@
         Dashboard
     </a>
 
-    <a mat-list-item routerLinkActive="list-item-active" [routerLink]="['s']" routerLinkActive="active">
+    <a
+    mat-list-item
+    data-bs-toggle="modal"
+    data-bs-target="#createInvoiceModal"
+    data-bs-whatever="@mdo">
       <mat-icon>receipt</mat-icon>
       Create Invoice
     </a>
@@ -25,22 +29,22 @@
         Customers
     </a>
 
-    <a mat-list-item routerLinkActive="list-item-active" [routerLink]="['df']" routerLinkActive="active">
+    <a mat-list-item routerLinkActive="list-item-active" [routerLink]="['transactions']" routerLinkActive="active">
       <mat-icon>receipt_long</mat-icon>
       Transactions
     </a>
 
-    <a mat-list-item routerLinkActive="list-item-active" [routerLink]="['sds']" routerLinkActive="active">
+    <a mat-list-item routerLinkActive="list-item-active" [routerLink]="['credits']" routerLinkActive="active">
       <mat-icon>credit_card</mat-icon>
       Credits
     </a>
 
-    <a mat-list-item routerLinkActive="list-item-active" [routerLink]="['sdw']" routerLinkActive="active">
+    <a mat-list-item routerLinkActive="list-item-active" [routerLink]="['reports']" routerLinkActive="active">
       <mat-icon>summarize</mat-icon>
       Reports
     </a>
 
-    <a mat-list-item routerLinkActive="list-item-active" [routerLink]="['sdw']" routerLinkActive="active">
+    <a mat-list-item routerLinkActive="list-item-active" [routerLink]="['inventory']" routerLinkActive="active">
       <mat-icon>inventory_2</mat-icon>
       Inventory
     </a>

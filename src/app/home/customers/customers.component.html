@@ -59,11 +59,11 @@
           <mat-card class="content-container">
             <div class="container-fluid">
               <div class="content-header">
-                <div class="mb-1">
-                  <p class="customer-name">Sanskar Soni</p>
-                </div>
+
+                <span class="customer-name mb-1">Sanskar Soni</span>
+
                 <div>
-                  <p>btn</p>
+                  <button (click)="openDialog()" class="btn btn-danger content-btn"><fa-icon [icon]="faTrashAlt" class="icon-mr"></fa-icon>Remove</button>
                 </div>
               </div>
               <div class="content-body">

@@ -25,6 +25,16 @@ import {MatCardModule} from '@angular/material/card';
 import { InventoryComponent } from './inventory/inventory.component';
 import {MatPaginatorModule} from '@angular/material/paginator';
 import { MatMenuModule } from '@angular/material/menu';
+import {MatDialogModule} from "@angular/material/dialog";
+import { DialogsModule } from "../dialogs/dialogs.module";
+import { TransactionsComponent } from './transactions/transactions.component';
+import { CreditsComponent } from './credits/credits.component';
+import { ReportsComponent } from './reports/reports.component';
+import { ChartsModule } from 'ng2-charts';
+import {MatSelectModule} from '@angular/material/select';
+import {MatDatepickerModule} from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
+import { MatInputModule } from '@angular/material/input';
 
 @NgModule({
   declarations: [
@@ -35,6 +45,9 @@ import { MatMenuModule } from '@angular/material/menu';
     SettingsComponent,
     CustomersComponent,
     InventoryComponent,
+    TransactionsComponent,
+    CreditsComponent,
+    ReportsComponent,
 
   ],
   imports: [
@@ -55,7 +68,15 @@ import { MatMenuModule } from '@angular/material/menu';
     MatGridListModule,
     MatCardModule,
     MatPaginatorModule,
-    MatMenuModule
+    MatMenuModule,
+    MatDialogModule,
+    DialogsModule,
+    ChartsModule,
+    MatSelectModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    MatInputModule
+
   ]
 })
 

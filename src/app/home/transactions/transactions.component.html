@@ -1,0 +1,31 @@
+<app-home-header [title] = "'Transactions'"></app-home-header>
+<div class="container-fluid">
+  <mat-card class="transactions-wrapper">
+    <div class="search-input-wrapper">
+      <div class="input-box">
+        <mat-icon class="left-icon">search</mat-icon>
+        <input class="search-input" type="text" placeholder="Search by Customer Number">
+        <mat-icon class="right-icon" color="accent">filter_alt</mat-icon>
+      </div>
+    </div>
+
+    <mat-card class="transaction-card alert alert-" *ngFor = "let item of number">
+      <div class="inside">
+        <div class="left">
+          <span>SALE</span>
+          <span>|</span>
+          <span>Sanskar Soni</span>
+          <span>|</span>
+          <span>Cash</span>
+          <span>|</span>
+          <span>02/09/2021</span>
+        </div>
+        <div class="right">
+          <span><fa-icon [icon]="faRupeeSign"></fa-icon> 1000</span>
+          <mat-icon class="red" *ngIf = "item%2 === 0">remove_circle_outline</mat-icon>
+          <mat-icon class="green" *ngIf = "item%2 !== 0">add_circle_outline</mat-icon>
+        </div>
+      </div>
+    </mat-card>
+  </mat-card>
+</div>

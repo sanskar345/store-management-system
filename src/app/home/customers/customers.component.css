@@ -46,6 +46,7 @@
 .content-header {
   display: flex;
   justify-content: space-between;
+  align-items: center;
 }
 
 .content-container {
@@ -56,7 +57,11 @@
   font-size: 20px;
   font-weight:normal;
   letter-spacing: 1px;
+  margin: 0;
+}
 
+.content-btn {
+  font-size: 13px;
 }
 
 /* list */

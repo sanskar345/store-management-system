@@ -1,7 +1,55 @@
+<app-home-header [title] = "'Inventory'"></app-home-header>
+
 <div class="container-fluid">
   <div class="row">
     <div class="col-lg-3 sidebar">
       <mat-card class="sidebar-container">
+        <div class="sidebar-top-btn-wrapper" *ngIf = "!showSearchInput">
+        <button
+        (click) = "onClickSearchBtn()"
+        class="search-btn"
+        mat-mini-fab
+        aria-label="Example icon button with a home icon">
+          <mat-icon style="color: black;">search</mat-icon>
+        </button>
+        <button class="btn btn-warning">
+          <fa-icon [icon] = "faPlus" class="icon-mr" ></fa-icon>
+          Add Item
+        </button>
+        </div>
+        <div class="input-group mb-3" *ngIf = "showSearchInput">
+          <span class="input-group-text">
+            <mat-icon>search</mat-icon>
+          </span>
+          <input (change) = "searchInput($event)" type="text" class="form-control" aria-label="Amount (to the nearest dollar)">
+          <span class="input-group-text close-search-input-btn">
+            <mat-icon  (click) = "closeSearchInput()">close</mat-icon>
+          </span>
+        </div>
+        <div class="mt-3 mb-5">
+          <mat-divider></mat-divider>
+        </div>
+
+        <div>
+          <mat-card class="mb-2 alert alert-info customer-selector">
+            <div class="customer-selector-inside">
+              <span>Item1</span>
+              <mat-icon>chevron_right</mat-icon>
+            </div>
+          </mat-card>
+          <mat-card class="mb-2 alert alert-info customer-selector">
+            <div class="customer-selector-inside">
+              <span>item2</span>
+              <mat-icon>chevron_right</mat-icon>
+            </div>
+          </mat-card>
+          <mat-card class="mb-2 alert alert-info customer-selector">
+            <div class="customer-selector-inside">
+              <span>Item3</span>
+              <mat-icon>chevron_right</mat-icon>
+            </div>
+          </mat-card>
+        </div>
 
       </mat-card>
     </div>
@@ -11,20 +59,22 @@
           <mat-card class="content-container">
             <div class="container-fluid">
               <div class="content-header">
+                <span class="customer-name">Item1</span>
                 <div>
-                  <p>Sanskar Soni</p>
-                </div>
-                <div>
-                  <p>btn</p>
+                  <button class="btn btn-danger content-btn mr-10px"> <fa-icon [icon]="faTrashAlt" class="icon-mr"></fa-icon>Delete</button>
+                  <button class="btn btn-primary content-btn mr-10px"><fa-icon [icon]="faEdit" class="icon-mr"></fa-icon>Edit</button>
+                  <button class="btn btn-info content-btn"><fa-icon [icon]="faInfo" class="icon-mr"></fa-icon>View</button>
                 </div>
               </div>
               <div class="content-body">
                 <div>
-                  <p>Mobile: 8823078781</p>
-                  <p>Address: Vijay Nagar(Indore)</p>
+                  <p class="mb-1 mt-2">Size: small</p>
+                  <p class="mb-1">Rate: <fa-icon [icon]="faRupeeSign" ></fa-icon> 909</p>
+                  <p>Mrp: <fa-icon [icon]="faRupeeSign" ></fa-icon> 909</p>
                 </div>
                 <div>
-
+                  <p class="mb-1 mt-2 color-succcess">Stock Quantity: 100</p>
+                  <p>Stock Value</p>
                 </div>
               </div>
             </div>
@@ -34,7 +84,52 @@
       <div class="row">
         <div class="col-lg-12 list-wrapper">
           <mat-card class="list-container">
-
+            <h2>Transactions</h2>
+            <div>
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th scope="col"></th>
+                    <th scope="col">Type</th>
+                    <th scope="col">C.Name</th>
+                    <th scope="col">Date</th>
+                    <th scope="col">Quantity</th>
+                    <th scope="col">Rate</th>
+                    <th scope="col">Net Amount</th>
+                    <th scope="col"></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <th scope="row"><fa-icon [icon] = "faDotCircle" class="text-info"></fa-icon></th>
+                    <td>Sale</td>
+                    <td>Sanskar</td>
+                    <td>28/09/2021</td>
+                    <td>2</td>
+                    <td><fa-icon [icon] = "faRupeeSign"></fa-icon> 909</td>
+                    <td><fa-icon [icon] = "faRupeeSign"></fa-icon> 909</td>
+                    <td>
+                      <button class="trans-more-detail-btn" mat-button [matMenuTriggerFor]="transaction">
+                        <fa-icon [icon] = "faEllipsisV"></fa-icon>
+                      </button>
+                      <mat-menu #transaction="matMenu">
+                        <button mat-menu-item>
+                            <!-- <mat-icon>View</mat-icon> -->
+                            View
+                        </button>
+                      </mat-menu>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <footer class="list-footer">
+              <mat-paginator [length]="100"
+              [pageSize]="10"
+              [pageSizeOptions]="[5, 10, 25, 100]"
+              aria-label="Select page">
+              </mat-paginator>
+            </footer>
           </mat-card>
         </div>
       </div>
