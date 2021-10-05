@@ -35,6 +35,7 @@ import {MatSelectModule} from '@angular/material/select';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatInputModule } from '@angular/material/input';
+import { AlertsComponent } from './alerts/alerts.component';
 
 @NgModule({
   declarations: [
@@ -48,6 +49,7 @@ import { MatInputModule } from '@angular/material/input';
     TransactionsComponent,
     CreditsComponent,
     ReportsComponent,
+    AlertsComponent,
 
   ],
   imports: [

@@ -1,0 +1,44 @@
+.container-fluid {
+  margin: 0;
+  padding: 0 1rem 1rem 1rem;
+}
+
+.fiter-bar {
+  margin: 10px;
+}
+
+.alerts-wrapper {
+  width: 100%;
+  min-height: 70vh;
+  padding: 1rem;
+}
+
+.item-card-container-div {
+  width: fit-content;
+
+}
+
+.item-card-main {
+  width: 350px;
+  display: inline-block;
+  margin: 10px;
+}
+
+.item-card .upper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+
+.item-card .lower {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* all */
+
+.alerts-wrapper:not([class*="mat-elevation-z"]) {
+  box-shadow: 0 2px 1px -1px #779574, 0 1px 1px 0 #779574, 0 1px 8px 0 #779574;
+}

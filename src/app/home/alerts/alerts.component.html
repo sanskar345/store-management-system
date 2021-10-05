@@ -1,0 +1,39 @@
+<app-home-header [title] = "'Alerts'"></app-home-header>
+<div class="container-fluid">
+  <mat-card class="alerts-wrapper">
+    <div>
+      <mat-form-field appearance="fill" class="bar-form-field fiter-bar">
+        <mat-label> <fa-icon [icon]="faFilter"></fa-icon> Filter</mat-label>
+        <mat-select>
+          <mat-option *ngFor = "let filter of filterArray" value = "{{ filter }}">
+            {{ filter | titlecase }} Per Month
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+    <div class="item-card-container-div">
+      <div>
+      <mat-card *ngFor = "let item of [0,3,0,0,7]" [ngClass] = "{ 'alert alert-danger' : item === 0, 'alert alert-warning' : item !== 0 }" class="item-card-main" >
+        <div class="item-card">
+          <div class="upper">
+            <div class="itemName">
+              Item 1
+            </div>
+            <div class="alert-message">
+              {{ item === 0 ? 'Out Of Stock' : 'Low In Stock' }}
+            </div>
+          </div>
+          <div class="lower">
+            <div class="item-qty">
+              Stock Quantity: {{item}}
+            </div>
+            <div class="btn">
+              <button class="btn btn-primary">Edit</button>
+            </div>
+          </div>
+        </div>
+      </mat-card>
+      </div>
+    </div>
+  </mat-card>
+</div>
