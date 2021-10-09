@@ -11,9 +11,9 @@
         </mat-select>
       </mat-form-field>
     </div>
-    <div class="item-card-container-div">
-      <div>
-      <mat-card *ngFor = "let item of [0,3,0,0,7]" [ngClass] = "{ 'alert alert-danger' : item === 0, 'alert alert-warning' : item !== 0 }" class="item-card-main" >
+    <div class="row">
+      <div class="col-lg-4 item-card-col" *ngFor = "let item of [0,3,0,0,7]" >
+      <mat-card [ngClass] = "{ 'alert alert-danger' : item === 0, 'alert alert-warning' : item !== 0 }" class="item-card-main" >
         <div class="item-card">
           <div class="upper">
             <div class="itemName">

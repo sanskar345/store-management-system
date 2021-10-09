@@ -13,15 +13,14 @@
   padding: 1rem;
 }
 
-.item-card-container-div {
-  width: fit-content;
+
+.item-card-main {
+  width: 100%;
 
 }
 
-.item-card-main {
-  width: 350px;
-  display: inline-block;
-  margin: 10px;
+.item-card-col{
+  padding: 10px 10px 0 10px;
 }
 
 .item-card .upper {
