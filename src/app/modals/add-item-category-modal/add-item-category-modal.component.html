@@ -6,19 +6,21 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        <form>
+        <form [formGroup] = "itemCategoryForm">
           <div class="mb-3">
             <label for="item-category-name" class="col-form-label">Item Category Name:</label>
-            <input type="text" class="form-control" id="item-category-name">
+            <input formControlName = "name" type="text" class="form-control" id="item-category-name">
           </div>
         </form>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
         <button
+        [disabled] = "!itemCategoryForm.valid"
         data-bs-dismiss="modal"
         type="button"
         class="btn btn-primary"
+        (click)="onAddCategory()"
         >Add Item Category</button>
       </div>
     </div>

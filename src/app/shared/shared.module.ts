@@ -11,6 +11,8 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatListModule } from '@angular/material/list';
 import { RouterModule } from '@angular/router';
+import { LoadingSpinnerComponent } from './loading-spinner/loading-spinner.component';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 
 
 
@@ -19,6 +21,7 @@ import { RouterModule } from '@angular/router';
     HeaderComponent,
     FooterComponent,
     SidebarComponent,
+    LoadingSpinnerComponent,
 
   ],
   imports: [
@@ -30,13 +33,15 @@ import { RouterModule } from '@angular/router';
     MatButtonModule,
     MatMenuModule,
     MatListModule,
-    RouterModule
+    RouterModule,
+    MatProgressSpinnerModule
 
   ],
   exports: [
     HeaderComponent,
     FooterComponent,
-    SidebarComponent
+    SidebarComponent,
+    LoadingSpinnerComponent
   ]
 })
 export class SharedModule { }

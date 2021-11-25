@@ -6,16 +6,16 @@
       </div>
 
       <div class="col-md-7 col-lg-5 col-xl-5 offset-xl-1">
-        <form [formGroup] = "authenticationForm">
+        <form [formGroup] = "authenticationForm" *ngIf = "!showRegister">
 
           <div class="form-outline mb-4">
             <input
             type="text"
             class="form-control form-control-lg"
-            formControlName = "userName"
+            formControlName = "email"
             name = "userName"
             />
-            <label class="form-label" for="form1Example13">User Name</label>
+            <label class="form-label" for="form1Example13">Email</label>
           </div>
 
           <div class="form-outline mb-4" >
@@ -34,26 +34,79 @@
             <a href="#!">Forgot password?</a>
           </div>
         </form>
+
+        <!-- register form -->
+
+        <form [formGroup] = "signUpForm" *ngIf = "showRegister">
+
+          <div class="form-outline mb-4">
+            <input
+            type="text"
+            class="form-control form-control-lg"
+            formControlName = "name"
+            name = "name"
+            />
+            <label class="form-label" for="form1Example13">Full Name</label>
+          </div>
+
+          <div class="form-outline mb-4">
+            <input
+            type="text"
+            class="form-control form-control-lg"
+            formControlName = "email"
+            name = "Name"
+            />
+            <label class="form-label" for="form1Example13">Email</label>
+          </div>
+
+          <div class="form-outline mb-4" >
+            <input
+            type="password"
+            class="form-control form-control-lg"
+            formControlName = "password"
+            name = ""
+            />
+            <label class="form-label" for="form1Example23">Password</label>
+          </div>
+
+          <div class="form-outline mb-4" >
+            <input
+            type="text"
+            class="form-control form-control-lg"
+            formControlName = "confirmPassword"
+            name = ""
+            />
+            <label class="form-label" for="form1Example23">Confirm Password</label>
+          </div>
+
+          <!-- <div
+          class="d-flex justify-content-around align-items-center mb-4">
+
+            <a href="#!">Forgot password?</a>
+          </div> -->
+        </form>
+
           <!-- Submit button -->
           <div class="d-grid gap-2">
           <button
           class="btn btn-primary btn-lg btn-block"
-          *ngIf = "!showAdminLogin"
+          *ngIf = "!showRegister"
           [disabled] = "!authenticationForm.valid"
           (click) = "verifyLogin()"
           >Log In</button>
           <button
           class="btn btn-primary btn-lg btn-block"
-          *ngIf = "showAdminLogin"
-          [disabled] = "!authenticationForm.valid"
-          >Log In as a Admin</button>
+          *ngIf = "showRegister"
+          [disabled] = "!signUpForm.valid"
+          (click) = "onSignUp()"
+          >Sign Up</button>
 
           <div class="divider d-flex align-items-center my-4">
             <p class="text-center fw-bold mx-3 mb-0 text-muted">OR</p>
           </div>
           <button
           class="btn btn-primary btn-lg btn-block"
-          (click) = "switchMode()">{{ showAdminLogin ? 'Log In' : 'Login as a Admin' }}</button>
+          (click) = "switchMode()">{{ showRegister ? 'Log In' : 'Sign Up' }}</button>
           <!-- <a class="btn btn-primary btn-lg btn-block" style="background-color: #3b5998" href="#!" role="button">
             <i class="fab fa-facebook-f me-2"></i>Continue with Facebook
           </a>
