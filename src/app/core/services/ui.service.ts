@@ -10,13 +10,15 @@ export class UiService {
   // for custom loading
   loadingChecker = new Subject();
 
+  addItemSubject = new Subject();
+
   constructor(
     private snackBar: MatSnackBar,
   ) { }
 
   openSnackBar(message: string, action: string) {
     this.snackBar.open(message, action, {
-      duration: 3000,
+      duration: 5000,
     });
   }
 }

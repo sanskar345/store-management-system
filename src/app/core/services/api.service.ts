@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { ADD_CUSTOMER, ADD_ITEM_CATEGORY, LOGIN, SIGN_UP, STOREUP_API } from '../constants/apis.constant';
+import { ADD_CUSTOMER, ADD_ITEM_CATEGORY, ITEMS, ITEM_CATEGORY, LOGIN, SIGN_UP, STOREUP_API } from '../constants/apis.constant';
 import { StorageService } from './storage.service';
 
 @Injectable({
@@ -46,6 +46,21 @@ export class ApiService {
     return this.http.post(
       `${STOREUP_API}${ADD_ITEM_CATEGORY}`,
       data
+    );
+  }
+
+  addItem(data: any){
+    data = Object.assign(data, {adminIdFk: this.storageService.getAdminIdFk()});
+    return this.http.post(
+      `${STOREUP_API}${ITEMS}`,
+      data
+    )
+
+  };
+
+  getItemCategory(){
+    return this.http.get(
+      `${STOREUP_API}${ITEM_CATEGORY}`
     );
   }
 

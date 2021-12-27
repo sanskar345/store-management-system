@@ -1,0 +1,32 @@
+<div mat-dialog-title>
+  <div class="header">
+    <div>
+      <h2 >Add Item</h2>
+    </div>
+    <button type="button" class="btn-close" (click) = "close()"></button>
+  </div>
+</div>
+<mat-dialog-content>
+  <div class="modal-content">
+    <div class="modal-body">
+      <form [formGroup] = "itemCategoryForm">
+        <div class="mb-3">
+          <label for="item-category-name" class="col-form-label">Item Category Name:</label>
+          <input formControlName = "name" type="text" class="form-control" id="item-category-name">
+        </div>
+      </form>
+    </div>
+
+  </div>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+    <button
+    [disabled] = "!itemCategoryForm.valid"
+    type="button"
+    class="btn btn-primary"
+    (click)="onAddCategory()"
+    >Add Item Category</button>
+  </div>
+</mat-dialog-actions>

@@ -13,7 +13,6 @@ import { TokenInterceptorService } from './core/interceptor/token.interceptor';
 import { SharedModule } from './shared/shared.module';
 
 
-
 @NgModule({
   declarations: [
     AppComponent,

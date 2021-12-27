@@ -14,7 +14,7 @@ import { ReceivePaymentModalComponent } from './receive-payment-modal/receive-pa
 import { GivePaymentModalComponent } from './give-payment-modal/give-payment-modal.component';
 import { ReceiveCustomerCreditModalComponent } from './receive-customer-credit-modal/receive-customer-credit-modal.component';
 import { ChangeStorePhotoModalComponent } from './change-store-photo-modal/change-store-photo-modal.component';
-
+import {MatDialogModule} from '@angular/material/dialog';
 
 
 
@@ -36,7 +36,8 @@ import { ChangeStorePhotoModalComponent } from './change-store-photo-modal/chang
     MatFormFieldModule,
     MatAutocompleteModule,
     ReactiveFormsModule,
-    FontAwesomeModule
+    FontAwesomeModule,
+    MatDialogModule
   ],
   exports: [
     ModalsComponent

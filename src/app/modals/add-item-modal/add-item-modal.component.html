@@ -6,28 +6,26 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        <form>
+        <form [formGroup]="addItemForm">
           <div class="mb-3">
             <label for="recipient-name" class="col-form-label">Item Name:</label>
-            <input type="text" class="form-control" id="recipient-name">
+            <input formControlName="name" type="text" class="form-control" id="recipient-name">
           </div>
           <div class="mb-3">
             <label for="item-mrp" class="col-form-label">Item MRP:</label>
-            <input type="text" class="form-control" id="item-mrp">
+            <input formControlName="mrp" type="text" class="form-control" id="item-mrp">
           </div>
           <div class="mb-3">
             <label for="item-rate" class="col-form-label">Item Rate:</label>
-            <input type="text" class="form-control" id="item-rate">
+            <input formControlName="rate" type="text" class="form-control" id="item-rate">
           </div>
-
           <div class="mb-3">
-            <label for="category" class="col-form-label">Item Category:</label>
-            <select class="form-select" aria-label="Default select example">
-              <option selected>Open this select menu</option>
-              <option value="1">One</option>
-              <option value="2">Two</option>
-              <option value="3">Three</option>
-            </select>
+            <label for="item-rate" class="col-form-label">Purchase Price:</label>
+            <input formControlName="purchasePrice" type="number" class="form-control" id="item-rate">
+          </div>
+          <div class="mb-3">
+            <label for="item-quantity" class="col-form-label">Brand:</label>
+            <input formControlName="brand" type="text" class="form-control" id="item-quantity">
           </div>
         </form>
       </div>
@@ -47,14 +45,22 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        <form>
+        <form [formGroup]="addItemForm">
           <div class="mb-3">
             <label for="item-size" class="col-form-label">Item Size:</label>
-            <input type="text" class="form-control" id="item-size">
+            <input formControlName="size" type="text" class="form-control" id="item-size">
           </div>
           <div class="mb-3">
             <label for="item-quantity" class="col-form-label">Item Quantity:</label>
-            <input type="text" class="form-control" id="item-quantity">
+            <input formControlName="quantity" type="text" class="form-control" id="item-quantity">
+          </div>
+
+          <div class="mb-3">
+            <label for="category" class="col-form-label">Item Category:</label>
+            <select (click) = "onCategoryClick()" formControlName="category" class="form-select" aria-label="Default select example">
+              <option selected>Open this select menu</option>
+              <option *ngFor="let category of categories" value="{{ category?.name }}">{{ category?.name }}</option>
+            </select>
           </div>
           <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
             <label style="margin-right: 10px;" for="item-quantity" class="col-form-label">Add Expiry and Manufature Date</label>
@@ -79,7 +85,7 @@
           <div class="mb-3">
             <label for="item-expiry" class="col-form-label">Item Expiry:</label>
             <input
-            [disabled] = "!showAddExpiryAndManufacturingDetail"
+            formControlName="expiryDate"
             type="date"
             class="form-control"
             id="item-expiry">
@@ -87,7 +93,7 @@
           <div class="mb-3">
             <label for="item-manufactury-date" class="col-form-label">Item Manufacture Date:</label>
             <input
-            [disabled] = "!showAddExpiryAndManufacturingDetail"
+            formControlName="manufacturerDate"
             type="date"
             class="form-control"
             id="item-manufactury-date">
@@ -97,6 +103,7 @@
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
         <button
+        [disabled]="!addItemForm.valid"
         data-bs-dismiss="modal"
         type="button"
         class="btn btn-primary"

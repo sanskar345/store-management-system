@@ -15,9 +15,7 @@
       <button
       class="btn btn-primary"
       type="button"
-      data-bs-toggle="modal"
-      data-bs-target="#addItemModal"
-      data-bs-whatever="@mdo">
+      (click)="openAddItemDialog()">
       <fa-icon [icon]="faSquare"></fa-icon>Add Item
     </button>
     </span>
@@ -25,9 +23,7 @@
       <button
       class="btn btn-primary"
       type="button"
-      data-bs-toggle="modal"
-      data-bs-target="#addItemCategoryModal"
-      data-bs-whatever="@mdo">
+      (click)="openAddItemCategoryDialog()">
       <fa-icon [icon]="faEllipsisV"></fa-icon>Add Item Category
     </button>
     </span>
@@ -139,3 +135,5 @@
   </div>
 
 </section>
+
+
