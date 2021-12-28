@@ -7,6 +7,7 @@ import { ApiService } from 'src/app/core/services/api.service';
 import { UiService } from 'src/app/core/services/ui.service';
 import { AddItemCategoryDialogComponent } from 'src/app/dialogs/add-item-category-dialog/add-item-category-dialog.component';
 import { AddItemDialogComponent } from 'src/app/dialogs/add-item-dialog/add-item-dialog.component';
+import { CreateInvoiceDialogComponent } from 'src/app/dialogs/create-invoice-dialog/create-invoice-dialog.component';
 import { DialogsService } from 'src/app/dialogs/dialogs.service';
 import { ModalsModule } from 'src/app/modals/modals.module';
 import { ModalsService } from 'src/app/modals/modals.service';
@@ -107,6 +108,31 @@ export class DashboardComponent implements OnInit {
     let dialog = this.dialog.open(AddItemCategoryDialogComponent, {
       width: '500px',
       data : {
+      }
+    });
+
+    // const dialogRef = this.dialog.open(AlertDialogComponent);
+
+    dialog.afterClosed().subscribe(
+        data => console.log("Dialog output:", data)
+    );
+
+
+  }
+
+  // open crete invoice dialog
+
+  openCreateInvoiceDialog() {
+    const dialogConfig = new MatDialogConfig();
+
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
+
+    let dialog = this.dialog.open(CreateInvoiceDialogComponent, {
+      width: '100vw',
+      data : {
+        showModal1: true,
+        showModal2: false
       }
     });
 

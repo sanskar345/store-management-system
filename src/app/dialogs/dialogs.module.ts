@@ -5,18 +5,22 @@ import { AddItemDialogComponent } from './add-item-dialog/add-item-dialog.compon
 import {MatDialogModule} from '@angular/material/dialog';
 import { ReactiveFormsModule } from '@angular/forms';
 import { AddItemCategoryDialogComponent } from './add-item-category-dialog/add-item-category-dialog.component';
+import { CreateInvoiceDialogComponent } from './create-invoice-dialog/create-invoice-dialog.component';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 
 @NgModule({
   declarations: [
     AlertDialogComponent,
     AddItemDialogComponent,
-    AddItemCategoryDialogComponent
+    AddItemCategoryDialogComponent,
+    CreateInvoiceDialogComponent
   ],
   imports: [
     CommonModule,
     MatDialogModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    FontAwesomeModule
   ],
   exports: [
     AlertDialogComponent
