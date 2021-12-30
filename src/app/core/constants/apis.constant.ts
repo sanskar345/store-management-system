@@ -6,4 +6,6 @@ export const ADD_ITEM_CATEGORY = 'itemCategory/';
 export const ITEMS = 'items/';
 export const ITEM_CATEGORY = 'itemCategory/';
 export const CUSTOMER = 'customers/';
+export const TRANSACTION = 'transactions/';
+export const GET_TRANSACTION_STAT = 'transactions/transactions-stats';
 

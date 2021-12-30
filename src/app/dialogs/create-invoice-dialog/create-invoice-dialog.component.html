@@ -312,10 +312,9 @@
 
               <div class="input-group mb-3">
                 <label class="input-group-text" for="inputGroupSelect01">Payment Type</label>
-                <select [disabled] = "!instantPayment" class="form-select" id="inputGroupSelect01">
-                  <option selected>Choose</option>
-                  <option value="1">By Cash</option>
-                  <option value="1">Online</option>
+                <select formControlName="paymentMode" class="form-select" id="inputGroupSelect01">
+                  <option selected value="OFFLINE">By Cash</option>
+                  <option value="ONLINE">Online</option>
                 </select>
               </div>
               <div class="form-check">
@@ -493,14 +492,14 @@
   <div class="modal-footer" *ngIf="passedData?.showModal1">
     <!-- <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button> -->
     <button
-    [disabled] = "items.controls.length === 0 || invoiceDetail.customer.name === null"
+    [disabled] = "items.controls.length === 0 || invoiceDetail.customer.name === null || !invoiceForm.valid"
     (click) = "onGoToSecondModal()"
     class="btn btn-primary">Confirm and Preview</button>
   </div>
   <div class="modal-footer" *ngIf="passedData?.showModal2">
     <!-- <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button> -->
     <button
-    (click) = "generatePDF()"
+    (click) = "createInvoice()"
     data-bs-dismiss="modal"
     class="btn btn-primary">Comfirm and Generate Invoice</button>
   </div>

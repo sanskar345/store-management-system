@@ -8,6 +8,7 @@ import pdfMake from "pdfmake/build/pdfmake";
 import pdfFonts from "pdfmake/build/vfs_fonts";
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
 import { faBraille, faCalendarAlt, faHashtag, faInfo, faMapMarkerAlt, faPhoneAlt, faPlus, faPlusSquare, faRupeeSign, faSquare, faTimes, faUser, faUserPlus, faUserTie } from '@fortawesome/free-solid-svg-icons';
+import { UNIQUE_NUMBER } from 'src/app/core/constants/storage.constant';
 
 @Component({
   selector: 'app-create-invoice-dialog',
@@ -80,6 +81,8 @@ export class CreateInvoiceDialogComponent implements OnInit {
 
   invoicePreviewData: any;
 
+  transactionStats: any;
+
   constructor(
     @Inject(MAT_DIALOG_DATA) private data,
     private dialogtRef: MatDialogRef<CreateInvoiceDialogComponent>,
@@ -97,6 +100,8 @@ export class CreateInvoiceDialogComponent implements OnInit {
       this.invoicePreviewData = this.passedData.invoicePreviewData;
       this.paymentReceived = this.passedData.paymentReceived;
       this.invoiceDetail = this.passedData.invoiceDetail;
+      this.instantPayment = this.passedData.instantPayment;
+      this.invoiceTotalAmountByTotalItems = this.passedData.invoiceTotalAmountByTotalItems;
     }else{
       this.invoiceDetail.customer = {
         address: null,
@@ -137,13 +142,15 @@ export class CreateInvoiceDialogComponent implements OnInit {
         }
 
       });
+
+    this.getTransactionStat();
   }
 
   close(){
     this.dialogtRef.close('add');
   }
 
-  openSecondDialog(invoicePreviewData: any, paymentReceived: any, invoiceDetail: any) {
+  openSecondDialog(invoicePreviewData: any, paymentReceived: any, invoiceDetail: any, invoiceTotalAmountByTotalItems: any, instantPayment: any) {
 
     this.close();
 
@@ -159,7 +166,8 @@ export class CreateInvoiceDialogComponent implements OnInit {
         showModal2: true,
         invoicePreviewData,
         paymentReceived,
-        invoiceDetail
+        invoiceDetail,
+        invoiceTotalAmountByTotalItems
       }
     });
 
@@ -175,11 +183,12 @@ export class CreateInvoiceDialogComponent implements OnInit {
   buildForms(){
     this.invoiceForm = this.formBuilder.group({
       customerMobileNumberInput: [''],
-      invoiceNumber: ['45', Validators.required],
+      invoiceNumber: ['', Validators.required],
       invoiceDate: [ this.today.toLocaleDateString(), Validators.required],
       items: this.formBuilder.array([]),
-      paymentReceived: ['', Validators.required],
-      roundOff: []
+      paymentReceived: [''],
+      roundOff: [],
+      paymentMode: ['', Validators.required]
     })
   };
 
@@ -235,6 +244,7 @@ export class CreateInvoiceDialogComponent implements OnInit {
       mrp: [''],
       stockQuantity: [''],
       quantity: [''],
+      purchasePrice: ['']
 
     });
     (<FormArray>this.invoiceForm.get('items')).push(formControl);
@@ -256,6 +266,7 @@ export class CreateInvoiceDialogComponent implements OnInit {
       mrp: [],
       stockQuantity: [],
       quantity: [],
+      purchasePrice: []
     })
   }
 
@@ -313,7 +324,8 @@ export class CreateInvoiceDialogComponent implements OnInit {
       rate: [this.itemSuggestions[index].rate],
       mrp: [this.itemSuggestions[index].mrp],
       stockQuantity: [this.itemSuggestions[index].quantity],
-      quantity: [1]
+      quantity: [1],
+      purchasePrice: [this.itemSuggestions[index].purchasePrice]
     });
 
     if(this.checkIfItemExistOnFormArray(this.itemSuggestions[index].name) === false){
@@ -357,6 +369,15 @@ export class CreateInvoiceDialogComponent implements OnInit {
 
   toggleInstantPayment(){
     this.instantPayment = !this.instantPayment;
+    if(!this.instantPayment){
+      console.log(' true');
+      this.invoiceForm.controls.paymentMode.disable();
+      this.invoiceForm.controls.paymentMode.clearValidators();
+    }else{
+      console.log('not true');
+      this.invoiceForm.get('paymentMode').setValidators([Validators.required]);
+      this.invoiceForm.controls.paymentMode.enable();
+    }
   }
 
   roundOffTotalAmount(){
@@ -385,6 +406,7 @@ export class CreateInvoiceDialogComponent implements OnInit {
   // pdf make
 
   generatePDF() {
+
     const products = [
       {
         name: 'dasd',
@@ -539,10 +561,10 @@ export class CreateInvoiceDialogComponent implements OnInit {
     console.log('in', this.invoiceDetail);
 
     if(this.instantPayment === true){
-      this.openSecondDialog(this.invoiceForm.value, this.invoiceTotalAmountByTotalItems, this.invoiceDetail);
+      this.openSecondDialog(this.invoiceForm.value, this.invoiceTotalAmountByTotalItems, this.invoiceDetail, this.invoiceTotalAmountByTotalItems, this.instantPayment);
     }
     else if(this.instantPayment === false){
-      this.openSecondDialog(this.invoiceForm.value, 0, this.invoiceDetail);
+      this.openSecondDialog(this.invoiceForm.value, 0, this.invoiceDetail, this.invoiceTotalAmountByTotalItems, this.instantPayment);
     }
 
   };
@@ -573,6 +595,67 @@ export class CreateInvoiceDialogComponent implements OnInit {
       console.log(error);
 
     })
+  }
+
+  //hit api to create transaction
+
+  createTransaction(data: any){
+
+    this.apiService.createTransaction(data).subscribe((response) => {
+
+    }, error => {
+      this.uiService.openSnackBar(error.error.message, 'Close');
+      console.log(error);
+
+    });
+  }
+
+  // create invoice
+
+  createInvoice(){
+    console.log('invoicePreviewData',this.invoicePreviewData);
+    console.log('this.paymentReceived', this.paymentReceived);
+    console.log('this.invoiceDetail', this.invoiceDetail);
+    console.log('thi', this.invoicePreviewData.items);
+
+    let profit = 0;
+    this.invoicePreviewData.items.forEach((item) => {
+      profit += item.rate - item.purchasePrice;
+    });
+
+    let data: any;
+
+    if(this.instantPayment === true){
+      data = {
+        "partyName": this.invoiceDetail.customer.name,
+        "profit": 200,
+        "status": "COMPLETE",
+        "totalCustomerCredit": this.invoiceDetail.customer.credit,
+        "creditAmount": 0,
+        "invoiceOrBillNumber": this.transactionStats.totalTransactions + UNIQUE_NUMBER,
+        "transactionNumber": this.transactionStats.totalTransactions,
+        "transactionType": "SALE",
+        "customerId": this.invoiceDetail.customer._id,
+        "totalAmount": this.invoiceTotalAmountByTotalItems,
+        "paymentMode": "ONLINE",
+        "items": [{"name": "item1", "rate": 7898}, {"name": "item", "rate": 98}],
+        "partyMobileNumber": "8823078781",
+        "dateTime": "2021-01-27"
+      }
+    }
+
+  }
+
+  getTransactionStat(){
+    this.apiService.getTransactionStat()
+      .subscribe((response: any) => {
+        this.transactionStats = response.data.stats[0];
+        console.log('stats: ', this.transactionStats);
+        this.invoiceForm.patchValue({ invoiceNumber: this.transactionStats.totalTransactions + UNIQUE_NUMBER })
+      }, error => {
+        console.log(error);
+        this.uiService.openSnackBar(error.error.message, 'Close');
+      });
   }
 
 }
