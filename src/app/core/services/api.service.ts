@@ -99,4 +99,22 @@ export class ApiService {
     );
   }
 
+  //update customer with id
+
+  updateCustomerById(data, id: string){
+    return this.http.patch(
+      `${STOREUP_API}${CUSTOMER}${id}`,
+      data
+    );
+  }
+
+  //update item
+
+  updateItemWithId(data, id: string){
+    return this.http.patch(
+      `${STOREUP_API}${ITEMS}${id}`,
+      data
+    );
+  }
+
 }

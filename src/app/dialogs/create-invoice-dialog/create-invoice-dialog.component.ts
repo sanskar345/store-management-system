@@ -9,6 +9,7 @@ import pdfFonts from "pdfmake/build/vfs_fonts";
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
 import { faBraille, faCalendarAlt, faHashtag, faInfo, faMapMarkerAlt, faPhoneAlt, faPlus, faPlusSquare, faRupeeSign, faSquare, faTimes, faUser, faUserPlus, faUserTie } from '@fortawesome/free-solid-svg-icons';
 import { UNIQUE_NUMBER } from 'src/app/core/constants/storage.constant';
+import { StorageService } from 'src/app/core/services/storage.service';
 
 @Component({
   selector: 'app-create-invoice-dialog',
@@ -67,6 +68,7 @@ export class CreateInvoiceDialogComponent implements OnInit {
       mobileNumber: null,
       name: null,
       _id: null,
+      billsWithCredit: null
     }
   };
   customers = [];
@@ -90,7 +92,8 @@ export class CreateInvoiceDialogComponent implements OnInit {
     private dialog: MatDialog,
     private uiService: UiService,
     private apiService: ApiService,
-    private dialogsService: DialogsService
+    private dialogsService: DialogsService,
+    private storageService: StorageService
   ) { }
 
   ngOnInit(): void {
@@ -112,6 +115,7 @@ export class CreateInvoiceDialogComponent implements OnInit {
         mobileNumber: null,
         name: null,
         _id: null,
+        billsWithCredit: null
       };
     }
     // this.buildForms();
@@ -167,7 +171,8 @@ export class CreateInvoiceDialogComponent implements OnInit {
         invoicePreviewData,
         paymentReceived,
         invoiceDetail,
-        invoiceTotalAmountByTotalItems
+        invoiceTotalAmountByTotalItems,
+        instantPayment
       }
     });
 
@@ -231,6 +236,7 @@ export class CreateInvoiceDialogComponent implements OnInit {
       mobileNumber: null,
       name: null,
       _id: null,
+      billsWithCredit: null
     };
   }
 
@@ -244,7 +250,8 @@ export class CreateInvoiceDialogComponent implements OnInit {
       mrp: [''],
       stockQuantity: [''],
       quantity: [''],
-      purchasePrice: ['']
+      purchasePrice: [''],
+      _id: ['']
 
     });
     (<FormArray>this.invoiceForm.get('items')).push(formControl);
@@ -266,7 +273,8 @@ export class CreateInvoiceDialogComponent implements OnInit {
       mrp: [],
       stockQuantity: [],
       quantity: [],
-      purchasePrice: []
+      purchasePrice: [],
+      _id: []
     })
   }
 
@@ -325,7 +333,8 @@ export class CreateInvoiceDialogComponent implements OnInit {
       mrp: [this.itemSuggestions[index].mrp],
       stockQuantity: [this.itemSuggestions[index].quantity],
       quantity: [1],
-      purchasePrice: [this.itemSuggestions[index].purchasePrice]
+      purchasePrice: [this.itemSuggestions[index].purchasePrice],
+      _id: [this.itemSuggestions[index]._id]
     });
 
     if(this.checkIfItemExistOnFormArray(this.itemSuggestions[index].name) === false){
@@ -540,18 +549,20 @@ export class CreateInvoiceDialogComponent implements OnInit {
 
     pdfMake.createPdf(docDefinition).print();
 
-    this.invoiceForm.reset();
-    this.items.clear();
-    this.invoiceDetail.customer = {
-      address: null,
-      adminIdFk: null,
-      createdAt: null,
-      credit:  null,
-      dob: null,
-      mobileNumber: null,
-      name: null,
-      _id: null,
-    }
+    // this.invoiceForm.reset();
+    // this.items.clear();
+    // this.invoiceDetail.customer = {
+    //   address: null,
+    //   adminIdFk: null,
+    //   createdAt: null,
+    //   credit:  null,
+    //   dob: null,
+    //   mobileNumber: null,
+    //   name: null,
+    //   _id: null,
+    //   billsWithCredit: null
+    // }
+    this.close();
 
   };
 
@@ -601,8 +612,24 @@ export class CreateInvoiceDialogComponent implements OnInit {
 
   createTransaction(data: any){
 
-    this.apiService.createTransaction(data).subscribe((response) => {
+    this.apiService.createTransaction(data).subscribe((response: any) => {
+      if(response){
+        if(this.instantPayment !== true){
+          const billNumber = response.data.item.invoiceOrBillNumber;
+          const creditAmount = response.data.item.creditAmount;
+          let billsWithCreditArray = this.invoiceDetail.customer.billsWithCredit;
+          billsWithCreditArray.push(billNumber);
+          const data = {
+            credit: this.invoiceDetail.customer.credit + creditAmount,
+            billsWithCredit: billsWithCreditArray
+          }
+          this.updateCustomerById(data, this.invoiceDetail.customer._id);
+        }else{
+          this.uiService.openSnackBar('Transaction done successfully', 'Close');
+          this.generatePDF();
+        }
 
+      }
     }, error => {
       this.uiService.openSnackBar(error.error.message, 'Close');
       console.log(error);
@@ -620,29 +647,66 @@ export class CreateInvoiceDialogComponent implements OnInit {
 
     let profit = 0;
     this.invoicePreviewData.items.forEach((item) => {
+      const newQuantity = item.stockQuantity - item.quantity;
+      if(newQuantity < 0){
+        this.uiService.openSnackBar('The selected Items are not in quantity!', 'Close');
+        this.close();
+        return;
+      }
+      this.updateItemWithId({quantity: newQuantity}, item._id);
       profit += item.rate - item.purchasePrice;
+
     });
 
     let data: any;
 
+
+
     if(this.instantPayment === true){
       data = {
         "partyName": this.invoiceDetail.customer.name,
-        "profit": 200,
+        "profit": profit,
         "status": "COMPLETE",
         "totalCustomerCredit": this.invoiceDetail.customer.credit,
         "creditAmount": 0,
-        "invoiceOrBillNumber": this.transactionStats.totalTransactions + UNIQUE_NUMBER,
-        "transactionNumber": this.transactionStats.totalTransactions,
         "transactionType": "SALE",
         "customerId": this.invoiceDetail.customer._id,
         "totalAmount": this.invoiceTotalAmountByTotalItems,
-        "paymentMode": "ONLINE",
-        "items": [{"name": "item1", "rate": 7898}, {"name": "item", "rate": 98}],
-        "partyMobileNumber": "8823078781",
-        "dateTime": "2021-01-27"
+        "paymentMode": this.invoicePreviewData.paymentMode,
+        "items": this.invoicePreviewData.items,
+        "partyMobileNumber": this.invoiceDetail.customer.mobileNumber,
+        "dateTime": (new Date()).toISOString(),
+        "paymentIn": 0,
+        "paymentOut": 0
+      }
+
+    }else{
+      data = {
+        "partyName": this.invoiceDetail.customer.name,
+        "profit": 0,
+        "status": "CREDIT",
+        "totalCustomerCredit": this.invoiceDetail.customer.credit,
+        "creditAmount": this.invoiceTotalAmountByTotalItems,
+        "transactionType": "SALE",
+        "customerId": this.invoiceDetail.customer._id,
+        "totalAmount": this.invoiceTotalAmountByTotalItems,
+        "items": this.invoicePreviewData.items,
+        "partyMobileNumber": this.invoiceDetail.customer.mobileNumber,
+        "dateTime": (new Date()).toISOString(),
+        "paymentIn": 0,
+        "paymentOut": 0
       }
     }
+
+    if(this.transactionStats?.totalTransactions){
+      Object.assign(data, {"invoiceOrBillNumber":  this.storageService.getAdminIdFk() + '#N' + (this.transactionStats.totalTransactions + UNIQUE_NUMBER + 1).toString(),
+      "transactionNumber": this.storageService.getAdminIdFk()  + '#N' + (this.transactionStats.totalTransactions + 1).toString()});
+    }else{
+      Object.assign(data, {"invoiceOrBillNumber": this.storageService.getAdminIdFk()  + '#N' + (UNIQUE_NUMBER + 1).toString(),
+      "transactionNumber":  this.storageService.getAdminIdFk()  + '#N' +  '1'});
+    }
+
+    this.createTransaction(data);
 
   }
 
@@ -651,7 +715,36 @@ export class CreateInvoiceDialogComponent implements OnInit {
       .subscribe((response: any) => {
         this.transactionStats = response.data.stats[0];
         console.log('stats: ', this.transactionStats);
-        this.invoiceForm.patchValue({ invoiceNumber: this.transactionStats.totalTransactions + UNIQUE_NUMBER })
+        if(this.transactionStats?.totalTransactions){
+          this.invoiceForm.patchValue({ invoiceNumber: this.transactionStats.totalTransactions + UNIQUE_NUMBER + 1 });
+        }else{
+          this.invoiceForm.patchValue({ invoiceNumber: UNIQUE_NUMBER + 1 });
+        }
+      }, error => {
+        console.log(error);
+        this.uiService.openSnackBar(error.error.message, 'Close');
+      });
+  }
+
+  updateItemWithId(data, id: string){
+    this.apiService.updateItemWithId(data, id)
+      .subscribe((response) => {
+        console.log(response);
+
+      }, error => {
+        console.log(error);
+        this.uiService.openSnackBar(error.error.message, 'Close');
+      });
+  }
+
+  updateCustomerById(data, id: string){
+    this.apiService.updateCustomerById(data, id)
+      .subscribe((response) => {
+        if(response){
+          console.log('updated customer',response);
+          this.uiService.openSnackBar('Transaction done on CREDIT is successful', 'Close');
+          this.generatePDF();
+        }
       }, error => {
         console.log(error);
         this.uiService.openSnackBar(error.error.message, 'Close');
