@@ -14,12 +14,11 @@ import pdfFonts from "pdfmake/build/vfs_fonts";
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
 @Component({
-  selector: 'app-receive-payment-dialog',
-  templateUrl: './receive-payment-dialog.component.html',
-  styleUrls: ['./receive-payment-dialog.component.css']
+  selector: 'app-give-payment-dialog',
+  templateUrl: './give-payment-dialog.component.html',
+  styleUrls: ['./give-payment-dialog.component.css']
 })
-export class ReceivePaymentDialogComponent implements OnInit {
-
+export class GivePaymentDialogComponent implements OnInit {
 
   faRupeeSign = faRupeeSign;
   faCalendarAlt = faCalendarAlt;
@@ -33,7 +32,7 @@ export class ReceivePaymentDialogComponent implements OnInit {
     showModal1: false,
     showModal2: false,
   }
-  receivePaymentForm: FormGroup;
+  givepaymentForm: FormGroup;
   today: string;
   totalAmount: number;
   transactionStats: any;
@@ -53,7 +52,7 @@ export class ReceivePaymentDialogComponent implements OnInit {
     this.today = ((new Date()).toISOString()).split('T')[0];
     this.passedData = this.data;
     if(this.passedData.showModal2){
-      this.receivePaymentForm = this.passedData.receivePaymentForm;
+      this.givepaymentForm = this.passedData.givepaymentForm;
       this.totalAmount = this.passedData.totalAmount;
       this.today = this.passedData.today;
     }else{
@@ -68,18 +67,18 @@ export class ReceivePaymentDialogComponent implements OnInit {
   }
 
   buildForms(){
-    this.receivePaymentForm = this.formBuilder.group({
+    this.givepaymentForm = this.formBuilder.group({
       partyName: ['', [Validators.required, Validators.pattern(ONLY_LETTERS), Validators.minLength(3)]],
       partyMobileNumber: ['', [Validators.required, Validators.pattern(MOBILE_REGEX)]],
       description: ['', [Validators.required, Validators.minLength(3)]],
       billNumber: ['', Validators.required],
       date: [this.today, Validators.required],
-      paymentIn: ['', Validators.required],
+      paymentOut: ['', Validators.required],
       paymentMode: ['', Validators.required]
     })
   }
 
-  openSecondDialog(receivePaymentForm: FormGroup, totalAmount: Number, today: String) {
+  openSecondDialog(givepaymentForm: FormGroup, totalAmount: Number, today: String) {
 
     this.close();
 
@@ -88,12 +87,12 @@ export class ReceivePaymentDialogComponent implements OnInit {
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
 
-    let dialog = this.dialog.open(ReceivePaymentDialogComponent, {
+    let dialog = this.dialog.open(GivePaymentDialogComponent, {
       width: '100vw',
       data : {
         showModal1: false,
         showModal2: true,
-        receivePaymentForm,
+        givepaymentForm,
         totalAmount,
         today
       }
@@ -108,7 +107,7 @@ export class ReceivePaymentDialogComponent implements OnInit {
 
   }
 
-  onPaymentInInput(event){
+  onPaymentOutInput(event){
     this.totalAmount = event.target.value;
 
   }
@@ -119,9 +118,9 @@ export class ReceivePaymentDialogComponent implements OnInit {
         this.transactionStats = response.data.stats[0];
         console.log('stats: ', this.transactionStats);
         if(this.transactionStats?.totalTransactions){
-          this.receivePaymentForm.patchValue({ billNumber: this.transactionStats.totalTransactions + UNIQUE_NUMBER + 1 });
+          this.givepaymentForm.patchValue({ billNumber: this.transactionStats.totalTransactions + UNIQUE_NUMBER + 1 });
         }else{
-          this.receivePaymentForm.patchValue({ billNumber: UNIQUE_NUMBER + 1 });
+          this.givepaymentForm.patchValue({ billNumber: UNIQUE_NUMBER + 1 });
         }
       }, error => {
         console.log(error);
@@ -134,18 +133,18 @@ export class ReceivePaymentDialogComponent implements OnInit {
   createTransaction(){
 
     const data = {
-      "partyName": (this.receivePaymentForm.get('partyName').value).toLowerCase(),
+      "partyName": (this.givepaymentForm.get('partyName').value).toLowerCase(),
       "profit": 0,
       "status": "COMPLETE",
       "totalCustomerCredit": 0,
       "creditAmount": 0,
-      "transactionType": "PAYMENTIN",
+      "transactionType": "PAYMENTOUT",
       "totalAmount": this.totalAmount,
-      "paymentMode": this.receivePaymentForm.get('paymentMode').value,
-      "partyMobileNumber": this.receivePaymentForm.get('partyMobileNumber').value,
+      "paymentMode": this.givepaymentForm.get('paymentMode').value,
+      "partyMobileNumber": this.givepaymentForm.get('partyMobileNumber').value,
       "dateTime": this.today,
-      "paymentIn": this.totalAmount,
-      "paymentOut": 0
+      "paymentIn": 0,
+      "paymentOut": this.totalAmount
     }
 
     if(this.transactionStats?.totalTransactions){
@@ -207,10 +206,10 @@ export class ReceivePaymentDialogComponent implements OnInit {
           columns: [
             [
               {
-                text: 'Name : ' + this.receivePaymentForm.get('partyName').value ,
+                text: 'Name : ' + this.givepaymentForm.get('partyName').value ,
                 bold:true
               },
-              { text: 'Mobile : ' + this.receivePaymentForm.get('partyMobileNumber').value},
+              { text: 'Mobile : ' + this.givepaymentForm.get('partyMobileNumber').value},
             ],
             [
               {
@@ -218,7 +217,7 @@ export class ReceivePaymentDialogComponent implements OnInit {
                 alignment: 'right'
               },
               {
-                text: `Bill Number : ${this.receivePaymentForm.get('billNumber').value}`,
+                text: `Bill Number : ${this.givepaymentForm.get('billNumber').value}`,
                 alignment: 'right'
               }
             ]
@@ -233,7 +232,7 @@ export class ReceivePaymentDialogComponent implements OnInit {
             headerRows: 1,
             widths: ['auto','*'],
             body: [
-              [ { text: 'Payment Done', bold: true }, `₹${this.totalAmount}`],
+              [ { text: 'Payment Received', bold: true }, `₹${this.totalAmount}`],
 
             ],
             margin: [0, 20],
@@ -292,8 +291,7 @@ export class ReceivePaymentDialogComponent implements OnInit {
   };
 
   goToSeccondModal(){
-    this.openSecondDialog(this.receivePaymentForm, this.totalAmount, this.today);
+    this.openSecondDialog(this.givepaymentForm, this.totalAmount, this.today);
   }
-
 
 }

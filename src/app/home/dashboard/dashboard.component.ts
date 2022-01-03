@@ -9,6 +9,7 @@ import { AddItemCategoryDialogComponent } from 'src/app/dialogs/add-item-categor
 import { AddItemDialogComponent } from 'src/app/dialogs/add-item-dialog/add-item-dialog.component';
 import { CreateInvoiceDialogComponent } from 'src/app/dialogs/create-invoice-dialog/create-invoice-dialog.component';
 import { DialogsService } from 'src/app/dialogs/dialogs.service';
+import { GivePaymentDialogComponent } from 'src/app/dialogs/give-payment-dialog/give-payment-dialog.component';
 import { ReceivePaymentDialogComponent } from 'src/app/dialogs/receive-payment-dialog/receive-payment-dialog.component';
 import { ModalsModule } from 'src/app/modals/modals.module';
 import { ModalsService } from 'src/app/modals/modals.service';
@@ -155,6 +156,31 @@ export class DashboardComponent implements OnInit {
     dialogConfig.autoFocus = true;
 
     let dialog = this.dialog.open(ReceivePaymentDialogComponent, {
+      width: '100vw',
+      data : {
+        showModal1: true,
+        showModal2: false
+      }
+    });
+
+    // const dialogRef = this.dialog.open(AlertDialogComponent);
+
+    dialog.afterClosed().subscribe(
+        data => console.log("Dialog output:", data)
+    );
+
+
+  }
+
+  // open receive payment dialog
+
+  openGivePaymentDialog() {
+    const dialogConfig = new MatDialogConfig();
+
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
+
+    let dialog = this.dialog.open(GivePaymentDialogComponent, {
       width: '100vw',
       data : {
         showModal1: true,
