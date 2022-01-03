@@ -8,6 +8,7 @@ import { AddItemCategoryDialogComponent } from './add-item-category-dialog/add-i
 import { CreateInvoiceDialogComponent } from './create-invoice-dialog/create-invoice-dialog.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { BrowserModule } from '@angular/platform-browser';
+import { ReceivePaymentDialogComponent } from './receive-payment-dialog/receive-payment-dialog.component';
 
 
 @NgModule({
@@ -15,7 +16,8 @@ import { BrowserModule } from '@angular/platform-browser';
     AlertDialogComponent,
     AddItemDialogComponent,
     AddItemCategoryDialogComponent,
-    CreateInvoiceDialogComponent
+    CreateInvoiceDialogComponent,
+    ReceivePaymentDialogComponent
   ],
   imports: [
     CommonModule,

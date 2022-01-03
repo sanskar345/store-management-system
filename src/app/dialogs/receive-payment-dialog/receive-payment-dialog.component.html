@@ -1,0 +1,123 @@
+<div mat-dialog-title>
+  <div class="modal-header alert alert-success header">
+    <div>
+      <h2 >Add Item</h2>
+    </div>
+    <button type="button" class="btn-close" (click) = "close()"></button>
+  </div>
+</div>
+<mat-dialog-content  >
+  <div class="modal-content" [formGroup]="receivePaymentForm" *ngIf="passedData.showModal1">
+    <div class="modal-body">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-lg-6">
+            <div class="mb-3">
+              <label for="partyName" class="form-label">Party Name</label>
+              <input formControlName="partyName" type="text" class="form-control" id="partyName">
+            </div>
+            <div class="mb-3">
+              <label for="partyMobileNumber" class="form-label">Mobile Number</label>
+              <input formControlName="partyMobileNumber" type="text" class="form-control" id="partyMobileNumber">
+            </div>
+            <div class="mb-3">
+              <label for="paymentReceiveDescription" class="form-label">Description</label>
+              <textarea formControlName="description" class="form-control" id="paymentReceiveDescription" rows="3"></textarea>
+            </div>
+
+          </div>
+          <div class="col-lg-1">
+
+          </div>
+          <div class="col-lg-5">
+            <div class="input-group mb-3">
+              <span class="input-group-text"><fa-icon style="margin-right: 0.5em;" [icon]="faHashtag"></fa-icon>Bill Number</span>
+              <input
+              formControlName="billNumber"
+              value = "23"
+              readonly
+              type="text"
+              class="form-control"
+              aria-label="Username"
+              aria-describedby="basic-addon1">
+            </div>
+            <div class="input-group mb-3">
+              <span class="input-group-text"><fa-icon style="margin-right: 0.5em;" [icon]="faCalendarAlt"></fa-icon>Date</span>
+              <input
+              formControlName="date"
+              readonly
+              type="text"
+              class="form-control"
+              aria-label="Username"
+              aria-describedby="basic-addon1">
+            </div>
+            <div class="input-group mb-3">
+              <span class="input-group-text">Payment In</span>
+              <span class="input-group-text"><fa-icon [icon]="faRupeeSign"></fa-icon></span>
+              <input
+              formControlName="paymentIn"
+              (input) = "onPaymentInInput($event)"
+              type="text"
+              class="form-control" >
+            </div>
+            <div class="input-group mb-3">
+              <label class="input-group-text" for="receivePaymentType">Payment Type</label>
+              <select formControlName="paymentMode" class="form-select" id="receivePaymentType">
+                <option value="OFFLINE">Cash</option>
+                <option value="ONLINE">Online</option>
+              </select>
+            </div>
+            <div class="input-group mb-3">
+              <span class="input-group-text">Total Amount</span>
+              <span class="input-group-text"><fa-icon [icon]="faRupeeSign"></fa-icon></span>
+              <input
+              value = "{{ totalAmount }}"
+              readonly
+              type="text"
+              class="form-control" >
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="modal-content" *ngIf="passedData.showModal2">
+    <div class="modal-body">
+      <div class="container">
+        <h3 class="heading-center"><span class="badge bg-secondary">Payment Summary</span></h3>
+        <div class="summary-wrapper">
+          <ul class="list-group">
+            <li class="list-group-item list-group-item-secondary"><fa-icon [icon]="faCalendarAlt" style="margin-right: 0.5em;" class="mr-10"></fa-icon>Date : {{ today }} </li>
+            <li class="list-group-item list-group-item-secondary"><fa-icon [icon]="faHashtag" style="margin-right: 0.5em;" class="mr-10"></fa-icon>Bill Number : {{ receivePaymentForm.controls.billNumber.value }} </li>
+            <li class="list-group-item list-group-item-secondary"><fa-icon [icon]="faUserTie" style="margin-right: 0.5em;" class="mr-10"></fa-icon>Name : {{ receivePaymentForm.controls.partyName.value | titlecase }} </li>
+            <li class="list-group-item list-group-item-secondary"><fa-icon [icon]="faPhoneAlt" style="margin-right: 0.5em;" class="mr-10"></fa-icon>Mob : {{ receivePaymentForm.controls.partyMobileNumber.value }} </li>
+            <li class="list-group-item list-group-item-secondary"><fa-icon [icon]="faInfo" style="margin-right: 0.5em;" class="mr-10"></fa-icon>Description : {{ receivePaymentForm.controls.description.value }} </li>
+            <li class="list-group-item list-group-item-secondary"><fa-icon [icon]="faFileInvoice" style="margin-right: 0.5em;" class="mr-10"></fa-icon>Payment Type : {{ receivePaymentForm.controls.paymentMode.value === 'ONLINE' ? 'Online' : 'Cash' }} </li>
+            <li class="list-group-item list-group-item-secondary"><fa-icon [icon]="faRupeeSign" style="margin-right: 0.5em;" class="mr-10"></fa-icon>Payment In : {{ totalAmount }} </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <div class="modal-footer" *ngIf="passedData.showModal1">
+    <button type="button" class="btn btn-secondary" >Close</button>
+      <button
+      (click)="goToSeccondModal()"
+      type="button"
+      class="btn btn-primary"
+      [disabled]="!receivePaymentForm.valid"
+      >Preview Payment</button>
+  </div>
+  <div class="modal-footer" *ngIf="passedData.showModal2">
+    <button type="button" class="btn btn-secondary" (click)="close()">Close</button>
+      <button
+      (click)="createTransaction()"
+      type="button"
+      class="btn btn-primary"
+      >Confirm Payment</button>
+  </div>
+</mat-dialog-actions>
