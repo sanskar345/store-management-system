@@ -10,6 +10,7 @@ pdfMake.vfs = pdfFonts.pdfMake.vfs;
 import { faBraille, faCalendarAlt, faHashtag, faInfo, faMapMarkerAlt, faPhoneAlt, faPlus, faPlusSquare, faRupeeSign, faSquare, faTimes, faUser, faUserPlus, faUserTie } from '@fortawesome/free-solid-svg-icons';
 import { UNIQUE_NUMBER } from 'src/app/core/constants/storage.constant';
 import { StorageService } from 'src/app/core/services/storage.service';
+import { TitleCasePipe } from '@angular/common';
 
 @Component({
   selector: 'app-create-invoice-dialog',
@@ -93,7 +94,8 @@ export class CreateInvoiceDialogComponent implements OnInit {
     private uiService: UiService,
     private apiService: ApiService,
     private dialogsService: DialogsService,
-    private storageService: StorageService
+    private storageService: StorageService,
+    private titlecasePipe: TitleCasePipe
   ) { }
 
   ngOnInit(): void {
@@ -105,6 +107,9 @@ export class CreateInvoiceDialogComponent implements OnInit {
       this.invoiceDetail = this.passedData.invoiceDetail;
       this.instantPayment = this.passedData.instantPayment;
       this.invoiceTotalAmountByTotalItems = this.passedData.invoiceTotalAmountByTotalItems;
+      this.invoiceTotalMrpByTotalItems = this.passedData.invoiceTotalMrpByTotalItems;
+      this.discountInAmount = this.passedData.discountInAmount;
+
     }else{
       this.invoiceDetail.customer = {
         address: null,
@@ -154,7 +159,7 @@ export class CreateInvoiceDialogComponent implements OnInit {
     this.dialogtRef.close('add');
   }
 
-  openSecondDialog(invoicePreviewData: any, paymentReceived: any, invoiceDetail: any, invoiceTotalAmountByTotalItems: any, instantPayment: any) {
+  openSecondDialog(invoicePreviewData: any, paymentReceived: any, invoiceDetail: any, invoiceTotalAmountByTotalItems: any, instantPayment: any, invoiceTotalMrpByTotalItems: any, discountInAmount: any) {
 
     this.close();
 
@@ -172,7 +177,9 @@ export class CreateInvoiceDialogComponent implements OnInit {
         paymentReceived,
         invoiceDetail,
         invoiceTotalAmountByTotalItems,
-        instantPayment
+        instantPayment,
+        discountInAmount,
+        invoiceTotalMrpByTotalItems
       }
     });
 
@@ -448,20 +455,20 @@ export class CreateInvoiceDialogComponent implements OnInit {
           columns: [
             [
               {
-                text: 'Name : Sanskar Soni',
+                text: 'Name : ' + this.transformToTitlecase(this.invoiceDetail.customer.name) ,
                 bold:true
               },
-              { text: 'Mobile : 8823078781' },
-              { text: 'Address : Bamhori' },
+              { text: 'Mobile : ' + this.invoiceDetail.customer.mobileNumber},
+              { text: 'Address :' + this.transformToTitlecase(this.invoiceDetail.customer.address) },
 
             ],
             [
               {
-                text: 'Invoice Date : 09/17/2021',
+                text: 'Invoice Date : ' + this.getCurrentDate(),
                 alignment: 'right'
               },
               {
-                text: `Invoice Number : 8785`,
+                text: `Invoice Number : ${this.getInvoiceNumber()}`,
                 alignment: 'right'
               }
             ]
@@ -475,15 +482,7 @@ export class CreateInvoiceDialogComponent implements OnInit {
           table: {
             headerRows: 1,
             widths: ['auto','*', 'auto', 'auto', 'auto', 'auto'],
-            body: [
-              [ { text: 'S.No.', bold: true }, { text: 'Item Name', bold: true }, { text: 'Quantity', bold: true }, { text: 'MRP', bold: true }, { text: 'Rate', bold: true }, { text: 'Amount', bold: true } ],
-              ['1', 'item1', 8, '₹ 855', '₹ 852', '₹ 895' ],
-              ['2', 'item1', 8, 888, 852, 895 ],
-              ['3', 'item1', 8, 888, 852, 895 ],
-              ['4', 'item1', 8, 888, 852, 895 ],
-              ['5', 'item1', 8, 888, 852, 895 ],
-
-            ]
+            body: this.getItemArrayForPDF()
           }
         },
         {
@@ -491,10 +490,10 @@ export class CreateInvoiceDialogComponent implements OnInit {
             headerRows: 1,
             widths: ['auto','*'],
             body: [
-              [ { text: 'Grand Total', bold: true }, '₹ 888'],
-              [ { text: 'Discount', bold: true }, '₹ 87'],
-              [ { text: 'Net Amount', bold: true }, '₹ 888'],
-              [ { text: 'Paid', bold: true }, '₹ 888'],
+              [ { text: 'Grand Total', bold: true }, `₹${this.invoiceTotalMrpByTotalItems}`],
+              [ { text: 'Discount', bold: true }, `₹${this.discountInAmount}`],
+              [ { text: 'Net Amount', bold: true }, `₹${this.invoiceTotalAmountByTotalItems}`],
+              [ { text: 'Paid', bold: true }, `₹${this.paymentReceived}`],
 
 
             ],
@@ -572,10 +571,10 @@ export class CreateInvoiceDialogComponent implements OnInit {
     console.log('in', this.invoiceDetail);
 
     if(this.instantPayment === true){
-      this.openSecondDialog(this.invoiceForm.value, this.invoiceTotalAmountByTotalItems, this.invoiceDetail, this.invoiceTotalAmountByTotalItems, this.instantPayment);
+      this.openSecondDialog(this.invoiceForm.value, this.invoiceTotalAmountByTotalItems, this.invoiceDetail, this.invoiceTotalAmountByTotalItems, this.instantPayment, this.invoiceTotalMrpByTotalItems, this.discountInAmount);
     }
     else if(this.instantPayment === false){
-      this.openSecondDialog(this.invoiceForm.value, 0, this.invoiceDetail, this.invoiceTotalAmountByTotalItems, this.instantPayment);
+      this.openSecondDialog(this.invoiceForm.value, 0, this.invoiceDetail, this.invoiceTotalAmountByTotalItems, this.instantPayment, this.invoiceTotalMrpByTotalItems, this.discountInAmount);
     }
 
   };
@@ -749,6 +748,32 @@ export class CreateInvoiceDialogComponent implements OnInit {
         console.log(error);
         this.uiService.openSnackBar(error.error.message, 'Close');
       });
+  }
+
+  getCurrentDate(){
+    return ((new Date()).toISOString()).split('T')[0];
+  }
+
+  getInvoiceNumber(){
+    if(this.transactionStats?.totalTransactions){
+      return this.transactionStats.totalTransactions + UNIQUE_NUMBER + 1;
+    }else{
+      return UNIQUE_NUMBER + 1 ;
+    }
+  }
+
+  getItemArrayForPDF(){
+    let array = [];
+    array.push([ { text: 'S.No.', bold: true }, { text: 'Item Name', bold: true }, { text: 'Quantity', bold: true }, { text: 'MRP', bold: true }, { text: 'Rate', bold: true }, { text: 'Amount', bold: true } ]);
+
+    this.invoicePreviewData.items.forEach((item, index) => {
+      array.push([index + 1, item.name, item.quantity, `₹${item.mrp}`, `₹${item.rate}`, `₹${item.rate*item.quantity}`]);
+    });
+    return array;
+    }
+
+  transformToTitlecase(str: string){
+    return this.titlecasePipe.transform(str);
   }
 
 }

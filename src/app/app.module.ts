@@ -11,6 +11,7 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { TokenInterceptorService } from './core/interceptor/token.interceptor';
 import { SharedModule } from './shared/shared.module';
+import { TitleCasePipe } from '@angular/common';
 
 
 @NgModule({
@@ -30,6 +31,7 @@ import { SharedModule } from './shared/shared.module';
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptorService, multi: true },
+    TitleCasePipe
   ],
   bootstrap: [AppComponent]
 })

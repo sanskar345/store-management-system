@@ -7,6 +7,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { AddItemCategoryDialogComponent } from './add-item-category-dialog/add-item-category-dialog.component';
 import { CreateInvoiceDialogComponent } from './create-invoice-dialog/create-invoice-dialog.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { BrowserModule } from '@angular/platform-browser';
 
 
 @NgModule({
