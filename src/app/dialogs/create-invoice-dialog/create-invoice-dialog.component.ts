@@ -614,10 +614,10 @@ export class CreateInvoiceDialogComponent implements OnInit {
     this.apiService.createTransaction(data).subscribe((response: any) => {
       if(response){
         if(this.instantPayment !== true){
-          const billNumber = response.data.item.invoiceOrBillNumber;
+          const id = response.data.item._id;
           const creditAmount = response.data.item.creditAmount;
           let billsWithCreditArray = this.invoiceDetail.customer.billsWithCredit;
-          billsWithCreditArray.push(billNumber);
+          billsWithCreditArray.push(id);
           const data = {
             credit: this.invoiceDetail.customer.credit + creditAmount,
             billsWithCredit: billsWithCreditArray

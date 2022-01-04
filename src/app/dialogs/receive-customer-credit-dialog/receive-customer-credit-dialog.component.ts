@@ -1,6 +1,6 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatDialog, MatDialogConfig, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { ApiService } from 'src/app/core/services/api.service';
 import { UiService } from 'src/app/core/services/ui.service';
 import { DialogsService } from '../dialogs.service';
@@ -28,13 +28,18 @@ export class ReceiveCustomerCreditDialogComponent implements OnInit {
   faInfo = faInfo;
   faHashtag = faHashtag;
   customers = [];
-  suggestions: any;
+  suggestions = [];
   invoiceDetail = {
     customer:  {
-      name: null,
-      mobileNumber: null,
       address: null,
-      id: null
+      adminIdFk: null,
+      createdAt: null,
+      credit:  null,
+      dob: null,
+      mobileNumber: null,
+      name: null,
+      _id: null,
+      billsWithCredit: null
     }
   };
 
@@ -42,7 +47,9 @@ export class ReceiveCustomerCreditDialogComponent implements OnInit {
     showModal1: false,
     showModal2: false,
   }
-  addItemForm1: FormGroup;
+  invoiceForm: FormGroup;
+  creditTransactionArray = [];
+  totalCredit = 0;
 
   constructor(
     @Inject(MAT_DIALOG_DATA) private data,
@@ -58,6 +65,9 @@ export class ReceiveCustomerCreditDialogComponent implements OnInit {
     this.passedData = this.data;
     this.buildForms();
     this.getCustomers();
+    if(this.invoiceDetail.customer.name !== null){
+      this.pushTransactionInArray();
+    }
     console.log(this.passedData);
   }
 
@@ -66,19 +76,10 @@ export class ReceiveCustomerCreditDialogComponent implements OnInit {
   }
 
   buildForms(){
-    this.addItemForm1 = this.formBuilder.group({
-      name: ['', Validators.required],
-      mrp: ['', Validators.required],
-      rate: ['', Validators.required],
-      purchasePrice: ['', Validators.required],
-      brand: ['', Validators.required]
-    })
-    this.addItemForm2 = this.formBuilder.group({
-      category: ['', Validators.required],
-      size: ['', Validators.required],
-      quantity: ['', Validators.required],
-      expiryDate: [''],
-      manufacturerDate: ['']
+    this.invoiceForm = this.formBuilder.group({
+      customerMobileNumberInput: [''],
+      invoiceDate: ['', Validators.required],
+      invoiceNumber: ['', Validators.required],
     })
   }
 
@@ -91,18 +92,11 @@ export class ReceiveCustomerCreditDialogComponent implements OnInit {
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
 
-    let dialog = this.dialog.open(AddItemDialogComponent, {
+    let dialog = this.dialog.open(ReceiveCustomerCreditDialogComponent, {
       width: '500px',
       data : {
         showModal1: false,
         showModal2: true,
-        form1Data: {
-          "name": this.addItemForm1.get('name').value,
-          "rate": this.addItemForm1.get('rate').value,
-          "mrp": this.addItemForm1.get('mrp').value,
-          "purchasePrice": this.addItemForm1.get('purchasePrice').value,
-          "brand": this.addItemForm1.get('brand').value
-        }
       }
     });
 
@@ -140,17 +134,47 @@ export class ReceiveCustomerCreditDialogComponent implements OnInit {
     this.invoiceDetail['customer'] = this.suggestions[index];
     console.log(this.suggestions[index]);
     console.log(this.invoiceDetail['customer']);
+    this.pushTransactionInArray();
 
+  }
 
+  pushTransactionInArray(){
+    this.creditTransactionArray = [];
+    if(this.invoiceDetail.customer.name !== null || this.invoiceDetail.customer.name !== ""){
+      this.invoiceDetail.customer.billsWithCredit.forEach((id) => {
+        this.getTransactionById(id);
+      });
+    }
+
+  }
+
+  getTotalCredit(){
+    this.totalCredit = 0;
+    this.creditTransactionArray.forEach((transaction) => {
+      this.totalCredit += transaction.transaction.creditAmount;
+    })
+    console.log(this.totalCredit);
+
+  }
+
+  clearTransactionArray(){
+    this.creditTransactionArray = [];
+    this.getTotalCredit();
   }
 
   removeCustomerFromInvoiceDetail(){
     this.invoiceDetail.customer = {
-      name: null,
-      mobileNumber: null,
       address: null,
-      id: null
+      adminIdFk: null,
+      createdAt: null,
+      credit:  null,
+      dob: null,
+      mobileNumber: null,
+      name: null,
+      _id: null,
+      billsWithCredit: null
     };
+    this.clearTransactionArray();
   }
 
   //get customers
@@ -163,8 +187,23 @@ export class ReceiveCustomerCreditDialogComponent implements OnInit {
         this.suggestions = this.customers.slice(0, 2);
 
       }, error => {
+        this.uiService.openSnackBar(error.error.message, 'Close');
         console.log(error);
 
+      });
+  }
+
+  getTransactionById(id: string){
+    this.apiService.getTransactionById(id)
+      .subscribe((response: any) => {
+        if(response){
+          this.creditTransactionArray.push(response.data);
+          console.log('array:', this.creditTransactionArray);
+          this.getTotalCredit();
+        }
+      }, error => {
+        this.uiService.openSnackBar(error.error.message, 'Close');
+        console.log(error);
       });
   }
 

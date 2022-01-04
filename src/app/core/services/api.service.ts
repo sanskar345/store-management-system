@@ -117,4 +117,12 @@ export class ApiService {
     );
   }
 
+  //get transaction by id
+
+  getTransactionById(id: string){
+    return this.http.get(
+      `${STOREUP_API}${TRANSACTION}${id}`
+    );
+  }
+
 }

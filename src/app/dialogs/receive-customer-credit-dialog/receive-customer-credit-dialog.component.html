@@ -1,17 +1,18 @@
 <div mat-dialog-title>
   <div class="header">
     <div>
-      <h2 >Create Invoice</h2>
+      <h2 >Receive Customer Credit</h2>
     </div>
     <button type="button" class="btn-close" (click) = "close()"></button>
   </div>
 </div>
+
 <mat-dialog-content>
 
-  <div class="modal-content" *ngIf="passedData.showmodal1">
+  <div class="modal-content" *ngIf="passedData?.showModal1">
     <div class="modal-body">
       <div class="container-fluid">
-        <!-- <form > -->
+        <form [formGroup] = "invoiceForm">
           <div class="row alert alert-info">
             <div class="col-lg-3 col-md-12">
               <h3 class="heading-center"><span class="badge bg-secondary">Add Customer With <br> Mobile Number:</span></h3>
@@ -22,6 +23,7 @@
                 class="form-control"
                 id="customerMobileNumberInput"
                 placeholder="Enter Mobile Number"
+                formControlName = "customerMobileNumberInput"
                 (input) = "suggest($event)"
                 autocomplete="off">
               </div>
@@ -36,6 +38,11 @@
                 <div class="alert alert-warning" role="alert">
                   Customer Does Not Exist!
                 </div>
+                <button
+                class="btn btn-info inform-btn"
+                data-bs-toggle="modal"
+                data-bs-target="#addCustomerModal"
+                data-bs-whatever="@mdo"><fa-icon [icon]="faUser" style="color: darkgray; margin-right: 0.5em;" class="mr-10"></fa-icon>Add New Customer</button>
               </div>
 
 
@@ -57,7 +64,14 @@
                 <p class="" role="alert">
                   Please Select and Add Customer
                 </p>
-
+                <p>
+                  OR
+                </p>
+                <button
+                class="btn btn-primary"
+                data-bs-toggle="modal"
+                data-bs-target="#addCustomerModal"
+                data-bs-whatever="@mdo"><fa-icon [icon]="faUser" style="margin-right: 0.5em;" class="mr-10"></fa-icon>Add New Customer</button>
               </div>
             </div>
             <div class="col-lg-4 col-md-12">
@@ -69,6 +83,7 @@
                   type="text"
                   class="form-control"
                   aria-label="Invoice Number"
+                  formControlName = "invoiceNumber"
                   readonly>
                 </div>
                 <div class="input-group mb-3">
@@ -77,9 +92,19 @@
                   type="text"
                   class="form-control"
                   aria-label="Date"
+                  formControlName = "invoiceDate"
                   readonly>
                 </div>
                 <div class="input-group mb-3">
+                  <span class="input-group-text" id="basic-addon1"><fa-icon [icon]="faCalendarAlt" style="margin-right: 0.5em;" class="mr-10"></fa-icon>Total Credit : </span>
+                  <input
+                  type="number"
+                  class="form-control"
+                  aria-label="Date"
+                  value="{{totalCredit}}"
+                  readonly>
+                </div>
+                <!-- <div class="input-group mb-3">
                   <label class="input-group-text" for="inputGroupSelect01"><fa-icon [icon]="faInfo" style="margin-right: 0.5em;" class="mr-10"></fa-icon>State of supply</label>
                   <select class="form-select" id="inputGroupSelect01">
                     <option selected>Choose...</option>
@@ -87,67 +112,56 @@
                     <option value="2">Two</option>
                     <option value="3">Three</option>
                   </select>
-                </div>
+                </div> -->
               </div>
             </div>
-
           </div>
-          <div class="row top-buffer">
-            <div class="col-lg-8">
-
-            </div>
-            <div class="col-lg-4">
-              <div class="input-group mb-3">
-                <span class="input-group-text">Total Credit</span>
-                <span class="input-group-text"><fa-icon [icon]="faRupeeSign"></fa-icon></span>
-                <input
-                readonly
-                type="text"
-                class="form-control">
-
-              </div>
-              <div class="input-group mb-3">
-                <span class="input-group-text">Payment In</span>
-                <span class="input-group-text"><fa-icon [icon]="faRupeeSign"></fa-icon></span>
-                <input
-                type="text"
-                class="form-control">
-
-              </div>
-
-              <div class="input-group mb-3">
-                <label class="input-group-text" for="inputGroupSelect01">Payment Type</label>
-                <select class="form-select" id="inputGroupSelect01">
-                  <option selected>Choose</option>
-                  <option value="1">By Cash</option>
-                  <option value="1">Online</option>
-                </select>
-              </div>
-              <div class="input-group mb-3">
-                <span class="input-group-text">Credit Balance</span>
-                <span class="input-group-text"><fa-icon [icon]="faRupeeSign"></fa-icon></span>
-                <input
-                readonly type="text"
-                class="form-control">
-              </div>
-              <div class="input-group mb-3">
-                <span class="input-group-text">Credit Received</span>
-                <span class="input-group-text"><fa-icon [icon]="faRupeeSign"></fa-icon></span>
-                <input
-                readonly type="text"
-                class="form-control">
-              </div>
-          <div>
-        <!-- </form> -->
+        </form>
       </div>
-    </div>
+
+
+
+
+<mat-divider></mat-divider>
+
+<div class="row card-row">
+  <div class="col-lg-12 info-card-wrapper">
+    <mat-card class="alert alert-secondary">
+      <div>
+        <h3>Transactions : </h3>
+      </div>
+      <mat-card class="transaction-card alert alert-" *ngFor = "let transaction of creditTransactionArray">
+        <div class="inside">
+          <div class="left">
+            <span>Bill Number: {{ transaction?.transaction?.invoiceOrBillNumber.split('#N')[1] }}</span>
+            <span>|</span>
+            <span>Credit: {{ transaction?.transaction?.creditAmount }}</span>
+            <!-- <span>|</span>
+            <span>Cash</span>  -->
+            <span>|</span>
+            <span>{{ transaction?.transaction?.dateTime | date: 'medium' }}</span>
+          </div>
+          <div class="right">
+            <button class="btn btn-warning">Add Payment & Clear</button>
+            <!-- <span><fa-icon [icon]="faRupeeSign"></fa-icon> 1000</span>
+            <mat-icon class="red" *ngIf = "item%2 === 0">remove_circle_outline</mat-icon>
+            <mat-icon class="green" *ngIf = "item%2 !== 0">add_circle_outline</mat-icon> -->
+          </div>
+        </div>
+      </mat-card>
+    </mat-card>
   </div>
+</div>
+</div>
+
+</div>
 
 </mat-dialog-content>
+
 <mat-dialog-actions>
   <div class="modal-footer" *ngIf="passedData.showModal1">
     <button type="button" class="btn btn-secondary" (click) = "close()">Close</button>
-    <button [disabled]="!addItemForm1.valid" class="btn btn-primary" (click)="openSecondDialog()">Continue</button>
+    <button [disabled]="true" class="btn btn-primary" (click)="openSecondDialog()">Continue</button>
   </div>
   <!-- <div class="modal-footer" *ngIf="passedData.showModal2">
     <button type="button" class="btn btn-secondary" (click) = "close()">Close</button>
