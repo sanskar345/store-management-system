@@ -197,4 +197,29 @@ export class DashboardComponent implements OnInit {
 
   }
 
+  // open receive customer credit dialog
+
+  openReceiveCustomerCreditDialog() {
+    const dialogConfig = new MatDialogConfig();
+
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
+
+    let dialog = this.dialog.open(GivePaymentDialogComponent, {
+      width: '100vw',
+      data : {
+        showModal1: true,
+        showModal2: false
+      }
+    });
+
+    // const dialogRef = this.dialog.open(AlertDialogComponent);
+
+    dialog.afterClosed().subscribe(
+        data => console.log("Dialog output:", data)
+    );
+
+
+  }
+
 }
