@@ -1,0 +1,13 @@
+<div class="data-not-found-wrapper">
+  <div class="img-wrapper" *ngIf = "notFoundImg">
+    <img src="../../../assets/images/empty-box.svg" alt="Empty State Illustration">
+  </div>
+  <div class="content-wrapper">
+    <p class="content-heading">{{ title }}</p>
+    <p class="content-para">{{ subtitle1 }} <br> {{ subtitle2 }}</p>
+    <!-- <p class="content-para"></p> -->
+  </div>
+  <div class="action-btn-wrapper" *ngIf = "actionBtn">
+    <button class="action-btn">Action</button>
+  </div>
+</div>

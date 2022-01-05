@@ -77,7 +77,7 @@
             <div class="col-lg-4 col-md-12">
               <h3 class="heading-center"><span class="badge bg-secondary">Invoice Detail:</span></h3>
               <div class="customer-detail-wrapper">
-                <div class="input-group mb-3">
+                <!-- <div class="input-group mb-3">
                   <span class="input-group-text" id="basic-addon1"><fa-icon [icon]="faHashtag" style="margin-right: 0.5em;" class="mr-10"></fa-icon>Invoice Number : </span>
                   <input
                   type="text"
@@ -85,7 +85,7 @@
                   aria-label="Invoice Number"
                   formControlName = "invoiceNumber"
                   readonly>
-                </div>
+                </div> -->
                 <div class="input-group mb-3">
                   <span class="input-group-text" id="basic-addon1"><fa-icon [icon]="faCalendarAlt" style="margin-right: 0.5em;" class="mr-10"></fa-icon>Invoice Date : </span>
                   <input
@@ -130,6 +130,14 @@
       <div>
         <h3>Transactions : </h3>
       </div>
+      <app-empty-state
+        *ngIf = "creditTransactionArray.length === 0"
+        [actionBtn] = "false"
+        [title] = "'No Data Found!'"
+        [notFoundImg] = "true"
+        [subtitle1] = "'Looks like customer does not have any credits.'"
+        [subtitle2] = "''"
+        ></app-empty-state>
       <mat-card class="transaction-card alert alert-" *ngFor = "let transaction of creditTransactionArray">
         <div class="inside">
           <div class="left">
@@ -142,7 +150,7 @@
             <span>{{ transaction?.transaction?.dateTime | date: 'medium' }}</span>
           </div>
           <div class="right">
-            <button class="btn btn-warning">Add Payment & Clear</button>
+            <button class="btn btn-warning" (click)="addPaymentAndClearBill(transaction?.transaction)">Add Payment & Clear</button>
             <!-- <span><fa-icon [icon]="faRupeeSign"></fa-icon> 1000</span>
             <mat-icon class="red" *ngIf = "item%2 === 0">remove_circle_outline</mat-icon>
             <mat-icon class="green" *ngIf = "item%2 !== 0">add_circle_outline</mat-icon> -->
@@ -156,18 +164,151 @@
 
 </div>
 
+<div class="modal-content" *ngIf="passedData?.showModal2">
+  <div class="modal-body">
+    <div class="container">
+      <h2 class="preview-heading alert alert-info pt-1 pb-1 mb-2">Invoice Preview</h2>
+      <div class="invoice-preview-container">
+        <div class="row">
+          <div class="col-lg-5">
+              <h3 class="heading-center"><span class="badge bg-secondary">Customer Details:</span></h3>
+              <div class="detail-wrapper">
+                <p class="mt-1 align-text-center font-weight-bold preview-text"><fa-icon [icon]="faUserTie" style="margin-right: 0.5em;" class="mr-10"></fa-icon>Name : {{ invoiceDetail.customer.name }}</p>
+                <p class="align-text-center preview-text"><fa-icon [icon]="faPhoneAlt" style="margin-right: 0.5em;" class="mr-10"></fa-icon>Mobile Number : {{ invoiceDetail.customer.mobileNumber }}</p>
+                <p class="align-text-center preview-text"><fa-icon [icon]="faMapMarkerAlt" style="margin-right: 0.5em;" class="mr-10"></fa-icon>Address : {{ invoiceDetail.customer.address }}</p>
+              </div>
+          </div>
+          <div class="col-lg-2">
+
+          </div>
+          <div class="col-lg-5">
+              <h3 class="heading-center"><span class="badge bg-secondary">Invoice Details:</span></h3>
+              <div class="detail-wrapper">
+                <p class="mt-1 align-text-center preview-text"><fa-icon [icon]="faHashtag" style="margin-right: 0.5em;" class="mr-10"></fa-icon>Invoice Number : {{ particularTransaction?.invoiceOrBillNumber.split('#N')[1] }}</p>
+                <p class="align-text-center preview-text"><fa-icon [icon]="faCalendarAlt" style="margin-right: 0.5em;" class="mr-10"></fa-icon>Invoice Date : {{ particularTransaction?.dateTime.split('T')[0] }}</p>
+              </div>
+          </div>
+
+        </div>
+        <div class="row">
+          <h3 class="heading-center"><span class="badge bg-secondary">Items: </span></h3>
+          <div class="col-lg-12">
+            <div class="table-responsive">
+            <table class="table table-borderless">
+              <thead class="table-secondary">
+                <tr>
+                  <th scope="col">#</th>
+                  <th scope="col">Item Name</th>
+                  <!-- <th scope="col">Brand</th> -->
+                  <th scope="col">Size</th>
+                  <!-- <th scope="col">Category</th> -->
+                  <th scope="col">Rate</th>
+                  <th scope="col">MRP</th>
+                  <!-- <th scope="col">Stock Quantity [ Limit ]</th> -->
+                  <th scope="col">Quantity</th>
+                  <!-- <th scope="col"></th> -->
+                </tr>
+              </thead>
+              <tbody>
+
+                <tr *ngFor = "let item of particularTransaction?.items; index as i" >
+
+                    <th scope="row"><span class="">{{ i + 1 }}</span></th>
+                    <td>
+                      {{ item.name }}
+                    </td>
+                    <!-- <td>
+                      <div class="mt-auto">
+
+                        <input
+                        formControlName = "brand"
+                        type="text"
+                        class="form-control"
+                        id=""
+                        placeholder=""
+                        readonly
+                        autocomplete="off">
+                      </div>
+                    </td> -->
+                    <td>
+                      {{ item.size }}
+                    </td>
+                    <td>
+                      {{ item.rate }}
+                    </td>
+                    <td>
+                      {{ item.mrp }}
+                    </td>
+                    <td>
+                      {{ item.quantity }}
+                    </td>
+                </tr>
+
+              </tbody>
+              <tfoot>
+                <tr>
+                  <td>
+                    <p class="preview-text">Net Amount :</p>
+                  </td>
+                  <td colspan="5">
+                    <p class="preview-text"><fa-icon [icon]="faRupeeSign"></fa-icon> {{ particularTransaction?.totalAmount }} </p>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <p class="preview-text">Payment Amount(Credit Amount) :</p>
+                  </td>
+                  <td colspan="5">
+                    <p class="preview-text"><fa-icon [icon]="faRupeeSign"></fa-icon> {{ particularTransaction?.totalAmount }}</p>
+                  </td>
+                </tr>
+                <!-- <tr>
+                  <td>
+                    <p class="preview-text">Discount in Percentage :</p>
+                  </td>
+                  <td colspan="5">
+                    <p class="preview-text">{{ discountInPercentage }} %</p>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <p class="preview-text">Net Amount :</p>
+                  </td>
+                  <td colspan="5">
+                    <p class="preview-text"><fa-icon [icon]="faRupeeSign"></fa-icon> {{ invoiceTotalAmountByTotalItems }}</p>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <p class="preview-text">Payment Received :</p>
+                  </td>
+                  <td colspan="5">
+                    <p class="preview-text"><fa-icon [icon]="faRupeeSign"></fa-icon> {{ paymentReceived }}</p>
+                  </td>
+                </tr> -->
+              </tfoot>
+
+            </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
 </mat-dialog-content>
 
 <mat-dialog-actions>
   <div class="modal-footer" *ngIf="passedData.showModal1">
     <button type="button" class="btn btn-secondary" (click) = "close()">Close</button>
-    <button [disabled]="true" class="btn btn-primary" (click)="openSecondDialog()">Continue</button>
+    <!-- <button [disabled]="true" class="btn btn-primary" (click)="openSecondDialog()">Continue</button> -->
   </div>
-  <!-- <div class="modal-footer" *ngIf="passedData.showModal2">
+  <div class="modal-footer" *ngIf="passedData.showModal2">
     <button type="button" class="btn btn-secondary" (click) = "close()">Close</button>
     <button
-    [disabled]="!addItemForm2.valid"
-    (click)="onAddItem()"
-    class="btn btn-primary">Add Item</button>
-  </div> -->
+    (click)="clearPayment()"
+    class="btn btn-primary">Clear Payment</button>
+  </div>
 </mat-dialog-actions>

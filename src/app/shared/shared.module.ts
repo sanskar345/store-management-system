@@ -13,6 +13,7 @@ import { MatListModule } from '@angular/material/list';
 import { RouterModule } from '@angular/router';
 import { LoadingSpinnerComponent } from './loading-spinner/loading-spinner.component';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import { EmptyStateComponent } from './empty-state/empty-state.component';
 
 
 
@@ -22,6 +23,7 @@ import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
     FooterComponent,
     SidebarComponent,
     LoadingSpinnerComponent,
+    EmptyStateComponent,
 
   ],
   imports: [
@@ -41,7 +43,8 @@ import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
     HeaderComponent,
     FooterComponent,
     SidebarComponent,
-    LoadingSpinnerComponent
+    LoadingSpinnerComponent,
+    EmptyStateComponent
   ]
 })
 export class SharedModule { }

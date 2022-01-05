@@ -14,6 +14,7 @@ import { ReceiveCustomerCreditDialogComponent } from './receive-customer-credit-
 import { MatDividerModule } from '@angular/material/divider';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
+import { SharedModule } from '../shared/shared.module';
 
 
 @NgModule({
@@ -34,7 +35,8 @@ import { MatIconModule } from '@angular/material/icon';
     MatDividerModule,
     MatCardModule,
     MatIconModule,
-    FormsModule
+    FormsModule,
+    SharedModule
   ],
   exports: [
     AlertDialogComponent
