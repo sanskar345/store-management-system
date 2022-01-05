@@ -10,6 +10,7 @@ import { AddItemDialogComponent } from 'src/app/dialogs/add-item-dialog/add-item
 import { CreateInvoiceDialogComponent } from 'src/app/dialogs/create-invoice-dialog/create-invoice-dialog.component';
 import { DialogsService } from 'src/app/dialogs/dialogs.service';
 import { GivePaymentDialogComponent } from 'src/app/dialogs/give-payment-dialog/give-payment-dialog.component';
+import { ReceiveCustomerCreditDialogComponent } from 'src/app/dialogs/receive-customer-credit-dialog/receive-customer-credit-dialog.component';
 import { ReceivePaymentDialogComponent } from 'src/app/dialogs/receive-payment-dialog/receive-payment-dialog.component';
 import { ModalsModule } from 'src/app/modals/modals.module';
 import { ModalsService } from 'src/app/modals/modals.service';
@@ -181,6 +182,31 @@ export class DashboardComponent implements OnInit {
     dialogConfig.autoFocus = true;
 
     let dialog = this.dialog.open(GivePaymentDialogComponent, {
+      width: '100vw',
+      data : {
+        showModal1: true,
+        showModal2: false
+      }
+    });
+
+    // const dialogRef = this.dialog.open(AlertDialogComponent);
+
+    dialog.afterClosed().subscribe(
+        data => console.log("Dialog output:", data)
+    );
+
+
+  }
+
+  // open receive customer credit dialog
+
+  openReceiveCustomerCreditDialog() {
+    const dialogConfig = new MatDialogConfig();
+
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
+
+    let dialog = this.dialog.open(ReceiveCustomerCreditDialogComponent, {
       width: '100vw',
       data : {
         showModal1: true,

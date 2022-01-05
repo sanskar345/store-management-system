@@ -117,4 +117,21 @@ export class ApiService {
     );
   }
 
+  //get transaction by id
+
+  getTransactionById(id: string){
+    return this.http.get(
+      `${STOREUP_API}${TRANSACTION}${id}`
+    );
+  }
+
+  //get transaction by id
+
+  updateTransactionById(id: string, data: any){
+    return this.http.patch(
+      `${STOREUP_API}${TRANSACTION}${id}`,
+      data
+    );
+  }
+
 }
