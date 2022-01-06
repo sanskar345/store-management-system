@@ -15,6 +15,7 @@ import { MatDividerModule } from '@angular/material/divider';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { SharedModule } from '../shared/shared.module';
+import { AddCustomerDialogComponent } from './add-customer-dialog/add-customer-dialog.component';
 
 
 @NgModule({
@@ -25,7 +26,8 @@ import { SharedModule } from '../shared/shared.module';
     CreateInvoiceDialogComponent,
     ReceivePaymentDialogComponent,
     GivePaymentDialogComponent,
-    ReceiveCustomerCreditDialogComponent
+    ReceiveCustomerCreditDialogComponent,
+    AddCustomerDialogComponent
   ],
   imports: [
     CommonModule,

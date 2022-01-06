@@ -1,0 +1,43 @@
+<div mat-dialog-title>
+  <div class="header">
+    <div>
+      <h2 >Add Customer</h2>
+    </div>
+    <button type="button" class="btn-close" (click) = "close()"></button>
+  </div>
+</div>
+<mat-dialog-content>
+  <div class="modal-content">
+    <div class="modal-body">
+      <form [formGroup]="addCustomerForm">
+        <div class="mb-3">
+          <label for="recipient-name" class="col-form-label">Cutomer Name:</label>
+          <input formControlName = "customerName" type="text" class="form-control" id="recipient-name">
+        </div>
+        <div class="mb-3">
+          <label for="message-text" class="col-form-label">Address:</label>
+          <textarea formControlName = "address" class="form-control" id="message-text"></textarea>
+        </div>
+        <div class="mb-3">
+          <label for="recipient-name" class="col-form-label">Mobile No:</label>
+          <input formControlName = "mobile" type="text" class="form-control" id="recipient-name">
+        </div>
+        <div class="mb-3">
+          <label for="recipient-name" class="col-form-label">Date of Birth</label>
+          <input formControlName = "dob" type="date" class="form-control" id="recipient-name">
+        </div>
+      </form>
+    </div>
+
+  </div>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="close()">Close</button>
+    <button
+    [disabled] = "!addCustomerForm.valid"
+    type="button"
+    class="btn btn-primary"
+    (click) = "onAddCustomer()">Add Customer</button>
+  </div>
+</mat-dialog-actions>
