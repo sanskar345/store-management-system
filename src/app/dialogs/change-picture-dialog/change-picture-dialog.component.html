@@ -1,0 +1,28 @@
+<mat-dialog-content  >
+<div class="dialog-wrapper">
+  <div class="modal-content">
+    <div class="modal-body">
+      <div class="company-card">
+        <img
+        src="https://material.angular.io/assets/img/examples/shiba2.jpg" alt="">
+
+        <div class="input-group mb-3 mt-3">
+          <input
+          (change) = "onSelectFile($event)"
+          type="file"
+          class="form-control"
+          id="inputGroupFile01">
+        </div>
+
+    </div>
+    </div>
+  </div>
+
+</div>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <div class="btn-wrapper">
+    <button type="button" class="btn btn-secondary" (click)="close()">Close</button>
+    <button type="button" class="btn btn-primary">Save changes</button>
+  </div>
+</mat-dialog-actions>

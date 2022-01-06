@@ -16,6 +16,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { SharedModule } from '../shared/shared.module';
 import { AddCustomerDialogComponent } from './add-customer-dialog/add-customer-dialog.component';
+import { ChangePictureDialogComponent } from './change-picture-dialog/change-picture-dialog.component';
 
 
 @NgModule({
@@ -27,7 +28,8 @@ import { AddCustomerDialogComponent } from './add-customer-dialog/add-customer-d
     ReceivePaymentDialogComponent,
     GivePaymentDialogComponent,
     ReceiveCustomerCreditDialogComponent,
-    AddCustomerDialogComponent
+    AddCustomerDialogComponent,
+    ChangePictureDialogComponent
   ],
   imports: [
     CommonModule,
