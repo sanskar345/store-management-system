@@ -69,7 +69,7 @@ export class AddItemDialogComponent implements OnInit {
     dialogConfig.autoFocus = true;
 
     let dialog = this.dialog.open(AddItemDialogComponent, {
-      width: '500px',
+      width: '40vw',
       data : {
         showModal1: false,
         showModal2: true,

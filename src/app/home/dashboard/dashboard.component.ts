@@ -5,6 +5,7 @@ import { faHome, faUser, faSquare, faEllipsisV, faFileInvoice, faMoneyBillWave, 
 import { Subject } from 'rxjs';
 import { ApiService } from 'src/app/core/services/api.service';
 import { UiService } from 'src/app/core/services/ui.service';
+import { AddCustomerDialogComponent } from 'src/app/dialogs/add-customer-dialog/add-customer-dialog.component';
 import { AddItemCategoryDialogComponent } from 'src/app/dialogs/add-item-category-dialog/add-item-category-dialog.component';
 import { AddItemDialogComponent } from 'src/app/dialogs/add-item-dialog/add-item-dialog.component';
 import { CreateInvoiceDialogComponent } from 'src/app/dialogs/create-invoice-dialog/create-invoice-dialog.component';
@@ -84,7 +85,7 @@ export class DashboardComponent implements OnInit {
     dialogConfig.autoFocus = true;
 
     let dialog = this.dialog.open(AddItemDialogComponent, {
-      width: '500px',
+      width: '40vw',
       data : {
         showModal1: true,
         showModal2: false
@@ -109,7 +110,21 @@ export class DashboardComponent implements OnInit {
     dialogConfig.autoFocus = true;
 
     let dialog = this.dialog.open(AddItemCategoryDialogComponent, {
-      width: '500px',
+      width: '40vw',
+      data : {
+      }
+    });
+  }
+  // open add customer dialog
+
+  openAddCustomerDialog() {
+    const dialogConfig = new MatDialogConfig();
+
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
+
+    let dialog = this.dialog.open(AddCustomerDialogComponent, {
+      width: '40vw',
       data : {
       }
     });
