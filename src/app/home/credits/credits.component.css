@@ -16,7 +16,7 @@
 
 .search-input {
   width: 40vw;
-  border: 3px solid #FFC107;
+  border: 3px solid #ffc107;
   border-radius: 6px;
   padding: 10px 32px;
 }
@@ -39,7 +39,7 @@
 
 .credit-card {
   /* border: 2px solid #007BFF; */
-  border: 1.5px solid #E2E3E5;
+  border: 1.5px solid #e2e3e5;
   margin-top: 15px;
   font-size: 15px;
   font-weight: 500;
@@ -51,7 +51,6 @@
   /* display: flex;
   align-items: center;
   justify-content: center; */
-
 }
 
 .detail-wrapper span {
@@ -68,14 +67,31 @@
   margin-right: 10px;
 }
 
-.btns-wrapper .left .red{
-  color: #FF0000;
+.btns-wrapper .left .red {
+  color: #ff0000;
 }
-
-
 
 /* all */
 
 .credits-wrapper:not([class*="mat-elevation-z"]) {
   box-shadow: 0 2px 1px -1px #779574, 0 1px 1px 0 #779574, 0 1px 8px 0 #779574;
+}
+
+.list-footer {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+}
+
+mat-card-actions {
+  position: relative;
+  bottom: 0;
+}
+
+.input-red {
+  color: #ff0000;
+}
+
+.input-green {
+  color: #337633;
 }

@@ -70,6 +70,9 @@ export class ReceiveCustomerCreditDialogComponent implements OnInit {
   ngOnInit(): void {
     this.today = ((new Date()).toISOString()).split('T')[0];
     this.passedData = this.data;
+    if(this.passedData.invoiceDetail.customer.name !== "" && this.passedData.invoiceDetail.customer.name !== null && this.passedData.showModal1){
+      this.invoiceDetail = this.passedData.invoiceDetail;
+    }
     this.buildForms();
     this.getCustomers();
     if(this.invoiceDetail.customer.name !== null){

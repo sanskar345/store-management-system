@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { ADD_CUSTOMER, ADD_ITEM_CATEGORY, CUSTOMER, GET_TRANSACTION_STAT, ITEMS, ITEM_CATEGORY, LOGIN, SIGN_UP, STOREUP_API, TRANSACTION } from '../constants/apis.constant';
+import { ADD_CUSTOMER, ADD_ITEM_CATEGORY, CUSTOMER, GET_CUSTOMER_STAT_FOR_CREDIT, GET_TRANSACTION_STAT, ITEMS, ITEM_CATEGORY, LOGIN, SIGN_UP, STOREUP_API, TRANSACTION } from '../constants/apis.constant';
 import { StorageService } from './storage.service';
 
 @Injectable({
@@ -131,6 +131,25 @@ export class ApiService {
     return this.http.patch(
       `${STOREUP_API}${TRANSACTION}${id}`,
       data
+    );
+  }
+
+  //get customers with queryPArams
+
+  getCustomersWithQueryParams(params: {}){
+    return this.http.get(
+      `${STOREUP_API}${CUSTOMER}`,
+      {
+        params
+      }
+    );
+  }
+
+  //get customers stats
+
+  getCustomerStatForCredit(){
+    return this.http.get(
+      `${STOREUP_API}${GET_CUSTOMER_STAT_FOR_CREDIT}`
     );
   }
 
