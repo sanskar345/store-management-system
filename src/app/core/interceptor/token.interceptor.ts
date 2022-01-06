@@ -27,7 +27,7 @@ export class TokenInterceptorService implements HttpInterceptor {
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
 
-      this.uiService.loadingChecker.next(true);
+      // this.uiService.loadingChecker.next(true);
       // let promise = this.storageService.getAuthToken();
       const token = this.storageService.getString('token');
 
@@ -56,7 +56,7 @@ export class TokenInterceptorService implements HttpInterceptor {
       }),
 
       finalize(() => {
-          this.uiService.loadingChecker.next(false);
+          // this.uiService.loadingChecker.next(false);
       }));
       // return from(promise)
       // .pipe(mergeMap((token) => {
