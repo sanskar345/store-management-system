@@ -24,4 +24,8 @@ export class HeaderComponent implements OnInit {
     this.router.navigate(['home/settings']);
   }
 
+  refreshPage() {
+    window.location.reload();
+   }
+
 }

@@ -10,6 +10,7 @@ import pdfFonts from "pdfmake/build/vfs_fonts";
 import { TitleCasePipe } from '@angular/common';
 import { MatBottomSheet } from '@angular/material/bottom-sheet';
 import { TransactionDetailsBottomSheetComponent } from 'src/app/bottom-sheets/transaction-details-bottom-sheet/transaction-details-bottom-sheet.component';
+import { NgxSpinnerService } from 'ngx-spinner';
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
 @Component({
@@ -67,7 +68,8 @@ export class ReceiveCustomerCreditDialogComponent implements OnInit {
     private apiService: ApiService,
     private dialogsService: DialogsService,
     private titlecasePipe: TitleCasePipe,
-    private bottomSheet: MatBottomSheet
+    private bottomSheet: MatBottomSheet,
+    private spinner: NgxSpinnerService
   ) { }
 
   ngOnInit(): void {
@@ -199,13 +201,16 @@ export class ReceiveCustomerCreditDialogComponent implements OnInit {
   //get customers
 
   getCustomers(){
+    this.spinner.show('mainSpinner');
     this.apiService.getCustomers()
       .subscribe((response: any) => {
+        this.spinner.hide('mainSpinner');
         console.log('customers', response);
         this.customers = response.data;
         this.suggestions = this.customers.slice(0, 2);
 
       }, error => {
+        this.spinner.hide('mainSpinner');
         this.uiService.openSnackBar(error.error.message, 'Close');
         console.log(error);
 
@@ -213,14 +218,17 @@ export class ReceiveCustomerCreditDialogComponent implements OnInit {
   }
 
   getTransactionById(id: string){
+    this.spinner.show('mainSpinner');
     this.apiService.getTransactionById(id)
       .subscribe((response: any) => {
+        this.spinner.hide('mainSpinner');
         if(response){
           this.creditTransactionArray.push(response.data);
           console.log('array:', this.creditTransactionArray);
           this.getTotalCredit();
         }
       }, error => {
+        this.spinner.hide('mainSpinner');
         this.uiService.openSnackBar(error.error.message, 'Close');
         console.log(error);
       });
@@ -231,8 +239,10 @@ export class ReceiveCustomerCreditDialogComponent implements OnInit {
   }
 
   updateTransactionById(id: string, data: any){
+    this.spinner.show('mainSpinner');
     this.apiService.updateTransactionById(id, data)
       .subscribe((response: any) => {
+        this.spinner.hide('mainSpinner');
         if(response){
           console.log(response);
           const id = response.data.updatedTransaction._id;
@@ -250,6 +260,7 @@ export class ReceiveCustomerCreditDialogComponent implements OnInit {
           this.updateCustomerById(data, this.invoiceDetail.customer._id);
         }
       }, error => {
+        this.spinner.hide('mainSpinner');
         console.log(error);
         this.uiService.openSnackBar(error.error.message, 'Close');
       })
@@ -274,14 +285,17 @@ export class ReceiveCustomerCreditDialogComponent implements OnInit {
   }
 
   updateCustomerById(data, id: string){
+    this.spinner.show('mainSpinner');
     this.apiService.updateCustomerById(data, id)
       .subscribe((response) => {
+        this.spinner.hide('mainSpinner');
         if(response){
           console.log('updated customer',response);
           this.uiService.openSnackBar('Transaction done successfully', 'Close');
           this.generatePDF();
         }
       }, error => {
+        this.spinner.hide('mainSpinner');
         console.log(error);
         this.uiService.openSnackBar(error.error.message, 'Close');
       });

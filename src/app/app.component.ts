@@ -10,21 +10,11 @@ import { UiService } from './core/services/ui.service';
 export class AppComponent implements OnInit {
 
   title = 'store-management-system';
-  isLoading = false;
 
   constructor(
     private uiService: UiService
   ) { }
 
   ngOnInit() {
-    this.uiService.loadingChecker.subscribe(
-      res => {
-        if (res) {
-          this.isLoading = true;
-        } else {
-          this.isLoading = false;
-        }
-      }
-    );
   }
 }

@@ -1,8 +1,18 @@
-<div *ngIf = "!isLoading">
+<div>
   <router-outlet></router-outlet>
 </div>
 
-<app-loading-spinner *ngIf = "isLoading"></app-loading-spinner>
+
+<ngx-spinner name="mainSpinner" [fullScreen]="false"></ngx-spinner>
+<ngx-spinner name="searchSpinner" color = "#fff" size = "medium" type = "square-jelly-box" [fullScreen]="false" >
+  <p style="color: #fff" > Searching... </p>
+</ngx-spinner>
+<ngx-spinner name="loginSpinner" color = "#fff" size = "medium" type = "ball-spin-clockwise" [fullScreen]="false" >
+  <p style="color: #fff" > Getting things ready... </p>
+</ngx-spinner>
+<ngx-spinner name="signUpSpinner" color = "#fff" size = "medium" type = "ball-spin-clockwise" [fullScreen]="false" >
+  <p style="color: #fff" > Registering... </p>
+</ngx-spinner>
 
 
 
