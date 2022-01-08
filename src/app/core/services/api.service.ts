@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { ADD_CUSTOMER, ADD_ITEM_CATEGORY, CUSTOMER, GET_CUSTOMER_STAT_FOR_CREDIT, GET_TRANSACTION_STAT, ITEMS, ITEM_CATEGORY, LOGIN, SIGN_UP, STOREUP_API, TRANSACTION } from '../constants/apis.constant';
+import { ADD_CUSTOMER, ADD_ITEM_CATEGORY, CUSTOMER, GET_CUSTOMER_STAT_FOR_CREDIT, GET_TODAY_TRANSACTION_STAT, GET_TRANSACTION_STAT, ITEMS, ITEMS_OUT_OF_STOCK, ITEM_CATEGORY, LOGIN, SIGN_UP, STOREUP_API, TRANSACTION } from '../constants/apis.constant';
 import { StorageService } from './storage.service';
 
 @Injectable({
@@ -150,6 +150,36 @@ export class ApiService {
   getCustomerStatForCredit(){
     return this.http.get(
       `${STOREUP_API}${GET_CUSTOMER_STAT_FOR_CREDIT}`
+    );
+  }
+
+  //get transactions
+
+  getTransactions(params: {}){
+    return this.http.get(
+      `${STOREUP_API}${TRANSACTION}`,
+      {
+        params
+      }
+    );
+  }
+
+  //get sales today
+
+  getTodayTransactionStats(params){
+    return this.http.get(
+      `${STOREUP_API}${GET_TODAY_TRANSACTION_STAT}`,
+      {
+        params
+      }
+    );
+  }
+
+  // get items out of stock
+
+  getItemsOutOfStock(){
+    return this.http.get(
+      `${STOREUP_API}${ITEMS_OUT_OF_STOCK}`,
     );
   }
 

@@ -67,7 +67,7 @@
     <div class="col-lg-4 info-card-wrapper">
       <mat-card class="info-card alert alert-info">
         <div class="upper">
-          41616
+          {{ totalTransactionToday }}
         </div>
         <div class="lower">
           Sales Today
@@ -77,7 +77,7 @@
     <div class="col-lg-4 info-card-wrapper">
       <mat-card class="info-card alert alert-warning">
         <div class="upper">
-          56
+          {{totalCustomersWithCredit}}
         </div>
         <div class="lower">
           Customers With Credit
@@ -87,7 +87,7 @@
     <div class="col-lg-4 info-card-wrapper">
       <mat-card class="info-card alert alert-danger">
         <div class="upper">
-          22
+          {{totalItemsOutOfStock}}
         </div>
         <div class="lower">
           Items Out Of Stock
@@ -101,21 +101,26 @@
         <div>
           <h3>Recent Transactions : </h3>
         </div>
-        <mat-card class="transaction-card alert alert-" *ngFor = "let item of number">
+        <mat-card class="transaction-card alert alert-" *ngFor = "let transaction of transactions" (click)="openTransactionDetailBottomSheet(transaction)">
           <div class="inside">
             <div class="left">
-              <span>SALE</span>
+              <span>{{ transaction?.transactionType }}</span>
               <span>|</span>
-              <span>Sanskar Soni</span>
+              <span>{{ transaction?.partyName | titlecase }}</span>
+              <span *ngIf="transaction?.paymentMode && transaction?.paymentMode !== ''">|</span>
+              <span *ngIf="transaction?.paymentMode && transaction?.paymentMode !== ''">{{ transaction?.paymentMode === 'OFFLINE' ? 'Cash' : 'Online' }}</span>
+              <span *ngIf="transaction?.status === 'CREDIT' || transaction?.status === 'PAID'">|</span>
+              <span *ngIf="transaction?.status === 'CREDIT' || transaction?.status === 'PAID'">{{ transaction?.status }}</span>
               <span>|</span>
-              <span>Cash</span>
-              <span>|</span>
-              <span>02/09/2021</span>
+              <span>{{ transaction?.dateTime | date: 'short' }}</span>
             </div>
             <div class="right">
-              <span><fa-icon [icon]="faRupeeSign"></fa-icon> 1000</span>
-              <mat-icon class="red" *ngIf = "item%2 === 0">remove_circle_outline</mat-icon>
-              <mat-icon class="green" *ngIf = "item%2 !== 0">add_circle_outline</mat-icon>
+              <span *ngIf="transaction?.status === 'CREDIT'"><fa-icon [icon]="faRupeeSign"></fa-icon> {{ transaction?.creditAmount }}</span>
+              <mat-icon *ngIf="transaction?.status === 'CREDIT'" class="material-icons-outlined warn " >pending</mat-icon>
+              <span *ngIf="transaction?.status !== 'CREDIT' && transaction?.transactionType === 'PAYMENTOUT'"><fa-icon [icon]="faRupeeSign"></fa-icon> {{ transaction?.paymentOut }}</span>
+              <mat-icon *ngIf="transaction?.status !== 'CREDIT' && transaction?.transactionType === 'PAYMENTOUT'" class="red" >remove_circle_outline</mat-icon>
+              <span *ngIf="(transaction?.status === 'PAID' || transaction?.status === 'COMPLETE') && (transaction?.transactionType === 'PAYMENTIN' || transaction?.transactionType === 'SALE')"><fa-icon [icon]="faRupeeSign"></fa-icon> {{ transaction?.totalAmount }}</span>
+              <mat-icon class="green" *ngIf="(transaction?.status === 'PAID' || transaction?.status === 'COMPLETE') && (transaction?.transactionType === 'PAYMENTIN' || transaction?.transactionType === 'SALE')">add_circle_outline</mat-icon>
             </div>
           </div>
         </mat-card>

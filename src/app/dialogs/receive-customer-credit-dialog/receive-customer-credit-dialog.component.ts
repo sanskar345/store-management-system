@@ -8,6 +8,8 @@ import { faBraille, faCalendarAlt, faHashtag, faInfo, faMapMarkerAlt, faPhoneAlt
 import pdfMake from "pdfmake/build/pdfmake";
 import pdfFonts from "pdfmake/build/vfs_fonts";
 import { TitleCasePipe } from '@angular/common';
+import { MatBottomSheet } from '@angular/material/bottom-sheet';
+import { TransactionDetailsBottomSheetComponent } from 'src/app/bottom-sheets/transaction-details-bottom-sheet/transaction-details-bottom-sheet.component';
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
 @Component({
@@ -64,13 +66,14 @@ export class ReceiveCustomerCreditDialogComponent implements OnInit {
     private uiService: UiService,
     private apiService: ApiService,
     private dialogsService: DialogsService,
-    private titlecasePipe: TitleCasePipe
+    private titlecasePipe: TitleCasePipe,
+    private bottomSheet: MatBottomSheet
   ) { }
 
   ngOnInit(): void {
     this.today = ((new Date()).toISOString()).split('T')[0];
     this.passedData = this.data;
-    if(this.passedData.invoiceDetail.customer.name !== "" && this.passedData.invoiceDetail.customer.name !== null && this.passedData.showModal1){
+    if(this.passedData.invoiceDetail && this.passedData.showModal1){
       this.invoiceDetail = this.passedData.invoiceDetail;
     }
     this.buildForms();
@@ -458,6 +461,20 @@ export class ReceiveCustomerCreditDialogComponent implements OnInit {
 
     getPurchaseDate(){
       return this.particularTransaction.dateTime.split('T')[0];
+    }
+
+    openTransactionDetailBottomSheet(transaction){
+      const bottomSheetRef = this.bottomSheet.open(TransactionDetailsBottomSheetComponent, {
+        panelClass: 'transaction-details-bottom-sheet',
+        data: {
+          transaction
+         },
+      });
+
+      bottomSheetRef.afterDismissed().subscribe(() => {
+        console.log('Bottom sheet has been dismissed.:');
+      });
+
     }
 
 }

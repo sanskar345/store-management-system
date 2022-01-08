@@ -29,7 +29,7 @@ export class AddCustomerDialogComponent implements OnInit {
   onAddCustomer(){
     if(this.addCustomerForm.valid){
       this.apiService.addCustomer({
-        name: this.addCustomerForm.get('customerName').value,
+        name: (this.addCustomerForm.get('customerName').value).toLowerCase(),
         mobileNumber: this.addCustomerForm.get('mobile').value,
         address: this.addCustomerForm.get('address').value,
         dob: this.addCustomerForm.get('dob').value,
