@@ -18,6 +18,7 @@ import { TitleCasePipe } from '@angular/common';
   declarations: [
     AppComponent,
     AuthComponent,
+
   ],
   imports: [
     BrowserModule,

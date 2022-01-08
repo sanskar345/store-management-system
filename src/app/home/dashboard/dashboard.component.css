@@ -66,6 +66,7 @@ fa-icon {
   font-weight: 500;
   letter-spacing: 0.5px;
   padding: 10px;
+  cursor: pointer;
 }
 
 .transaction-card .inside {
@@ -93,4 +94,8 @@ fa-icon {
 
 .transaction-card .inside .left span{
   margin-left: 10px;
+}
+
+.warn {
+  color: #ffc107;
 }

@@ -150,6 +150,7 @@
             <span>{{ transaction?.transaction?.dateTime | date: 'medium' }}</span>
           </div>
           <div class="right">
+            <button class="btn btn-primary view-btn" (click)="openTransactionDetailBottomSheet(transaction?.transaction)">View</button>
             <button class="btn btn-warning" (click)="addPaymentAndClearBill(transaction?.transaction)">Add Payment & Clear</button>
             <!-- <span><fa-icon [icon]="faRupeeSign"></fa-icon> 1000</span>
             <mat-icon class="red" *ngIf = "item%2 === 0">remove_circle_outline</mat-icon>

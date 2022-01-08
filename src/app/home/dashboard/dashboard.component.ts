@@ -1,8 +1,10 @@
 import { AfterContentInit, AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { MatBottomSheet } from '@angular/material/bottom-sheet';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 import { faHome, faUser, faSquare, faEllipsisV, faFileInvoice, faMoneyBillWave, faMoneyBill, faHandHolding, faMoneyBillWaveAlt, faRupeeSign } from '@fortawesome/free-solid-svg-icons';
 import { Subject } from 'rxjs';
+import { TransactionDetailsBottomSheetComponent } from 'src/app/bottom-sheets/transaction-details-bottom-sheet/transaction-details-bottom-sheet.component';
 import { ApiService } from 'src/app/core/services/api.service';
 import { UiService } from 'src/app/core/services/ui.service';
 import { AddCustomerDialogComponent } from 'src/app/dialogs/add-customer-dialog/add-customer-dialog.component';
@@ -38,14 +40,20 @@ export class DashboardComponent implements OnInit {
 
   number = [12, 3];
 
+  totalCustomersWithCredit: number;
+  totalTransactionToday: number;
+  totalItemsOutOfStock: number;
+  transactions = [];
+
 
   constructor(
-    private cdr: ChangeDetectorRef,
     private uiService: UiService,
     private apiService: ApiService,
     private dialogsService: DialogsService,
     private route: ActivatedRoute,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private ref: ChangeDetectorRef,
+    private bottomSheet: MatBottomSheet
   ) {
     route.params.subscribe(val => {
       console.log('from route');
@@ -54,7 +62,14 @@ export class DashboardComponent implements OnInit {
    }
 
   ngOnInit(): void {
+    this.getAllInfo();
+  }
 
+  getAllInfo(){
+    this.getTodayTransactionStats();
+    this.getCustomerStatForCredit();
+    this.getItemsOutOfStock();
+    this.getTransactions({page: 1, limit: 2});
   }
 
 
@@ -95,7 +110,7 @@ export class DashboardComponent implements OnInit {
     // const dialogRef = this.dialog.open(AlertDialogComponent);
 
     dialog.afterClosed().subscribe(
-        data => console.log("Dialog output:", data)
+        () => this.getAllInfo()
     );
 
 
@@ -132,7 +147,7 @@ export class DashboardComponent implements OnInit {
     // const dialogRef = this.dialog.open(AlertDialogComponent);
 
     dialog.afterClosed().subscribe(
-        data => console.log("Dialog output:", data)
+      () => this.getAllInfo()
     );
 
 
@@ -157,7 +172,7 @@ export class DashboardComponent implements OnInit {
     // const dialogRef = this.dialog.open(AlertDialogComponent);
 
     dialog.afterClosed().subscribe(
-        data => console.log("Dialog output:", data)
+      (d) => this.getAllInfo()
     );
 
 
@@ -182,7 +197,7 @@ export class DashboardComponent implements OnInit {
     // const dialogRef = this.dialog.open(AlertDialogComponent);
 
     dialog.afterClosed().subscribe(
-        data => console.log("Dialog output:", data)
+      () => this.getAllInfo()
     );
 
 
@@ -207,7 +222,7 @@ export class DashboardComponent implements OnInit {
     // const dialogRef = this.dialog.open(AlertDialogComponent);
 
     dialog.afterClosed().subscribe(
-        data => console.log("Dialog output:", data)
+      () => this.getAllInfo()
     );
 
 
@@ -232,9 +247,76 @@ export class DashboardComponent implements OnInit {
     // const dialogRef = this.dialog.open(AlertDialogComponent);
 
     dialog.afterClosed().subscribe(
-        data => console.log("Dialog output:", data)
+      () => this.getAllInfo()
     );
 
+
+  }
+
+  getCustomerStatForCredit(){
+    this.apiService.getCustomerStatForCredit()
+      .subscribe((response: any) => {
+
+        this.totalCustomersWithCredit = response.data.stats[0].totalCustomers;
+        console.log('.cre', this.totalCustomersWithCredit);
+        this.ref.detectChanges();
+
+      }, error => {
+        console.log(error);
+        this.uiService.openSnackBar(error.error.message, 'Close');
+      });
+  }
+
+  getTodayTransactionStats(){
+    const today = ((new Date()).toISOString()).split('T')[0];
+    this.apiService.getTodayTransactionStats({date: today})
+      .subscribe((response: any) => {
+        this.totalTransactionToday = response.data.stats[0].totalTransactions;
+        console.log('today::', this.totalTransactionToday);
+        this.ref.detectChanges();
+      }, error => {
+        console.log(error);
+        this.uiService.openSnackBar(error.error.message, 'Close');
+      });
+  }
+
+  getItemsOutOfStock(){
+    this.apiService.getItemsOutOfStock()
+      .subscribe((response: any) => {
+        this.totalItemsOutOfStock = response.data.stats[0].itemsOutOfStock;
+        console.log('getItemsOutOfStock::', this.totalItemsOutOfStock);
+        this.ref.detectChanges();
+      }, error => {
+        console.log(error);
+        this.uiService.openSnackBar(error.error.message, 'Close');
+      });
+  }
+
+  getTransactions(params: {}){
+    this.apiService.getTransactions(params)
+      .subscribe((response: any) => {
+        if(response){
+          console.log('transactions',response);
+          this.transactions = response.data;
+          this.ref.detectChanges();
+        }
+      }, error => {
+        console.log(error);
+        this.uiService.openSnackBar(error.error.message, 'Close');
+      })
+  }
+
+  openTransactionDetailBottomSheet(transaction){
+    const bottomSheetRef = this.bottomSheet.open(TransactionDetailsBottomSheetComponent, {
+      panelClass: 'transaction-details-bottom-sheet',
+      data: {
+        transaction
+       },
+    });
+
+    bottomSheetRef.afterDismissed().subscribe(() => {
+      console.log('Bottom sheet has been dismissed.:');
+    });
 
   }
 

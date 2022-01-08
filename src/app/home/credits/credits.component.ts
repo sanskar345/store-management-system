@@ -1,14 +1,15 @@
 import { ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
-import { PageEvent } from '@angular/material/paginator';
+import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { faRupeeSign } from '@fortawesome/free-solid-svg-icons';
 import { fromEvent } from 'rxjs';
 import { debounceTime, distinctUntilChanged, filter, tap } from 'rxjs/operators';
-import { MOBILE_REGEX } from 'src/app/core/constants/regex.constant';
+import { MOBILE_REGEX, ONLY_LETTERS } from 'src/app/core/constants/regex.constant';
 import { ApiService } from 'src/app/core/services/api.service';
 import { UiService } from 'src/app/core/services/ui.service';
 import { ReceiveCustomerCreditDialogComponent } from 'src/app/dialogs/receive-customer-credit-dialog/receive-customer-credit-dialog.component';
+import { SelectDialogComponent } from 'src/app/dialogs/select-dialog/select-dialog.component';
 
 @Component({
   selector: 'app-credits',
@@ -17,10 +18,16 @@ import { ReceiveCustomerCreditDialogComponent } from 'src/app/dialogs/receive-cu
 })
 export class CreditsComponent implements OnInit {
 
-  @ViewChild('input', {static: true}) input: ElementRef;
+  @ViewChild('input2', {static: true}) input2: ElementRef;
+  @ViewChild('input3', {static: true}) input3: ElementRef;
+
+  @ViewChild('paginator') paginator: MatPaginator;
 
   pageEvent: PageEvent;
   paginationLength: number = 100;
+  searchInputForm: FormGroup;
+  searchType = 'Customer_Mobile_Number';
+  showClearSearchBtn = false;
 
   faRupeeSign = faRupeeSign;
 
@@ -42,8 +49,6 @@ export class CreditsComponent implements OnInit {
   search: string = "";
   pagination: any;
 
-  searchInputForm: FormGroup;
-
   constructor(
     private apiService: ApiService,
     private uiService: UiService,
@@ -54,36 +59,17 @@ export class CreditsComponent implements OnInit {
 
   ngOnInit(): void {
     this.builForms();
-    this.getCustomers({'credit[gt]': 0});
+    this.getCustomers({'credit[gt]': 0,'page': 1, 'limit': 10});
     this.getCustomerStat();
+    this.subscribeToInput2();
+    this.subscribeToInput3();
   }
 
   builForms(){
     this.searchInputForm = this.formBuilder.group({
-      mobileNumberSearch: ['', [Validators.pattern(MOBILE_REGEX)]]
+      Customer_Mobile_Number: ['', [Validators.pattern(MOBILE_REGEX)]],
+      Customer_Name: ['', [Validators.pattern(ONLY_LETTERS), Validators.minLength(3)]],
     })
-  }
-
-  //search
-
-  ngAfterViewInit() {
-    // server-side search
-    this.cdr.detectChanges();
-    fromEvent(this.input.nativeElement,'keyup')
-        .pipe(
-            filter(Boolean),
-            debounceTime(1100),
-            distinctUntilChanged(),
-            tap((event:KeyboardEvent) => {
-              // console.log(event)
-              console.log(this.input.nativeElement.value)
-              if(this.input.nativeElement.value.length === 10){
-                // this.filterCustomers(this.input.nativeElement.value);
-                this.getCustomers({'credit[gt]': 0, 'mobileNumber': this.input.nativeElement.value});
-              }
-            })
-        )
-        .subscribe();
   }
 
   onSearch(event){
@@ -154,12 +140,101 @@ export class CreditsComponent implements OnInit {
   getCustomerStat(){
     this.apiService.getCustomerStatForCredit()
       .subscribe((response: any) => {
-        this.paginationLength = response.data[0].totalCustomers;
+        this.paginationLength = response.data.stats[0].totalCustomers;
 
       }, error => {
         console.log(error);
         this.uiService.openSnackBar(error.error.message, 'Close');
       });
+  }
+
+  openSelectDialog() {
+
+    const dialogConfig = new MatDialogConfig();
+
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
+
+    let dialog = this.dialog.open(SelectDialogComponent, {
+      data : {
+        title: 'Filter By',
+        radioBtns: ['Customer_Name', 'Customer_Mobile_Number'],
+        showDangerBtn: true,
+        showPrimaryBtn: true,
+        dangerBtnName: 'Cancel',
+        primaryBtnName: 'Done'
+      }
+    });
+
+    // const dialogRef = this.dialog.open(AlertDialogComponent);
+
+    dialog.afterClosed().subscribe(
+        data => {
+          if(data !== undefined && data !== null && data !== ''){
+            this.searchType = data;
+          }
+        }
+    );
+
+
+  }
+
+  onClickClearSearch(){
+    this.showClearSearchBtn = false;
+    this.searchInputForm.reset();
+    const hasPreviousPage =  this.paginator.hasPreviousPage();
+    if(hasPreviousPage){
+      this.paginator.firstPage();
+    }else{
+      this.getCustomers({'page': 1, 'limit': 10});
+    }
+  }
+
+  subscribeToInput2(){
+    // server-side search
+    fromEvent(this.input2.nativeElement,'keyup')
+        .pipe(
+            filter(Boolean),
+            debounceTime(1100),
+            distinctUntilChanged(),
+            tap((event:KeyboardEvent) => {
+              // console.log(event)
+              console.log(this.input2.nativeElement.value)
+              if(this.input2.nativeElement.value.length > 0){
+                this.showClearSearchBtn = true;
+                if(this.searchInputFormControls.Customer_Mobile_Number.valid && this.searchType === 'Customer_Mobile_Number'){
+                  this.getCustomers({'mobileNumber': this.input2.nativeElement.value});
+                }
+              }
+            })
+        )
+        .subscribe();
+  }
+
+  subscribeToInput3(){
+    // server-side search
+    fromEvent(this.input3.nativeElement,'keyup')
+        .pipe(
+            filter(Boolean),
+            debounceTime(1100),
+            distinctUntilChanged(),
+            tap((event:KeyboardEvent) => {
+              // console.log(event)
+              console.log(this.input3.nativeElement.value)
+              if(this.input3.nativeElement.value.length > 0){
+                this.showClearSearchBtn = true;
+                if(this.searchInputFormControls.Customer_Name.valid && this.searchType === 'Customer_Name'){
+                  // this.filterCustomers(this.input.nativeElement.value);
+                  this.getCustomers({'name': (this.input3.nativeElement.value).toLowerCase()});
+                }
+              }
+            })
+        )
+        .subscribe();
+  }
+
+  get searchInputFormControls(){
+    return this.searchInputForm.controls;
   }
 
 }

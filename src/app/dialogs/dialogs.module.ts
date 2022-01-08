@@ -17,6 +17,9 @@ import { MatIconModule } from '@angular/material/icon';
 import { SharedModule } from '../shared/shared.module';
 import { AddCustomerDialogComponent } from './add-customer-dialog/add-customer-dialog.component';
 import { ChangePictureDialogComponent } from './change-picture-dialog/change-picture-dialog.component';
+import { SelectDialogComponent } from './select-dialog/select-dialog.component';
+import {MatRadioModule} from '@angular/material/radio';
+
 
 
 @NgModule({
@@ -29,7 +32,8 @@ import { ChangePictureDialogComponent } from './change-picture-dialog/change-pic
     GivePaymentDialogComponent,
     ReceiveCustomerCreditDialogComponent,
     AddCustomerDialogComponent,
-    ChangePictureDialogComponent
+    ChangePictureDialogComponent,
+    SelectDialogComponent
   ],
   imports: [
     CommonModule,
@@ -40,7 +44,8 @@ import { ChangePictureDialogComponent } from './change-picture-dialog/change-pic
     MatCardModule,
     MatIconModule,
     FormsModule,
-    SharedModule
+    SharedModule,
+    MatRadioModule
   ],
   exports: [
     AlertDialogComponent

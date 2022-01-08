@@ -1,12 +1,18 @@
 <app-home-header [title] = "'Credits'"></app-home-header>
 <div class="container-fluid">
   <mat-card class="credits-wrapper">
-    <div class="search-input-wrapper">
-      <div class="input-box" [formGroup]="searchInputForm">
+    <div class="search-input-wrapper" [formGroup]="searchInputForm">
+      <div class="input-box" [ngClass]="{'display-none': searchType !== 'Customer_Mobile_Number' }">
         <mat-icon class="left-icon">search</mat-icon>
-        <input formControlName="mobileNumberSearch" #input [(ngModel)]="search" [ngClass]="{'input-red' : (!searchInputForm.valid), 'input-green': searchInputForm.valid }" class="search-input" type="text" placeholder="Search by Customer Mobile Number">
-        <mat-icon class="right-icon" color="accent">filter_alt</mat-icon>
+        <input formControlName="Customer_Mobile_Number" #input2 [ngClass]="{'input-red': (!searchInputFormControls.Customer_Mobile_Number.valid), 'input-green': (searchInputFormControls.Customer_Mobile_Number.valid) }" class="search-input" type="number" placeholder="{{'Search by ' + searchType}}">
+        <mat-icon (click)="openSelectDialog()" class="right-icon" color="accent">filter_alt</mat-icon>
       </div>
+      <div class="input-box" [ngClass]="{'display-none': searchType !== 'Customer_Name' }">
+        <mat-icon class="left-icon">search</mat-icon>
+        <input formControlName="Customer_Name" #input3 [ngClass]="{'input-red': (!searchInputFormControls.Customer_Name.valid), 'input-green': (searchInputFormControls.Customer_Name.valid) }" class="search-input" type="text" placeholder="{{'Search by ' + searchType}}">
+        <mat-icon (click)="openSelectDialog()" class="right-icon" color="accent">filter_alt</mat-icon>
+      </div>
+      <button *ngIf="showClearSearchBtn" (click)="onClickClearSearch()" class="clear-search-btn" mat-stroked-button color="accent">Clear Search</button>
     </div>
 
     <app-empty-state
@@ -47,9 +53,11 @@
         </div>
       </div>
     </mat-card>
-    <mat-card-actions [align]="'end'">
+    <mat-card-actions>
       <footer>
-        <mat-paginator [length]="paginationLength"
+        <mat-paginator
+        #paginator
+        [length]="paginationLength"
         [pageSize]="10"
         (page)="pageEvent = onPaginate($event)"
         [pageSizeOptions]="[5, 10, 15, 20]"

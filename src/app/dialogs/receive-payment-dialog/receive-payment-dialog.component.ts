@@ -143,7 +143,7 @@ export class ReceivePaymentDialogComponent implements OnInit {
       "totalAmount": this.totalAmount,
       "paymentMode": this.receivePaymentForm.get('paymentMode').value,
       "partyMobileNumber": this.receivePaymentForm.get('partyMobileNumber').value,
-      "dateTime": this.today,
+      "dateTime": (new Date()).toISOString(),
       "paymentIn": this.totalAmount,
       "paymentOut": 0
     }

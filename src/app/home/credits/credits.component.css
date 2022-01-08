@@ -35,6 +35,7 @@
 .input-box .right-icon {
   position: absolute;
   right: 8px;
+  cursor: pointer;
 }
 
 .credit-card {
@@ -94,4 +95,12 @@ mat-card-actions {
 
 .input-green {
   color: #337633;
+}
+
+.display-none {
+  display: none;
+}
+
+.clear-search-btn {
+  margin-left: 10px;
 }

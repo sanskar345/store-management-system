@@ -23,7 +23,7 @@ import { MatGridListModule } from '@angular/material/grid-list';
 import { CustomersComponent } from './customers/customers.component';
 import {MatCardModule} from '@angular/material/card';
 import { InventoryComponent } from './inventory/inventory.component';
-import {MatPaginatorModule} from '@angular/material/paginator';
+import {MatPaginatorIntl, MatPaginatorModule} from '@angular/material/paginator';
 import { MatMenuModule } from '@angular/material/menu';
 import {MatDialogModule} from "@angular/material/dialog";
 import { DialogsModule } from "../dialogs/dialogs.module";
@@ -36,6 +36,8 @@ import {MatDatepickerModule} from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatInputModule } from '@angular/material/input';
 import { AlertsComponent } from './alerts/alerts.component';
+import {MatBottomSheetModule} from '@angular/material/bottom-sheet';
+import { BottomSheetsModule } from "../bottom-sheets/bottom-sheets.module";
 
 @NgModule({
   declarations: [
@@ -78,8 +80,13 @@ import { AlertsComponent } from './alerts/alerts.component';
     MatDatepickerModule,
     MatNativeDateModule,
     MatInputModule,
-    FormsModule
+    FormsModule,
+    MatBottomSheetModule,
+    BottomSheetsModule
 
+  ],
+  providers: [
+     MatPaginatorIntl,
   ]
 })
 

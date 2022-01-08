@@ -1,0 +1,77 @@
+
+<div class="mat-dialog-title" mat-dialog-title>
+  <div class="header">
+    <div>
+      <h2 >Transaction Details</h2>
+    </div>
+    <button type="button" class="btn-close" (click) = "dissmiss()"></button>
+  </div>
+</div>
+<mat-dialog-content>
+  <mat-tab-group>
+    <mat-tab label="Details">
+      <mat-card>
+        <div class="row">
+          <div class="col-5">
+            <mat-list>
+              <mat-list-item> Date : {{ transaction?.dateTime | date: 'short' }} </mat-list-item>
+              <mat-list-item> Party Name : {{ transaction?.partyName | titlecase }} </mat-list-item>
+              <mat-list-item> Profit : {{ transaction?.profit }} </mat-list-item>
+              <mat-list-item> Status : {{ transaction?.status }} </mat-list-item>
+              <mat-list-item> Total Customer Credit : {{ transaction?.totalCustomerCredit }} </mat-list-item>
+              <mat-list-item> Transaction Number : {{ transaction?.transactionNumber.split('#N')[1] }} </mat-list-item>
+              <mat-list-item> Payment In : {{ transaction?.paymentIn }} </mat-list-item>
+             </mat-list>
+          </div>
+          <div class="col-5">
+            <mat-list>
+              <mat-list-item> Invoice Or Bill Number : {{ transaction?.invoiceOrBillNumber.split('#N')[1] }} </mat-list-item>
+              <mat-list-item> Party Mobile Number : {{ transaction?.partyMobileNumber }} </mat-list-item>
+              <mat-list-item> Total Amount : {{ transaction?.totalAmount }} </mat-list-item>
+              <mat-list-item> Transaction Type : {{ transaction?.transactionType }} </mat-list-item>
+              <mat-list-item> Credit Amount : {{ transaction?.creditAmount }} </mat-list-item>
+              <mat-list-item> Total Items : {{ transaction?.items.length }} </mat-list-item>
+              <mat-list-item> Payment Out : {{ transaction?.paymentOut }} </mat-list-item>
+             </mat-list>
+          </div>
+
+        </div>
+      </mat-card>
+    </mat-tab>
+    <mat-tab *ngIf="transaction?.items.length" label="{{'Items ( ' + transaction?.items.length + ' )'}}">
+      <mat-card>
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">Name</th>
+            <th scope="col">Mrp</th>
+            <th scope="col">Rate</th>
+            <th scope="col">Quantity</th>
+            <th scope="col">Size</th>
+          </tr>
+        </thead>
+        <tbody *ngIf="transaction?.items">
+          <tr *ngFor="let item of transaction?.items; index as i">
+            <th scope="row">{{ i + 1 }}</th>
+            <td>{{ item?.name }}</td>
+            <td>{{ item?.mrp }}</td>
+            <td>{{ item?.rate }}</td>
+            <td>{{ item?.quantity }}</td>
+            <td>{{ item?.size }}</td>
+
+          </tr>
+        </tbody>
+      </table>
+      </mat-card>
+    </mat-tab>
+  </mat-tab-group>
+  <!-- <div class="row">
+    <div class="col-6">
+
+    </div>
+    <div class="col-6">
+
+    </div>
+  </div> -->
+</mat-dialog-content>

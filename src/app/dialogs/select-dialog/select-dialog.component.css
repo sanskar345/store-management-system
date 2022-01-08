@@ -1,0 +1,27 @@
+.dialog-wrapper {
+  width: 300px;
+}
+
+.btn-wrapper {
+  margin-top: 10px;
+  display: flex;
+  justify-content: end;
+}
+
+.btn-wrapper button {
+  margin-right: 10px;
+}
+
+.subtitle {
+  white-space: pre-wrap;
+  overflow-wrap: break-word;
+}
+
+.title {
+  margin-bottom: 10px;
+}
+
+.radio-options {
+  margin-top: 5px;
+  margin-bottom: 5px;
+}

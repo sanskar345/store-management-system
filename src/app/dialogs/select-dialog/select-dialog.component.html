@@ -1,0 +1,12 @@
+<div class="dialog-wrapper" [formGroup]="radioForm">
+  <h2 class="title">{{ passedData?.title }}</h2>
+  <mat-radio-group formControlName="radio" aria-label="Select an option">
+    <div class="radio-options" *ngFor="let radio of passedData.radioBtns">
+      <mat-radio-button  value="{{radio}}">{{radio}}</mat-radio-button>
+    </div>
+  </mat-radio-group>
+  <div class="btn-wrapper">
+    <button *ngIf = "passedData?.showDangerBtn" (click)="close()" class="btn btn-danger">{{ passedData?.dangerBtnName }}</button>
+    <button *ngIf = "passedData?.showPrimaryBtn" (click)="onSubmit()" class="btn btn-primary">{{ passedData?.primaryBtnName }}</button>
+  </div>
+</div>
