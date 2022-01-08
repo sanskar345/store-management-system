@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { NgxSpinnerService } from 'ngx-spinner';
 import { EMAIL_REGEX } from '../core/constants/regex.constant';
 import { ApiService } from '../core/services/api.service';
 import { FormService } from '../core/services/form.service';
@@ -25,7 +26,8 @@ export class AuthComponent implements OnInit {
     private formService: FormService,
     private apiService: ApiService,
     private uiService: UiService,
-    private storageService: StorageService
+    private storageService: StorageService,
+    private spinner: NgxSpinnerService
   ) { }
 
   ngOnInit() {
@@ -53,11 +55,13 @@ export class AuthComponent implements OnInit {
   };
 
   verifyLogin(){
+    this.spinner.show('loginSpinner');
     this.apiService.loginUser({
         "email": this.authenticationForm.get('email').value,
         "password": this.authenticationForm.get('password').value
     }).subscribe((response: {[key: string]: any}) => {
       console.log(response);
+      this.spinner.hide('loginSpinner');
       if(response.status === 'success'){
         this.router.navigate(['/home']);
         this.storageService.setString('token', response.token);
@@ -66,6 +70,7 @@ export class AuthComponent implements OnInit {
         this.uiService.openSnackBar('Login Successful', 'Close');
       }
     }, (error) => {
+      this.spinner.hide('loginSpinner');
       console.log(error);
       this.uiService.openSnackBar(error.error.message, 'Close');
       this.authenticationForm.reset();
@@ -73,17 +78,20 @@ export class AuthComponent implements OnInit {
   }
 
   onSignUp(){
+    this.spinner.show('signUpSpinner');
     this.apiService.signUpUser({
       name: this.signUpForm.get('name').value,
       email: this.signUpForm.get('email').value,
       password: this.signUpForm.get('password').value,
       confirmPassword: this.signUpForm.get('confirmPassword').value
     }).subscribe((response) => {
+      this.spinner.hide('signUpSpinner');
       console.log(response);
       this.uiService.openSnackBar('Sign Up Successful', 'Close');
       this.signUpForm.reset();
       this.switchMode();
     }, (error) => {
+      this.spinner.hide('signUpSpinner');
       console.log(error);
       if(((error.error.message).toString()).includes('Duplicate')){
         this.uiService.openSnackBar('User Already Exists', 'Close');

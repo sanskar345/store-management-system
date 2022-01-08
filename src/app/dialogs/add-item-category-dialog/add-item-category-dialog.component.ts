@@ -1,6 +1,7 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { NgxSpinnerService } from 'ngx-spinner';
 import { ApiService } from 'src/app/core/services/api.service';
 import { UiService } from 'src/app/core/services/ui.service';
 
@@ -19,7 +20,8 @@ export class AddItemCategoryDialogComponent implements OnInit {
     private dialogtRef: MatDialogRef<AddItemCategoryDialogComponent>,
     private apiService: ApiService,
     private formBuilder: FormBuilder,
-    private uiService: UiService
+    private uiService: UiService,
+    private spinner: NgxSpinnerService
   ) { }
 
   ngOnInit(): void {
@@ -34,12 +36,15 @@ export class AddItemCategoryDialogComponent implements OnInit {
   }
 
   onAddCategory(){
+    this.spinner.show('mainSpinner');
     this.apiService.addItemCategory({ name:this.itemCategoryForm.get('name').value })
       .subscribe((response) => {
+        this.spinner.hide('mainSpinner');
         if(response){
           this.uiService.openSnackBar('Item Category added successfully.', 'Close');
         }
       }, (error) => {
+        this.spinner.hide('mainSpinner');
         if(((error.error.message).toString()).includes('Duplicate')){
           this.uiService.openSnackBar('Item Category Already Exists', 'Close');
         }else{

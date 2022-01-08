@@ -1,6 +1,7 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { NgxSpinnerService } from 'ngx-spinner';
 import { MOBILE_REGEX } from 'src/app/core/constants/regex.constant';
 import { ApiService } from 'src/app/core/services/api.service';
 import { UiService } from 'src/app/core/services/ui.service';
@@ -19,7 +20,8 @@ export class AddCustomerDialogComponent implements OnInit {
     private dialogtRef: MatDialogRef<AddCustomerDialogComponent>,
     private formBuilder: FormBuilder,
     private uiService: UiService,
-    private apiService: ApiService
+    private apiService: ApiService,
+    private spinner: NgxSpinnerService
   ) { }
 
   ngOnInit(): void {
@@ -27,6 +29,7 @@ export class AddCustomerDialogComponent implements OnInit {
   }
 
   onAddCustomer(){
+    this.spinner.show('mainSpinner');
     if(this.addCustomerForm.valid){
       this.apiService.addCustomer({
         name: (this.addCustomerForm.get('customerName').value).toLowerCase(),
@@ -35,6 +38,7 @@ export class AddCustomerDialogComponent implements OnInit {
         dob: this.addCustomerForm.get('dob').value,
         credit: 0
       }).subscribe((response) => {
+        this.spinner.hide('mainSpinner');
         console.log(response);
         if(response){
           this.uiService.openSnackBar('Customer added successfully.', 'Close');
@@ -42,6 +46,7 @@ export class AddCustomerDialogComponent implements OnInit {
         }
 
       }, (error) => {
+        this.spinner.hide('mainSpinner');
         // this.uiService.openSnackBar(error.error.message, 'Close');
         if(((error.error.message).toString()).includes('Duplicate')){
           this.uiService.openSnackBar('Customer Already Exists', 'Close');

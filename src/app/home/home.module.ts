@@ -38,6 +38,7 @@ import { MatInputModule } from '@angular/material/input';
 import { AlertsComponent } from './alerts/alerts.component';
 import {MatBottomSheetModule} from '@angular/material/bottom-sheet';
 import { BottomSheetsModule } from "../bottom-sheets/bottom-sheets.module";
+import { NgxSpinnerModule } from "ngx-spinner";
 
 @NgModule({
   declarations: [
@@ -82,8 +83,8 @@ import { BottomSheetsModule } from "../bottom-sheets/bottom-sheets.module";
     MatInputModule,
     FormsModule,
     MatBottomSheetModule,
-    BottomSheetsModule
-
+    BottomSheetsModule,
+    NgxSpinnerModule
   ],
   providers: [
      MatPaginatorIntl,

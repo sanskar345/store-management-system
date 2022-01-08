@@ -3,6 +3,7 @@ import { MatBottomSheet } from '@angular/material/bottom-sheet';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 import { faHome, faUser, faSquare, faEllipsisV, faFileInvoice, faMoneyBillWave, faMoneyBill, faHandHolding, faMoneyBillWaveAlt, faRupeeSign } from '@fortawesome/free-solid-svg-icons';
+import { NgxSpinnerService } from 'ngx-spinner';
 import { Subject } from 'rxjs';
 import { TransactionDetailsBottomSheetComponent } from 'src/app/bottom-sheets/transaction-details-bottom-sheet/transaction-details-bottom-sheet.component';
 import { ApiService } from 'src/app/core/services/api.service';
@@ -53,7 +54,8 @@ export class DashboardComponent implements OnInit {
     private route: ActivatedRoute,
     private dialog: MatDialog,
     private ref: ChangeDetectorRef,
-    private bottomSheet: MatBottomSheet
+    private bottomSheet: MatBottomSheet,
+    private spinner: NgxSpinnerService
   ) {
     route.params.subscribe(val => {
       console.log('from route');
@@ -74,14 +76,17 @@ export class DashboardComponent implements OnInit {
 
 
   getItemCategories(){
+    this.spinner.show('mainSpinner');
     this.apiService.getItemCategory()
       .subscribe((response: {[key: string]: any}) => {
+        this.spinner.hide('mainSpinner');
         if(response){
           console.log('itemCategory', response.data);
 
           this.dialogsService.itemCategories = response.data;
         }
       }, (error) => {
+        this.spinner.hide('mainSpinner');
         this.uiService.openSnackBar(error.error.message, 'Close')
       });
   }
@@ -254,47 +259,57 @@ export class DashboardComponent implements OnInit {
   }
 
   getCustomerStatForCredit(){
+    this.spinner.show('mainSpinner');
     this.apiService.getCustomerStatForCredit()
       .subscribe((response: any) => {
-
+        this.spinner.hide('mainSpinner');
         this.totalCustomersWithCredit = response.data.stats[0].totalCustomers;
         console.log('.cre', this.totalCustomersWithCredit);
         this.ref.detectChanges();
 
       }, error => {
+        this.spinner.hide('mainSpinner');
         console.log(error);
         this.uiService.openSnackBar(error.error.message, 'Close');
       });
   }
 
   getTodayTransactionStats(){
+    this.spinner.show('mainSpinner');
     const today = ((new Date()).toISOString()).split('T')[0];
     this.apiService.getTodayTransactionStats({date: today})
       .subscribe((response: any) => {
         this.totalTransactionToday = response.data.stats[0].totalTransactions;
         console.log('today::', this.totalTransactionToday);
         this.ref.detectChanges();
+        this.spinner.hide('mainSpinner');
       }, error => {
+        this.spinner.hide('mainSpinner');
         console.log(error);
         this.uiService.openSnackBar(error.error.message, 'Close');
       });
   }
 
   getItemsOutOfStock(){
+    this.spinner.show('mainSpinner');
     this.apiService.getItemsOutOfStock()
       .subscribe((response: any) => {
+        this.spinner.hide('mainSpinner');
         this.totalItemsOutOfStock = response.data.stats[0].itemsOutOfStock;
         console.log('getItemsOutOfStock::', this.totalItemsOutOfStock);
         this.ref.detectChanges();
       }, error => {
+        this.spinner.hide('mainSpinner');
         console.log(error);
         this.uiService.openSnackBar(error.error.message, 'Close');
       });
   }
 
   getTransactions(params: {}){
+    this.spinner.show('mainSpinner');
     this.apiService.getTransactions(params)
       .subscribe((response: any) => {
+        this.spinner.hide('mainSpinner');
         if(response){
           console.log('transactions',response);
           this.transactions = response.data;
@@ -302,6 +317,7 @@ export class DashboardComponent implements OnInit {
         }
       }, error => {
         console.log(error);
+        this.spinner.hide('mainSpinner');
         this.uiService.openSnackBar(error.error.message, 'Close');
       })
   }

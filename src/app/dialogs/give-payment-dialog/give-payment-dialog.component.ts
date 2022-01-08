@@ -11,6 +11,7 @@ import { UNIQUE_NUMBER } from 'src/app/core/constants/storage.constant';
 import { StorageService } from 'src/app/core/services/storage.service';
 import pdfMake from "pdfmake/build/pdfmake";
 import pdfFonts from "pdfmake/build/vfs_fonts";
+import { NgxSpinnerService } from 'ngx-spinner';
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
 @Component({
@@ -45,7 +46,8 @@ export class GivePaymentDialogComponent implements OnInit {
     private uiService: UiService,
     private apiService: ApiService,
     private dialogsService: DialogsService,
-    private storageService: StorageService
+    private storageService: StorageService,
+    private spinner: NgxSpinnerService
   ) { }
 
   ngOnInit(): void {
@@ -113,8 +115,10 @@ export class GivePaymentDialogComponent implements OnInit {
   }
 
   getTransactionStat(){
+    this.spinner.show('mainSpinner');
     this.apiService.getTransactionStat()
       .subscribe((response: any) => {
+        this.spinner.hide('mainSpinner');
         this.transactionStats = response.data.stats[0];
         console.log('stats: ', this.transactionStats);
         if(this.transactionStats?.totalTransactions){
@@ -123,6 +127,7 @@ export class GivePaymentDialogComponent implements OnInit {
           this.givepaymentForm.patchValue({ billNumber: UNIQUE_NUMBER + 1 });
         }
       }, error => {
+        this.spinner.hide('mainSpinner');
         console.log(error);
         this.uiService.openSnackBar(error.error.message, 'Close');
       });
@@ -131,7 +136,7 @@ export class GivePaymentDialogComponent implements OnInit {
   //hit api to create transaction
 
   createTransaction(){
-
+    this.spinner.show('mainSpinner');
     const data = {
       "partyName": (this.givepaymentForm.get('partyName').value).toLowerCase(),
       "profit": 0,
@@ -156,6 +161,7 @@ export class GivePaymentDialogComponent implements OnInit {
     }
 
     this.apiService.createTransaction(data).subscribe((response: any) => {
+      this.spinner.hide('mainSpinner');
       if(response){
 
         this.uiService.openSnackBar('Transaction done successfully', 'Close');
@@ -163,6 +169,7 @@ export class GivePaymentDialogComponent implements OnInit {
 
       }
     }, error => {
+      this.spinner.hide('mainSpinner');
       this.uiService.openSnackBar(error.error.message, 'Close');
       console.log(error);
 

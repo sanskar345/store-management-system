@@ -7,9 +7,6 @@ import { Subject } from 'rxjs';
 })
 export class UiService {
 
-  // for custom loading
-  loadingChecker = new Subject();
-
   addItemSubject = new Subject();
 
   constructor(

@@ -11,6 +11,7 @@ import { faBraille, faCalendarAlt, faHashtag, faInfo, faMapMarkerAlt, faPhoneAlt
 import { UNIQUE_NUMBER } from 'src/app/core/constants/storage.constant';
 import { StorageService } from 'src/app/core/services/storage.service';
 import { TitleCasePipe } from '@angular/common';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
   selector: 'app-create-invoice-dialog',
@@ -95,7 +96,8 @@ export class CreateInvoiceDialogComponent implements OnInit {
     private apiService: ApiService,
     private dialogsService: DialogsService,
     private storageService: StorageService,
-    private titlecasePipe: TitleCasePipe
+    private titlecasePipe: TitleCasePipe,
+    private spinner: NgxSpinnerService
   ) { }
 
   ngOnInit(): void {
@@ -582,13 +584,16 @@ export class CreateInvoiceDialogComponent implements OnInit {
   //get customers
 
   getCustomers(){
+    this.spinner.show('mainSpinner');
     this.apiService.getCustomers()
       .subscribe((response: any) => {
+        this.spinner.hide('mainSpinner');
         console.log('customers', response);
         this.customers = response.data;
         this.suggestions = this.customers.slice(0, 2);
 
       }, error => {
+        this.spinner.hide('mainSpinner');
         console.log(error);
 
       });
@@ -597,11 +602,14 @@ export class CreateInvoiceDialogComponent implements OnInit {
   // get items
 
   getItems(){
+    this.spinner.show('mainSpinner');
     this.apiService.getItems().subscribe((response: any) => {
+      this.spinner.hide('mainSpinner');
       console.log('items', response);
       this.itemsData = response.data;
       this.itemSuggestions = this.itemsData.slice(0,5);
     }, error => {
+      this.spinner.hide('mainSpinner');
       console.log(error);
 
     })
@@ -610,8 +618,9 @@ export class CreateInvoiceDialogComponent implements OnInit {
   //hit api to create transaction
 
   createTransaction(data: any){
-
+    this.spinner.show('mainSpinner');
     this.apiService.createTransaction(data).subscribe((response: any) => {
+      this.spinner.hide('mainSpinner');
       if(response){
         if(this.instantPayment !== true){
           const id = response.data.item._id;
@@ -630,6 +639,7 @@ export class CreateInvoiceDialogComponent implements OnInit {
 
       }
     }, error => {
+      this.spinner.hide('mainSpinner');
       this.uiService.openSnackBar(error.error.message, 'Close');
       console.log(error);
 
@@ -710,8 +720,10 @@ export class CreateInvoiceDialogComponent implements OnInit {
   }
 
   getTransactionStat(){
+    this.spinner.show('mainSpinner');
     this.apiService.getTransactionStat()
       .subscribe((response: any) => {
+        this.spinner.hide('mainSpinner');
         this.transactionStats = response.data.stats[0];
         console.log('stats: ', this.transactionStats);
         if(this.transactionStats?.totalTransactions){
@@ -720,31 +732,38 @@ export class CreateInvoiceDialogComponent implements OnInit {
           this.invoiceForm.patchValue({ invoiceNumber: UNIQUE_NUMBER + 1 });
         }
       }, error => {
+        this.spinner.hide('mainSpinner');
         console.log(error);
         this.uiService.openSnackBar(error.error.message, 'Close');
       });
   }
 
   updateItemWithId(data, id: string){
+    this.spinner.show('mainSpinner');
     this.apiService.updateItemWithId(data, id)
       .subscribe((response) => {
+        this.spinner.hide('mainSpinner');
         console.log(response);
 
       }, error => {
+        this.spinner.hide('mainSpinner');
         console.log(error);
         this.uiService.openSnackBar(error.error.message, 'Close');
       });
   }
 
   updateCustomerById(data, id: string){
+    this.spinner.show('mainSpinner');
     this.apiService.updateCustomerById(data, id)
       .subscribe((response) => {
+        this.spinner.hide('mainSpinner');
         if(response){
           console.log('updated customer',response);
           this.uiService.openSnackBar('Transaction done on CREDIT is successful', 'Close');
           this.generatePDF();
         }
       }, error => {
+        this.spinner.hide('mainSpinner');
         console.log(error);
         this.uiService.openSnackBar(error.error.message, 'Close');
       });

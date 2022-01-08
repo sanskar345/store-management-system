@@ -4,6 +4,7 @@ import { MatBottomSheet, MatBottomSheetRef } from '@angular/material/bottom-shee
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { faRupeeSign } from '@fortawesome/free-solid-svg-icons';
+import { NgxSpinnerService } from 'ngx-spinner';
 import { fromEvent } from 'rxjs';
 import { debounceTime, distinctUntilChanged, filter, tap } from 'rxjs/operators';
 import { TransactionDetailsBottomSheetComponent } from 'src/app/bottom-sheets/transaction-details-bottom-sheet/transaction-details-bottom-sheet.component';
@@ -41,13 +42,15 @@ export class TransactionsComponent implements OnInit {
   searchType = 'Bill_Number';
   showClearSearchBtn = false;
 
+
   constructor(
     private apiService: ApiService,
     private uiService: UiService,
     private formBuilder: FormBuilder,
     private dialog: MatDialog,
     private storageService: StorageService,
-    private bottomSheet: MatBottomSheet
+    private bottomSheet: MatBottomSheet,
+    private spinner: NgxSpinnerService
   ) { }
 
   ngOnInit(): void {
@@ -62,13 +65,32 @@ export class TransactionsComponent implements OnInit {
 
 
   getTransactions(params: {}){
+    this.spinner.show('mainSpinner');
     this.apiService.getTransactions(params)
       .subscribe((response: any) => {
         if(response){
           console.log('transactions',response);
           this.transactions = response.data;
         }
+        this.spinner.hide('mainSpinner');
       }, error => {
+        this.spinner.hide('mainSpinner');
+        console.log(error);
+        this.uiService.openSnackBar(error.error.message, 'Close');
+      })
+  }
+
+  getTransactionsBySearch(params: {}){
+    this.spinner.show('searchSpinner');
+    this.apiService.getTransactions(params)
+      .subscribe((response: any) => {
+        if(response){
+          console.log('transactions',response);
+          this.transactions = response.data;
+        }
+        this.spinner.hide('searchSpinner');
+      }, error => {
+        this.spinner.hide('searchSpinner');
         console.log(error);
         this.uiService.openSnackBar(error.error.message, 'Close');
       })
@@ -87,7 +109,7 @@ export class TransactionsComponent implements OnInit {
               if(this.input1.nativeElement.value.length > 0){
                 this.showClearSearchBtn = true;
                 if(this.searchInputFormControls.Bill_Number.valid  && this.searchType === 'Bill_Number'){
-                  this.getTransactions({'invoiceOrBillNumber': `${this.storageService.getAdminIdFk()}#N${this.input1.nativeElement.value}`});
+                  this.getTransactionsBySearch({'invoiceOrBillNumber': `${this.storageService.getAdminIdFk()}#N${this.input1.nativeElement.value}`});
                 }
               }
             })
@@ -108,7 +130,7 @@ export class TransactionsComponent implements OnInit {
               if(this.input2.nativeElement.value.length > 0){
                 this.showClearSearchBtn = true;
                 if(this.searchInputFormControls.Customer_Mobile_Number.valid && this.searchType === 'Customer_Mobile_Number'){
-                  this.getTransactions({'partyMobileNumber': this.input2.nativeElement.value});
+                  this.getTransactionsBySearch({'partyMobileNumber': this.input2.nativeElement.value});
                 }
               }
             })
@@ -130,7 +152,7 @@ export class TransactionsComponent implements OnInit {
                 this.showClearSearchBtn = true;
                 if(this.searchInputFormControls.Customer_Name.valid && this.searchType === 'Customer_Name'){
                   // this.filterCustomers(this.input.nativeElement.value);
-                  this.getTransactions({'partyName': (this.input3.nativeElement.value).toLowerCase()});
+                  this.getTransactionsBySearch({'partyName': (this.input3.nativeElement.value).toLowerCase()});
                 }
               }
             })
@@ -144,14 +166,18 @@ export class TransactionsComponent implements OnInit {
   }
 
   getTransactionStat(){
+    this.spinner.show('mainSpinner');
     this.apiService.getTransactionStat()
       .subscribe((response: any) => {
+        this.spinner.hide('mainSpinner');
         const transactionStats = response.data.stats[0];
         console.log('stats: ', transactionStats);
         if(transactionStats?.totalTransactions){
           this.paginationLength = transactionStats.totalTransactions;
         }
       }, error => {
+        this.spinner.hide('mainSpinner');
+        this.spinner.show('mainSpinner');
         console.log(error);
         this.uiService.openSnackBar(error.error.message, 'Close');
       });

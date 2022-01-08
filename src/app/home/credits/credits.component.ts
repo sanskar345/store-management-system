@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { faRupeeSign } from '@fortawesome/free-solid-svg-icons';
+import { NgxSpinnerService } from 'ngx-spinner';
 import { fromEvent } from 'rxjs';
 import { debounceTime, distinctUntilChanged, filter, tap } from 'rxjs/operators';
 import { MOBILE_REGEX, ONLY_LETTERS } from 'src/app/core/constants/regex.constant';
@@ -54,7 +55,8 @@ export class CreditsComponent implements OnInit {
     private uiService: UiService,
     private dialog: MatDialog,
     private cdr: ChangeDetectorRef,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private spinner: NgxSpinnerService
   ) { }
 
   ngOnInit(): void {
@@ -87,12 +89,31 @@ export class CreditsComponent implements OnInit {
   //get customers
 
   getCustomers(params: {}){
+    this.spinner.show('mainSpinner');
     this.apiService.getCustomersWithQueryParams(params)
       .subscribe((response: any) => {
+        this.spinner.hide('mainSpinner');
         console.log('customers', response);
         this.customers = response.data;
         this.customerSuggestion = response.data;
       }, error => {
+        this.spinner.hide('mainSpinner');
+        this.uiService.openSnackBar(error.error.message, 'Close');
+        console.log(error);
+
+      });
+  }
+
+  getCustomersBySearch(params: {}){
+    this.spinner.show('searchSpinner');
+    this.apiService.getCustomersWithQueryParams(params)
+      .subscribe((response: any) => {
+        this.spinner.hide('searchSpinner');
+        console.log('customers', response);
+        this.customers = response.data;
+        this.customerSuggestion = response.data;
+      }, error => {
+        this.spinner.hide('searchSpinner');
         this.uiService.openSnackBar(error.error.message, 'Close');
         console.log(error);
 
@@ -138,11 +159,14 @@ export class CreditsComponent implements OnInit {
   }
 
   getCustomerStat(){
+    this.spinner.show('mainSpinner');
     this.apiService.getCustomerStatForCredit()
       .subscribe((response: any) => {
+        this.spinner.hide('mainSpinner');
         this.paginationLength = response.data.stats[0].totalCustomers;
 
       }, error => {
+        this.spinner.hide('mainSpinner');
         console.log(error);
         this.uiService.openSnackBar(error.error.message, 'Close');
       });
@@ -203,7 +227,7 @@ export class CreditsComponent implements OnInit {
               if(this.input2.nativeElement.value.length > 0){
                 this.showClearSearchBtn = true;
                 if(this.searchInputFormControls.Customer_Mobile_Number.valid && this.searchType === 'Customer_Mobile_Number'){
-                  this.getCustomers({'mobileNumber': this.input2.nativeElement.value});
+                  this.getCustomersBySearch({'mobileNumber': this.input2.nativeElement.value});
                 }
               }
             })
@@ -225,7 +249,7 @@ export class CreditsComponent implements OnInit {
                 this.showClearSearchBtn = true;
                 if(this.searchInputFormControls.Customer_Name.valid && this.searchType === 'Customer_Name'){
                   // this.filterCustomers(this.input.nativeElement.value);
-                  this.getCustomers({'name': (this.input3.nativeElement.value).toLowerCase()});
+                  this.getCustomersBySearch({'name': (this.input3.nativeElement.value).toLowerCase()});
                 }
               }
             })
