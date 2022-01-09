@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { ADD_CUSTOMER, ADD_ITEM_CATEGORY, CUSTOMER, GET_CUSTOMER_STAT, GET_CUSTOMER_STAT_FOR_CREDIT, GET_TODAY_TRANSACTION_STAT, GET_TRANSACTION_STAT, ITEMS, ITEMS_OUT_OF_STOCK, ITEM_CATEGORY, LOGIN, SIGN_UP, STOREUP_API, TRANSACTION } from '../constants/apis.constant';
+import { ADD_CUSTOMER, ADD_ITEM_CATEGORY, CUSTOMER, GET_CUSTOMER_STAT, GET_CUSTOMER_STAT_FOR_CREDIT, GET_TODAY_TRANSACTION_STAT, GET_TRANSACTION_STAT, ITEMS, ITEMS_OUT_OF_STOCK, ITEMS_STAT, ITEM_CATEGORY, LOGIN, SIGN_UP, STOREUP_API, TRANSACTION } from '../constants/apis.constant';
 import { StorageService } from './storage.service';
 
 @Injectable({
@@ -77,6 +77,17 @@ export class ApiService {
   getItems(){
     return this.http.get(
       `${STOREUP_API}${ITEMS}`
+    );
+  }
+
+  //get items by query params
+
+  getItemsByParams(params: {}){
+    return this.http.get(
+      `${STOREUP_API}${ITEMS}`,
+      {
+        params
+      }
     );
   }
 
@@ -196,6 +207,31 @@ export class ApiService {
   deleteCustomerById(id: string){
     return this.http.delete(
       `${STOREUP_API}${CUSTOMER}${id}`,
+    );
+  }
+
+  // delete item by id
+
+  deleteItemById(id: string){
+    return this.http.delete(
+      `${STOREUP_API}${ITEMS}${id}`,
+    );
+  }
+
+  // update item by id
+
+  updateItemById(id: string, data: {}){
+    return this.http.patch(
+      `${STOREUP_API}${ITEMS}${id}`,
+      data
+    );
+  }
+
+  // get items stat
+
+  getItemsStats(){
+    return this.http.get(
+      `${STOREUP_API}${ITEMS_STAT}`,
     );
   }
 

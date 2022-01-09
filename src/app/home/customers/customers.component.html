@@ -14,7 +14,7 @@
         aria-label="Example icon button with a home icon">
           <mat-icon style="color: black;">search</mat-icon>
         </button>
-        <button class="btn btn-warning">
+        <button (click)="openAddCustomerDialog()" class="btn btn-warning">
           <fa-icon [icon] = "faPlus" class="icon-mr" ></fa-icon>
           Add Customer
         </button>
@@ -41,6 +41,14 @@
         </div>
 
         <div>
+          <app-empty-state
+              *ngIf = "!customersBySearch.length"
+              [actionBtn] = "false"
+              [title] = "'No Data Found!'"
+              [notFoundImg] = "true"
+              [subtitle1]="''"
+              [subtitle2] = "''"
+            ></app-empty-state>
           <mat-card *ngFor="let customer of customersBySearch" (click)="onSelect(customer)" class="mb-2 alert alert-info customer-selector">
             <div class="customer-selector-inside">
               <span>{{customer?.name | titlecase}}</span>
@@ -58,7 +66,7 @@
             <div class="container-fluid">
               <div class="content-header">
 
-                <span class="customer-name mb-1">{{customer?.name | titlecase}}</span>
+                <span class="customer-name mb-1">{{customer?.name | titlecase }}</span>
 
                 <div>
                   <button (click)="openDeleteCustomerDialog()" class="btn btn-danger content-btn"><fa-icon [icon]="faTrashAlt" class="icon-mr"></fa-icon>Remove</button>
@@ -66,13 +74,13 @@
               </div>
               <div class="content-body new-content-body">
                 <div>
-                  <p class="mb-1">Mobile: {{customer?.mobileNumber}}</p>
-                  <p class="mb-1">Dob: {{customer?.dob | date: 'shortDate'}}</p>
-                  <p>Adress: {{customer?.address | titlecase}}</p>
+                  <p class="mb-1">Mobile: {{customer?.mobileNumber || '-'}}</p>
+                  <p class="mb-1">Dob: {{customer?.dob | date: 'shortDate'  || '-'}}</p>
+                  <p>Adress: {{customer?.address | titlecase }}</p>
                 </div>
                 <div>
-                  <p class="mb-1 mt-3">Created At: {{customer?.createdAt | date: 'medium'}}</p>
-                  <p>Credit: <fa-icon [icon] = "faRupeeSign"></fa-icon> {{customer?.credit}}</p>
+                  <p class="mb-1 mt-3">Created At: {{customer?.createdAt | date: 'medium'  || '-'}}</p>
+                  <p>Credit: <fa-icon [icon] = "faRupeeSign"></fa-icon> {{customer?.credit  || '-'}}</p>
                 </div>
               </div>
             </div>
@@ -82,8 +90,16 @@
       <div class="row">
         <div class="col-lg-12 list-wrapper">
           <mat-card class="list-container transaction-card">
-            <h2>Transactions</h2>
-            <div>
+            <h2>Customers: </h2>
+            <app-empty-state
+              *ngIf = "!customers.length"
+              [actionBtn] = "false"
+              [title] = "'No Data Found!'"
+              [notFoundImg] = "true"
+              [subtitle1]="'Looks like you don not have any customers.'"
+              [subtitle2] = "''"
+            ></app-empty-state>
+            <div *ngIf = "customers.length">
               <table class="table">
                 <thead>
                   <tr>
@@ -119,7 +135,7 @@
                 </tbody>
               </table>
             </div>
-            <footer >
+            <footer *ngIf = "customers.length">
               <mat-paginator [length]="paginationLength"
               [pageSize]="4"
               [pageSizeOptions]="[4, 8]"

@@ -76,7 +76,6 @@ export class DashboardComponent implements OnInit {
 
 
   getItemCategories(){
-    this.spinner.show('mainSpinner');
     this.apiService.getItemCategory()
       .subscribe((response: {[key: string]: any}) => {
         this.spinner.hide('mainSpinner');

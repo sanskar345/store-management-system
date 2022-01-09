@@ -8,6 +8,7 @@ import { UiService } from 'src/app/core/services/ui.service';
 import { fromEvent } from 'rxjs';
 import { debounceTime, distinctUntilChanged, filter, tap } from 'rxjs/operators';
 import { PageEvent } from '@angular/material/paginator';
+import { AddCustomerDialogComponent } from 'src/app/dialogs/add-customer-dialog/add-customer-dialog.component';
 
 @Component({
   selector: 'app-customers',
@@ -100,32 +101,34 @@ export class CustomersComponent implements OnInit {
   }
 
   openDeleteCustomerDialog() {
+    if(this.customer.name !== null){
 
-    const dialogConfig = new MatDialogConfig();
+      const dialogConfig = new MatDialogConfig();
 
-    dialogConfig.disableClose = true;
-    dialogConfig.autoFocus = true;
+      dialogConfig.disableClose = true;
+      dialogConfig.autoFocus = true;
 
-    let dialog = this.dialog.open(AlertDialogComponent, {
-      data : {
-        title: 'Delete Customer?',
-        subtitle: 'Do you really want to delete this Customer',
-        showDangerBtn: true,
-        showPrimaryBtn: true,
-        dangerBtnName: 'Cancel',
-        primaryBtnName: 'Delete'
-      }
-    });
-
-    // const dialogRef = this.dialog.open(AlertDialogComponent);
-
-    dialog.afterClosed().subscribe(
-        data => {
-          if(data){
-            this.deleteCustomerById(this.customer._id);
-          }
+      let dialog = this.dialog.open(AlertDialogComponent, {
+        data : {
+          title: 'Delete Customer?',
+          subtitle: 'Do you really want to delete this Customer',
+          showDangerBtn: true,
+          showPrimaryBtn: true,
+          dangerBtnName: 'Cancel',
+          primaryBtnName: 'Delete'
         }
-    );
+      });
+
+      // const dialogRef = this.dialog.open(AlertDialogComponent);
+
+      dialog.afterClosed().subscribe(
+          data => {
+            if(data){
+              this.deleteCustomerById(this.customer._id);
+            }
+          }
+      );
+    }
 
 
   }
@@ -227,6 +230,29 @@ export class CustomersComponent implements OnInit {
         this.spinner.hide('mainSpinner');
         this.uiService.openSnackBar(error.error.message, 'Close');
       });
+  }
+
+  // open add customer dialog
+
+  openAddCustomerDialog() {
+    const dialogConfig = new MatDialogConfig();
+
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
+
+    let dialog = this.dialog.open(AddCustomerDialogComponent, {
+      width: '40vw',
+      data : {
+      }
+    });
+
+    // const dialogRef = this.dialog.open(AlertDialogComponent);
+
+    dialog.afterClosed().subscribe(
+      () => this.onStart()
+    );
+
+
   }
 
 }
