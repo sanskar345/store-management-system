@@ -603,7 +603,7 @@ export class CreateInvoiceDialogComponent implements OnInit {
 
   getItems(){
     this.spinner.show('mainSpinner');
-    this.apiService.getItems().subscribe((response: any) => {
+    this.apiService.getItemsByParams({'quantity[gt]': 0}).subscribe((response: any) => {
       this.spinner.hide('mainSpinner');
       console.log('items', response);
       this.itemsData = response.data;

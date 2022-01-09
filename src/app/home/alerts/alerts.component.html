@@ -4,31 +4,39 @@
     <div>
       <mat-form-field appearance="fill" class="bar-form-field fiter-bar">
         <mat-label> <fa-icon [icon]="faFilter"></fa-icon> Filter</mat-label>
-        <mat-select>
-          <mat-option *ngFor = "let filter of filterArray" value = "{{ filter }}">
-            {{ filter | titlecase }} Per Month
+        <mat-select (valueChange)="onFilter($event)">
+          <mat-option *ngFor = "let filter of filterArray" value = "{{ filter.value }}">
+            {{ filter.name | titlecase }}
           </mat-option>
         </mat-select>
       </mat-form-field>
     </div>
     <div class="row">
-      <div class="col-lg-4 item-card-col" *ngFor = "let item of [0,3,0,0,7]" >
-      <mat-card [ngClass] = "{ 'alert alert-danger' : item === 0, 'alert alert-warning' : item !== 0 }" class="item-card-main" >
+      <app-empty-state
+        *ngIf = "!items.length"
+        [actionBtn] = "false"
+        [title] = "'No Data Found!'"
+        [notFoundImg] = "true"
+        [subtitle1]="'Looks like you do not have any alerts.'"
+        [subtitle2] = "''"
+      ></app-empty-state>
+      <div class="col-lg-4 item-card-col" *ngFor = "let item of items" >
+      <mat-card [ngClass]="{ 'alert alert-danger' : item?.quantity === 0, 'alert alert-warning' : item?.quantity !== 0 }" class="item-card-main" >
         <div class="item-card">
           <div class="upper">
             <div class="itemName">
-              Item 1
+              {{ item?.name | titlecase }}
             </div>
             <div class="alert-message">
-              {{ item === 0 ? 'Out Of Stock' : 'Low In Stock' }}
+              {{ item?.quantity === 0 ? 'Out Of Stock' : 'Low In Stock' }}
             </div>
           </div>
           <div class="lower">
             <div class="item-qty">
-              Stock Quantity: {{item}}
+              Stock Quantity: {{item?.quantity}}
             </div>
             <div class="btn">
-              <button class="btn btn-primary">Edit</button>
+              <button (click)="openUpdateItemDialog(item)" class="btn btn-primary">Edit</button>
             </div>
           </div>
         </div>

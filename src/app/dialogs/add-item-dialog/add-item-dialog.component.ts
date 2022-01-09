@@ -36,12 +36,28 @@ export class AddItemDialogComponent implements OnInit {
 
     this.passedData = this.data;
     this.buildForms();
-    this.itemCategories = this.dialogsService.itemCategories;
+    this.getItemCategories();
     console.log(this.passedData);
   }
 
   close(){
     this.dialogtRef.close('add');
+  }
+
+  getItemCategories(){
+    this.spinner.show('mainSpinner');
+    this.apiService.getItemCategory()
+      .subscribe((response: {[key: string]: any}) => {
+        this.spinner.hide('mainSpinner');
+        if(response){
+          console.log('itemCategory', response.data);
+
+          this.itemCategories = response.data;
+        }
+      }, (error) => {
+        this.spinner.hide('mainSpinner');
+        this.uiService.openSnackBar(error.error.message, 'Close')
+      });
   }
 
   buildForms(){
@@ -76,7 +92,7 @@ export class AddItemDialogComponent implements OnInit {
         showModal1: false,
         showModal2: true,
         form1Data: {
-          "name": this.addItemForm1.get('name').value,
+          "name": (this.addItemForm1.get('name').value).toLowerCase(),
           "rate": this.addItemForm1.get('rate').value,
           "mrp": this.addItemForm1.get('mrp').value,
           "purchasePrice": this.addItemForm1.get('purchasePrice').value,

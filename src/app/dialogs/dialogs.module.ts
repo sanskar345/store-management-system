@@ -19,6 +19,7 @@ import { AddCustomerDialogComponent } from './add-customer-dialog/add-customer-d
 import { ChangePictureDialogComponent } from './change-picture-dialog/change-picture-dialog.component';
 import { SelectDialogComponent } from './select-dialog/select-dialog.component';
 import {MatRadioModule} from '@angular/material/radio';
+import { UpdateItemDialogComponent } from './update-item-dialog/update-item-dialog.component';
 
 
 
@@ -33,7 +34,8 @@ import {MatRadioModule} from '@angular/material/radio';
     ReceiveCustomerCreditDialogComponent,
     AddCustomerDialogComponent,
     ChangePictureDialogComponent,
-    SelectDialogComponent
+    SelectDialogComponent,
+    UpdateItemDialogComponent
   ],
   imports: [
     CommonModule,

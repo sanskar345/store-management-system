@@ -38,7 +38,7 @@
 /* content */
 
 .content-wrapper {
-  height: 25vh;
+  height: 29vh;
   padding: 10px;
 }
 
@@ -68,12 +68,10 @@
   font-size: 13px;
 }
 
-
-
 /* list */
 
 .list-wrapper {
-  height: 45vh;
+  height: 41vh;
 }
 
 .list-wrapper {
@@ -111,6 +109,18 @@ mat-card:not([class*="mat-elevation-z"]) {
   color: green;
 }
 
+.color-red {
+  color: red;
+}
+
 .mr-10px {
   margin-right: 10px;
+}
+
+.display-none {
+  display: none;
+}
+
+.items-card-table {
+  overflow-y: scroll;
 }

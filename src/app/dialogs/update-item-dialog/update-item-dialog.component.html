@@ -1,0 +1,44 @@
+<div mat-dialog-title>
+  <div class="header">
+    <div>
+      <h2 >Update Item - {{this.passedData.item.name | titlecase}}</h2>
+    </div>
+    <button type="button" class="btn-close" (click) = "close()"></button>
+  </div>
+</div>
+<mat-dialog-content>
+  <div class="modal-content">
+    <div class="modal-body">
+      <form [formGroup] = "updateForm">
+        <div class="mb-3">
+          <label for="item-category-name" class="col-form-label">Rate:</label>
+          <input formControlName = "rate" type="number" class="form-control" id="item-category-name">
+        </div>
+        <div class="mb-3">
+          <label for="item-category-name" class="col-form-label">Mrp:</label>
+          <input formControlName = "mrp" type="number" class="form-control" id="item-category-name">
+        </div>
+        <div class="mb-3">
+          <label for="item-category-name" class="col-form-label">Purchase Price:</label>
+          <input formControlName = "purchasePrice" type="number" class="form-control" id="item-category-name">
+        </div>
+        <div class="mb-3">
+          <label for="item-category-name" class="col-form-label">Stock Quantity:</label>
+          <input formControlName = "quantity" type="number" class="form-control" id="item-category-name">
+        </div>
+      </form>
+    </div>
+
+  </div>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="close()">Close</button>
+    <button
+    [disabled] = "!updateForm.valid"
+    type="button"
+    class="btn btn-primary"
+    (click)="onUpdate()"
+    >Update</button>
+  </div>
+</mat-dialog-actions>

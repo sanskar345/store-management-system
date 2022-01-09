@@ -4,6 +4,7 @@ export const LOGIN = 'users/login/';
 export const ADD_CUSTOMER = 'customers/';
 export const ADD_ITEM_CATEGORY = 'itemCategory/';
 export const ITEMS = 'items/';
+export const ITEMS_STAT = 'items/item-stats';
 export const ITEMS_OUT_OF_STOCK = 'items/item-out-of-stock';
 export const ITEM_CATEGORY = 'itemCategory/';
 export const CUSTOMER = 'customers/';
