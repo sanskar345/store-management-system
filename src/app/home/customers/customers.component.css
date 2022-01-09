@@ -38,7 +38,7 @@
 /* content */
 
 .content-wrapper {
-  height: 20vh;
+  height: 22vh;
   padding: 10px;
 }
 
@@ -66,7 +66,7 @@
 /* list */
 
 .list-wrapper {
-  height: 50vh;
+  height: 48vh;
 }
 
 .list-wrapper {
@@ -102,4 +102,18 @@ mat-card:not([class*="mat-elevation-z"]) {
 
 .transaction-card {
   overflow-y: scroll;
+}
+
+.slide-toggle {
+  margin-bottom: 10px;
+  margin-top: 10px;
+}
+
+.display-none {
+  display: none;
+}
+
+.new-content-body {
+  display: flex;
+  justify-content: space-between;
 }

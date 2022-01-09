@@ -26,7 +26,13 @@ export class AlertDialogComponent implements OnInit {
   }
 
   close(){
-    this.dialogtRef.close('sanskar')
+    this.dialogtRef.close(false);
   }
+
+  onClickDangerBtn(){
+    this.dialogtRef.close(true);
+  }
+
+
 
 }

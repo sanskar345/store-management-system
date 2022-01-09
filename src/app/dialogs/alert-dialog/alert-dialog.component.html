@@ -3,6 +3,6 @@
   <p class="subtitle">{{ passedData?.subtitle }}</p>
   <div class="btn-wrapper">
     <button *ngIf = "passedData?.showDangerBtn" (click)="close()" class="btn btn-danger">{{ passedData?.dangerBtnName }}</button>
-    <button *ngIf = "passedData?.showPrimaryBtn" class="btn btn-primary">{{ passedData?.primaryBtnName }}</button>
+    <button *ngIf = "passedData?.showPrimaryBtn" (click)="onClickDangerBtn()" class="btn btn-primary">{{ passedData?.primaryBtnName }}</button>
   </div>
 </div>

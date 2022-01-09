@@ -11,5 +11,6 @@ export const TRANSACTION = 'transactions/';
 export const GET_TRANSACTION_STAT = 'transactions/transactions-stats';
 export const GET_TODAY_TRANSACTION_STAT = 'transactions/get-total-sales-today';
 export const GET_CUSTOMER_STAT_FOR_CREDIT = 'customers/customer-stats-credit';
+export const GET_CUSTOMER_STAT = 'customers/customer-stats';
 
 
