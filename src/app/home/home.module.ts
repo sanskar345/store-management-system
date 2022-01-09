@@ -39,6 +39,7 @@ import { AlertsComponent } from './alerts/alerts.component';
 import {MatBottomSheetModule} from '@angular/material/bottom-sheet';
 import { BottomSheetsModule } from "../bottom-sheets/bottom-sheets.module";
 import { NgxSpinnerModule } from "ngx-spinner";
+import {MatSlideToggleModule} from '@angular/material/slide-toggle';
 
 @NgModule({
   declarations: [
@@ -84,7 +85,8 @@ import { NgxSpinnerModule } from "ngx-spinner";
     FormsModule,
     MatBottomSheetModule,
     BottomSheetsModule,
-    NgxSpinnerModule
+    NgxSpinnerModule,
+    MatSlideToggleModule
   ],
   providers: [
      MatPaginatorIntl,
