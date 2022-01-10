@@ -1,5 +1,18 @@
-
 @media print {
-  .isPrinting > * { display: none; }
-  .isPrinting app-print-layout { display: block; }
+  .isPrinting > * {
+    display: none;
+  }
+  .isPrinting app-print-layout {
+    display: block;
+  }
+}
+
+#error-message {
+  display: none;
+}
+
+@media only screen and (max-width: 1100px) {
+  #error-message {
+    display: block;
+  }
 }

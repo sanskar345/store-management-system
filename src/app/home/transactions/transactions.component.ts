@@ -177,7 +177,6 @@ export class TransactionsComponent implements OnInit {
         }
       }, error => {
         this.spinner.hide('mainSpinner');
-        this.spinner.show('mainSpinner');
         console.log(error);
         this.uiService.openSnackBar(error.error.message, 'Close');
       });

@@ -5,7 +5,10 @@
       <div class="col-lg-4 ">
         <mat-card class="info-card alert alert-success">
           <div class="row upper">
-            235346
+            <p class="stats-para">
+
+              {{totalCustomers}}
+            </p>
           </div>
           <div class="row lower">
             No. Of Customers
@@ -15,17 +18,23 @@
       <div class="col-lg-4">
         <mat-card class="info-card alert alert-warning">
           <div class="row upper">
-            498856
+            <p class="stats-para">
+
+              {{totalTransactions}}
+            </p>
           </div>
           <div class="row lower">
-            No. Of Sales
+            No. Of Transactions
           </div>
         </mat-card>
       </div>
       <div class="col-lg-4">
         <mat-card class="info-card alert alert-info">
           <div class="row upper">
-            234832854959
+            <p class="stats-para">
+
+              ₹{{totalProfit}}
+            </p>
           </div>
           <div class="row lower">
             Total Profit
@@ -37,7 +46,7 @@
       <mat-card class="bar-chart-wrapper">
         <div class="row bar-chart-action">
           <div class="col-lg-6 bar-chart-heading">
-            Sales Per Month (2021)
+            {{ filter }} Per Month ({{year}})
           </div>
           <div class="col-lg-6 bar-chart-fields">
             <div class="row">
@@ -54,22 +63,28 @@
               <div class="col-lg-4">
                 <mat-form-field appearance="fill" class="bar-form-field">
                   <mat-label> <fa-icon [icon]="faFilter"></fa-icon> Filter</mat-label>
-                  <mat-select>
+                  <mat-select  (selectionChange) = "changeFilter($event)">
                     <mat-option *ngFor = "let filter of filterArray" value = "{{ filter }}">
-                      {{ filter | titlecase }} Per Month
+                      {{ filter }} Per Month
                     </mat-option>
                   </mat-select>
                 </mat-form-field>
               </div>
               <div class="col-lg-4">
-                <mat-form-field class="example-full-width bar-form-field" appearance="fill">
+                <mat-form-field
+                [formGroup]="yearForm"
+                class="example-full-width bar-form-field"
+                appearance="fill">
                   <mat-label><fa-icon [icon] = "faCalendar"></fa-icon> Year</mat-label>
-                  <input matInput placeholder="Ex. 2021">
+                  <input #input1 formControlName="cYear" matInput placeholder="{{'Ex. ' + year}}">
+                  <mat-error *ngIf="yearForm.controls.cYear.invalid"></mat-error>
                 </mat-form-field>
               </div>
             </div>
           </div>
         </div>
+
+        <p class="no-data" *ngIf="!stats.length">No Data Found!</p>
 
         <div class="bar-chart">
           <canvas baseChart

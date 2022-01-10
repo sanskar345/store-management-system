@@ -234,5 +234,13 @@ export class ApiService {
       `${STOREUP_API}${ITEMS_STAT}`,
     );
   }
+  
+  // get transaction stats by year
+
+  getTransactionStatsByYear(year: string){
+    return this.http.get(
+      `${STOREUP_API}${GET_TRANSACTION_STAT}${year}`,
+    );
+  }
 
 }

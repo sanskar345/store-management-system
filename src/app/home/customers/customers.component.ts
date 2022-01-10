@@ -52,6 +52,7 @@ export class CustomersComponent implements OnInit {
 
   searchByName = false;
   firstTime = true;
+  windowWidth: number;
 
   constructor(
     private dialog: MatDialog,
@@ -61,6 +62,7 @@ export class CustomersComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.windowWidth = window.screen.width;
     this.onStart();
     this.subscribeToInput1();
   }

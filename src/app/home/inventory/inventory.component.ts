@@ -154,7 +154,7 @@ export class InventoryComponent implements OnInit {
   }
 
   getItemStats(){
-    this.spinner.hide('mainSpinner');
+    this.spinner.show('mainSpinner');
     this.apiService.getItemsStats()
       .subscribe((response: any) => {
         this.spinner.hide('mainSpinner');
