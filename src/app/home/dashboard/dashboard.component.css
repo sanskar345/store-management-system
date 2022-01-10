@@ -38,7 +38,7 @@ section {
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: 28px;
+  font-size: 26px;
   font-weight: 600;
   letter-spacing: 2px;
 }
@@ -98,4 +98,12 @@ fa-icon {
 
 .warn {
   color: #ffc107;
+}
+
+.stats-para {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-align: center;
+  margin-bottom: 0;
 }

@@ -1,7 +1,14 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { faCalendar, faChartLine, faFilter, faRupeeSign } from '@fortawesome/free-solid-svg-icons';
 import { ChartOptions, ChartType, ChartDataSets } from 'chart.js';
 import { Label } from 'ng2-charts';
+import { NgxSpinnerService } from 'ngx-spinner';
+import { fromEvent } from 'rxjs';
+import { debounceTime, distinctUntilChanged, filter, tap } from 'rxjs/operators';
+import { ONLY_NUMBERS } from 'src/app/core/constants/regex.constant';
+import { ApiService } from 'src/app/core/services/api.service';
+import { UiService } from 'src/app/core/services/ui.service';
 
 @Component({
   selector: 'app-reports',
@@ -10,11 +17,19 @@ import { Label } from 'ng2-charts';
 })
 export class ReportsComponent implements OnInit {
 
+  @ViewChild('input1', {static: true}) input1: ElementRef;
+
   faRupeeSign = faRupeeSign;
   faFilter = faFilter;
   faChartLine = faChartLine;
   faCalendar = faCalendar;
-  filterArray = ['sales', 'profit']
+  filterArray = ['Sales', 'Profit'];
+  filter = 'Sales';
+  year: number;
+
+  totalTransactions: number;
+  totalProfit: number;
+  totalCustomers: number;
 
   //chart
 
@@ -33,14 +48,33 @@ export class ReportsComponent implements OnInit {
   public barChartPlugins = [];
 
   public barChartData: ChartDataSets[] = [
-    { data: [65, 59, 80, 81, 56, 55, 40, 34, 5, 10, 11, 90], label: 'Sales' }
+    { data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], label: 'Sales' }
   ];
 
   //end of chart
 
-  constructor() { }
+  stats = [];
+
+  yearForm: FormGroup;
+
+
+  constructor(
+    private apiService: ApiService,
+    private uiService: UiService,
+    private spinner: NgxSpinnerService,
+    private formBuilder: FormBuilder,
+    private ref: ChangeDetectorRef,
+  ) { }
 
   ngOnInit(): void {
+    this.year = (new Date()).getFullYear();
+    this.filter = 'Sales';
+    this.buildForms();
+    this.getTransactionStatsByYear((this.year).toString(), this.filter);
+    this.getTransactionStat();
+    this.getCustomerStats();
+    this.subscribeToInput1();
+
   }
 
   changeChart(event) {
@@ -54,9 +88,119 @@ export class ReportsComponent implements OnInit {
     this.barChartLegend = true;
     this.barChartPlugins = [];
 
+    const duplicateData = this.barChartData[0].data;
+    const duplicateLabel = this.barChartData[0].label;
+
     this.barChartData = [
-      { data: [65, 59, 80, 81, 56, 55, 40, 34, 5, 10, 11, 90], label: 'Sales' }
+      { data: duplicateData, label: duplicateLabel }
     ];
+  }
+
+  getTransactionStatsByYear(year: string, status: string){
+    this.spinner.show('mainSpinner');
+    this.apiService.getTransactionStatsByYear(year)
+      .subscribe((response: any) => {
+        this.spinner.hide('mainSpinner');
+        if(response){
+          this.stats = response.data.stats;
+          if(status === 'Sales'){
+            this.setChartDataForSalesPerMonth();
+          }
+          else if(status === 'Profit'){
+            this.setChartDataForProfitPerMonth();
+          }
+        }
+
+      }, error => {
+        this.spinner.hide('mainSpinner');
+        console.log(error);
+        this.uiService.openSnackBar(error.error.message, 'Close');
+      });
+  }
+
+  setChartDataForSalesPerMonth(){
+    let nData = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+    this.stats.forEach((month) => {
+      let m = month.month;
+      nData[m-1] = month.totalSales;
+    });
+    this.barChartData = [
+      { data: nData, label: 'Sales' }
+    ];
+  }
+
+  setChartDataForProfitPerMonth(){
+    let nData = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+    this.stats.forEach((month) => {
+      let m = month.month;
+      nData[m-1] = month.totalProfit;
+    });
+    this.barChartData = [
+      { data: nData, label: 'Profit' }
+    ];
+  }
+
+  changeFilter(event){
+    this.filter = event.value;
+
+    if(event.value === 'Sales'){
+      this.setChartDataForSalesPerMonth();
+    }else{
+      this.setChartDataForProfitPerMonth();
+    }
+  }
+
+  buildForms(){
+    this.yearForm = this.formBuilder.group({
+      cYear: ['', [Validators.minLength(4), Validators.maxLength(4), Validators.pattern(ONLY_NUMBERS)]]
+    });
+  }
+
+  subscribeToInput1(){
+    // server-side search
+    fromEvent(this.input1.nativeElement,'keyup')
+        .pipe(
+            filter(Boolean),
+            debounceTime(700),
+            distinctUntilChanged(),
+            tap((event:KeyboardEvent) => {
+              if(this.input1.nativeElement.value.length === 4 && this.yearForm.valid){
+                this.year = this.input1.nativeElement.value;
+                this.getTransactionStatsByYear((this.input1.nativeElement.value).toString(), this.filter);
+              }
+            })
+        )
+        .subscribe();
+  }
+
+  getTransactionStat(){
+    this.spinner.show('mainSpinner');
+    this.apiService.getTransactionStat()
+      .subscribe((response: any) => {
+        this.spinner.hide('mainSpinner');
+        this.totalTransactions = response.data.stats[0].totalTransactions;
+        this.totalProfit = response.data.stats[0].totalProfit;
+
+      }, error => {
+        this.spinner.hide('mainSpinner');
+        console.log(error);
+        this.uiService.openSnackBar(error.error.message, 'Close');
+      });
+  }
+
+  getCustomerStats(){
+    this.spinner.show('mainSpinner');
+    this.apiService.getCustomerStats()
+      .subscribe((response: any) => {
+        this.spinner.hide('mainSpinner');
+        if(response){
+          this.totalCustomers = response.data.stats[0].totalCustomers;
+        }
+      }, error => {
+        console.log(error);
+        this.spinner.hide('mainSpinner');
+        this.uiService.openSnackBar(error.error.message, 'Close');
+      })
   }
 
 }

@@ -32,6 +32,9 @@ export class AuthComponent implements OnInit {
 
   ngOnInit() {
     this.buildForms();
+    if( window.screen.availWidth < 1250 || window.screen.availHeight < 700){
+      alert("This Web App is made for Desktop Size Screens!\n Please Use Bigger Screen.");
+     }
   }
 
   switchMode(){
