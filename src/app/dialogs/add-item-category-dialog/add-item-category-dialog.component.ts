@@ -31,7 +31,7 @@ export class AddItemCategoryDialogComponent implements OnInit {
 
   buildForms(){
     this.itemCategoryForm = this.formBuilder.group({
-      name: ['', Validators.required]
+      name: ['', [Validators.required, Validators.minLength(3)]]
     })
   }
 
@@ -58,5 +58,9 @@ export class AddItemCategoryDialogComponent implements OnInit {
 
   close(){
     this.dialogtRef.close('add');
+  }
+
+  get formControls(){
+    return this.itemCategoryForm.controls;
   }
 }

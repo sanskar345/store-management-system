@@ -12,19 +12,31 @@
       <form [formGroup]="addCustomerForm">
         <div class="mb-3">
           <label for="recipient-name" class="col-form-label">Cutomer Name:</label>
-          <input formControlName = "customerName" type="text" class="form-control" id="recipient-name">
+          <input [ngClass]="{'border-red': customerControls.customerName.invalid && customerControls.customerName.touched}" formControlName = "customerName" type="text" class="form-control" id="recipient-name">
+          <div class="invalid-input" *ngIf="customerControls.customerName.invalid && customerControls.customerName.touched">
+            Enter a valid name.
+          </div>
         </div>
         <div class="mb-3">
           <label for="message-text" class="col-form-label">Address:</label>
-          <textarea formControlName = "address" class="form-control" id="message-text"></textarea>
+          <textarea [ngClass]="{'border-red': customerControls.address.invalid && customerControls.address.touched}" formControlName = "address" class="form-control" id="message-text"></textarea>
+          <div class="invalid-input" *ngIf="customerControls.address.invalid && customerControls.address.touched">
+            Enter a valid address.
+          </div>
         </div>
         <div class="mb-3">
           <label for="recipient-name" class="col-form-label">Mobile No:</label>
-          <input formControlName = "mobile" type="text" class="form-control" id="recipient-name">
+          <input [ngClass]="{'border-red': customerControls.mobile.invalid && customerControls.mobile.touched}" formControlName = "mobile" type="text" class="form-control" id="recipient-name">
+          <div class="invalid-input" *ngIf="customerControls.mobile.invalid && customerControls.mobile.touched">
+            Enter a valid mobile number.
+          </div>
         </div>
         <div class="mb-3">
           <label for="recipient-name" class="col-form-label">Date of Birth</label>
-          <input formControlName = "dob" type="date" class="form-control" id="recipient-name">
+          <input [ngClass]="{'border-red': customerControls.dob.invalid && customerControls.dob.touched}" formControlName = "dob" type="date" class="form-control" id="recipient-name">
+          <div class="invalid-input" *ngIf="customerControls.dob.invalid && customerControls.dob.touched">
+            Enter a valid dob.
+          </div>
         </div>
       </form>
     </div>

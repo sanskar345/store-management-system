@@ -15,14 +15,15 @@ import { map, catchError, finalize, mergeMap } from 'rxjs/operators';
 import { UiService } from '../services/ui.service';
 
 import { StorageService } from 'src/app/core/services/storage.service';
+import { Router } from '@angular/router';
 
 @Injectable({ providedIn: 'root' })
 export class TokenInterceptorService implements HttpInterceptor {
-  isLoading: boolean;
 
   constructor(
       private uiService: UiService,
-      private storageService: StorageService
+      private storageService: StorageService,
+      private router: Router
   ) {}
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
@@ -30,12 +31,14 @@ export class TokenInterceptorService implements HttpInterceptor {
       // this.uiService.loadingChecker.next(true);
       // let promise = this.storageService.getAuthToken();
       const token = this.storageService.getString('token');
-
-      req = req.clone({
+      if(token)
+      {
+        req = req.clone({
           setHeaders: {
               Authorization: `Bearer ${token}`
           }
       });
+      }
       return next.handle(req).pipe(
 
           map((event: HttpEvent<any>) => {
@@ -48,9 +51,14 @@ export class TokenInterceptorService implements HttpInterceptor {
       catchError((error: HttpErrorResponse) => {
 
           if (error.status === 401) {
-              // unauthorized user
+              this.storageService.clear();
+              this.uiService.openSnackBar('Unauthorized Access Please Login','Close');
+              this.router.navigate(['']);
+
           } else if (error.status === 0) {
-              // alert('Internet connection error');
+              alert('Internet connection error');
+              console.log('no internet');
+
           }
           return throwError(error);
       }),
@@ -63,6 +71,7 @@ export class TokenInterceptorService implements HttpInterceptor {
       //     let clonedReq = this.addToken(req, token);
 
       // }));
+
   }
 
   private addToken(request: HttpRequest<any>, token: any) {
