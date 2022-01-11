@@ -64,7 +64,7 @@ export class DashboardComponent implements OnInit {
    }
 
   ngOnInit(): void {
-    if( window.screen.availWidth < 1250 || window.screen.availHeight < 700){
+    if( window.screen.availWidth < 1350 || window.screen.availHeight < 750){
       alert("This Web App is made for Desktop Size Screens!\n Please Use Bigger Screen.");
      }
 
@@ -338,5 +338,6 @@ export class DashboardComponent implements OnInit {
     });
 
   }
+
 
 }

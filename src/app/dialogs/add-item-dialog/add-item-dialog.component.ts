@@ -1,7 +1,8 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormControl, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import {MatDialog, MatDialogConfig, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { ONLY_NUMBERS } from 'src/app/core/constants/regex.constant';
 import { ApiService } from 'src/app/core/services/api.service';
 import { UiService } from 'src/app/core/services/ui.service';
 import { DialogsService } from '../dialogs.service';
@@ -62,11 +63,11 @@ export class AddItemDialogComponent implements OnInit {
 
   buildForms(){
     this.addItemForm1 = this.formBuilder.group({
-      name: ['', Validators.required],
-      mrp: ['', Validators.required],
-      rate: ['', Validators.required],
-      purchasePrice: ['', Validators.required],
-      brand: ['', Validators.required]
+      name: ['', [Validators.required, Validators.minLength(3)]],
+      mrp: ['', [Validators.required, Validators.pattern(ONLY_NUMBERS)]],
+      rate: ['', [Validators.required, Validators.pattern(ONLY_NUMBERS)]],
+      purchasePrice: ['', [Validators.required, Validators.pattern(ONLY_NUMBERS)]],
+      brand: ['', [Validators.required, Validators.minLength(3)]]
     })
     this.addItemForm2 = this.formBuilder.group({
       category: ['', Validators.required],
@@ -122,11 +123,17 @@ export class AddItemDialogComponent implements OnInit {
 
     console.log(data);
 
-    if(this.addItemForm2.get('expiryDate').value !== '' || null){
+    if(this.addItemForm2.get('expiryDate').value !== '' || this.addItemForm2.get('expiryDate').value !== null){
       Object.assign(data, {"expiryDate": this.addItemForm2.get('expiryDate').value});
     }
-    if(this.addItemForm2.get('manufacturerDate').value !== '' || null){
-      Object.assign(data, {"manufacturerDate": this.addItemForm2.get('manufacturingDate').value});
+    if(this.addItemForm2.get('manufacturerDate').value !== '' || this.addItemForm2.get('manufacturerDate').value !== null){
+      Object.assign(data, {"manufacturerDate": this.addItemForm2.get('manufacturerDate').value});
+    }
+    if((this.addItemForm2.get('expiryDate').value !== '' || this.addItemForm2.get('expiryDate').value !== null) && (this.addItemForm2.get('manufacturerDate').value !== '' || this.addItemForm2.get('manufacturerDate').value !== null)){
+      if(this.addItemForm2.get('expiryDate').value < this.addItemForm2.get('manufacturerDate').value){
+        this.spinner.hide('mainSpinner');
+        return this.uiService.openSnackBar('Expiry must be greater than manufacturer', 'Close');
+      }
     }
 
 
@@ -147,6 +154,10 @@ export class AddItemDialogComponent implements OnInit {
     });
 
     this.close();
+  }
+
+  get formControls1(){
+    return this.addItemForm1.controls;
   }
 
 

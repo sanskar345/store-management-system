@@ -58,6 +58,7 @@ export class ReceiveCustomerCreditDialogComponent implements OnInit {
   totalCredit = 0;
   particularTransaction: any;
   today: String;
+  store: any;
 
   constructor(
     @Inject(MAT_DIALOG_DATA) private data,
@@ -69,10 +70,12 @@ export class ReceiveCustomerCreditDialogComponent implements OnInit {
     private dialogsService: DialogsService,
     private titlecasePipe: TitleCasePipe,
     private bottomSheet: MatBottomSheet,
-    private spinner: NgxSpinnerService
+    private spinner: NgxSpinnerService,
+    private dialogService: DialogsService
   ) { }
 
   ngOnInit(): void {
+    this.getStore();
     this.today = ((new Date()).toISOString()).split('T')[0];
     this.passedData = this.data;
     if(this.passedData.invoiceDetail && this.passedData.showModal1){
@@ -316,7 +319,7 @@ export class ReceiveCustomerCreditDialogComponent implements OnInit {
       let docDefinition = {
         content: [
           {
-            text: 'Store Name',
+            text: this.transformToTitlecase(this.store.name),
             fontSize: 16,
             alignment: 'center',
             color: '#047886',
@@ -407,7 +410,7 @@ export class ReceiveCustomerCreditDialogComponent implements OnInit {
               ],
           },
           {
-            text: 'Complaint Number: 8852852852',
+            text: `Complaint Number: ${this.store.storeContactNumber}`,
             style: 'sectionHeader',
             alignment: 'center'
           },
@@ -489,6 +492,23 @@ export class ReceiveCustomerCreditDialogComponent implements OnInit {
         console.log('Bottom sheet has been dismissed.:');
       });
 
+    }
+
+    getStore(){
+      this.spinner.show('mainSpinner');
+      this.apiService.getStore()
+        .subscribe((response: any) => {
+          this.spinner.hide('mainSpinner');
+          if(response){
+            console.log(response);
+
+            this.store = response.data[0]
+          }
+        }, error => {
+          console.log(error);
+          this.spinner.hide('mainSpinner');
+          this.uiService.openSnackBar(error.error.message, 'Close');
+        })
     }
 
 }

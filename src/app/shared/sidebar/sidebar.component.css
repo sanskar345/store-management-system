@@ -1,5 +1,3 @@
-
-
 .mat-icon {
   vertical-align: middle;
   margin-right: 20px;
@@ -11,15 +9,14 @@
   justify-content: center;
   text-align: center;
   padding: 15px;
-
 }
 
 img {
-  width: 60px;
-  height: 60px;
+  width: 70px;
+  height: 70px;
   object-fit: cover;
   border-radius: 50%;
-  cursor: pointer ;
+  cursor: pointer;
 }
 
 .company-name {
@@ -27,7 +24,5 @@ img {
 }
 
 .active {
-  background-color: #E2E3E5;
+  background-color: #e2e3e5;
 }
-
-

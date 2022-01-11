@@ -8,3 +8,12 @@
 h2 {
   margin: 0;
 }
+
+.invalid-input{
+  color: red;
+  margin-top: 4px;
+}
+
+.border-red{
+  border-color: red;
+}

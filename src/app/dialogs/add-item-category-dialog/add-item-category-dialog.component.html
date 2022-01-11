@@ -12,7 +12,10 @@
       <form [formGroup] = "itemCategoryForm">
         <div class="mb-3">
           <label for="item-category-name" class="col-form-label">Item Category Name:</label>
-          <input formControlName = "name" type="text" class="form-control" id="item-category-name">
+          <input [ngClass]="{'border-red': formControls.name.invalid && formControls.name.touched}" formControlName = "name" type="text" class="form-control" id="item-category-name">
+          <div class="invalid-input" *ngIf="formControls.name.invalid && formControls.name.touched">
+            Enter a valid category name.
+          </div>
         </div>
       </form>
     </div>

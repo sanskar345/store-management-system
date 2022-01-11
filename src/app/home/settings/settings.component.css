@@ -11,12 +11,12 @@ section {
   margin-bottom: 0;
 }
 
-.divider{
+.divider {
   margin: 10px 0;
 }
 
 .input {
-  width:100%;
+  width: 100%;
   border: 1px solid;
   border-radius: 4px;
   padding: 5px;
@@ -24,11 +24,11 @@ section {
 }
 
 .cancel-btn {
-  margin-left: 0;
-  margin-right: 10px;
+  width: 74px;
+  margin: 4px 10px 4px 4px;
 }
 
-.btn-area-change{
+.btn-area-change {
   padding: 0;
 }
 
@@ -37,5 +37,25 @@ h3 {
 }
 
 .input-width {
-  width: 77%;
+  width: 70%;
 }
+
+button {
+  width: 74px;
+  margin: 4px;
+}
+
+.border-red{
+  border-color: red;
+}
+
+.input-red{
+  color: red;
+}
+
+@media only screen and (max-width: 1300px) {
+  .input-width {
+    width: 60%;
+  }
+}
+

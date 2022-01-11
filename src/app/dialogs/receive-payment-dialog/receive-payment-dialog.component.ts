@@ -12,6 +12,7 @@ import { StorageService } from 'src/app/core/services/storage.service';
 import pdfMake from "pdfmake/build/pdfmake";
 import pdfFonts from "pdfmake/build/vfs_fonts";
 import { NgxSpinnerService } from 'ngx-spinner';
+import { TitleCasePipe } from '@angular/common';
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
 @Component({
@@ -38,6 +39,7 @@ export class ReceivePaymentDialogComponent implements OnInit {
   today: string;
   totalAmount: number;
   transactionStats: any;
+  store: any;
 
   constructor(
     @Inject(MAT_DIALOG_DATA) private data,
@@ -48,10 +50,13 @@ export class ReceivePaymentDialogComponent implements OnInit {
     private apiService: ApiService,
     private dialogsService: DialogsService,
     private storageService: StorageService,
-    private spinner: NgxSpinnerService
+    private spinner: NgxSpinnerService,
+    private dialogService: DialogsService,
+    private titlecasePipe: TitleCasePipe,
   ) { }
 
   ngOnInit(): void {
+    this.getStore();
     this.today = ((new Date()).toISOString()).split('T')[0];
     this.passedData = this.data;
     if(this.passedData.showModal2){
@@ -193,7 +198,7 @@ export class ReceivePaymentDialogComponent implements OnInit {
     let docDefinition = {
       content: [
         {
-          text: 'Store Name',
+          text: this.transformToTitlecase(this.store.name),
           fontSize: 16,
           alignment: 'center',
           color: '#047886',
@@ -269,7 +274,7 @@ export class ReceivePaymentDialogComponent implements OnInit {
             ],
         },
         {
-          text: 'Complaint Number: 8852852852',
+          text: `Complaint Number: ${this.store.storeContactNumber}`,
           style: 'sectionHeader',
           alignment: 'center'
         },
@@ -300,6 +305,27 @@ export class ReceivePaymentDialogComponent implements OnInit {
 
   goToSeccondModal(){
     this.openSecondDialog(this.receivePaymentForm, this.totalAmount, this.today);
+  }
+
+  transformToTitlecase(str: string){
+    return this.titlecasePipe.transform(str);
+  }
+
+  getStore(){
+    this.spinner.show('mainSpinner');
+    this.apiService.getStore()
+      .subscribe((response: any) => {
+        this.spinner.hide('mainSpinner');
+        if(response){
+          console.log(response);
+
+          this.store = response.data[0]
+        }
+      }, error => {
+        console.log(error);
+        this.spinner.hide('mainSpinner');
+        this.uiService.openSnackBar(error.error.message, 'Close');
+      })
   }
 
 

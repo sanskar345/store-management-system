@@ -9,6 +9,8 @@ export class DialogsService {
 
   //just database things --
 
+  store: any;
+
   itemsData = [
     {
       name: 'item1',

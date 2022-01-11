@@ -13,6 +13,7 @@ import { TokenInterceptorService } from './core/interceptor/token.interceptor';
 import { SharedModule } from './shared/shared.module';
 import { TitleCasePipe } from '@angular/common';
 import { NgxSpinnerModule } from 'ngx-spinner';
+import { MatIconModule } from '@angular/material/icon';
 
 
 @NgModule({
@@ -30,7 +31,8 @@ import { NgxSpinnerModule } from 'ngx-spinner';
     HttpClientModule,
     MatSnackBarModule,
     SharedModule,
-    NgxSpinnerModule
+    NgxSpinnerModule,
+    MatIconModule
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptorService, multi: true },

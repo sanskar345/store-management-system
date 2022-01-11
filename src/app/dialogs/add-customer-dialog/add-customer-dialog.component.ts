@@ -72,4 +72,8 @@ export class AddCustomerDialogComponent implements OnInit {
     this.dialogtRef.close('add');
   }
 
+  get customerControls(){
+    return this.addCustomerForm.controls;
+  }
+
 }

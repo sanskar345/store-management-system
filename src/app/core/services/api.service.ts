@@ -1,6 +1,6 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { ADD_CUSTOMER, ADD_ITEM_CATEGORY, CUSTOMER, GET_CUSTOMER_STAT, GET_CUSTOMER_STAT_FOR_CREDIT, GET_TODAY_TRANSACTION_STAT, GET_TRANSACTION_STAT, ITEMS, ITEMS_OUT_OF_STOCK, ITEMS_STAT, ITEM_CATEGORY, LOGIN, SIGN_UP, STOREUP_API, TRANSACTION } from '../constants/apis.constant';
+import { ADD_CUSTOMER, ADD_ITEM_CATEGORY, CUSTOMER, GET_CUSTOMER_STAT, GET_CUSTOMER_STAT_FOR_CREDIT, GET_TODAY_TRANSACTION_STAT, GET_TRANSACTION_STAT, ITEMS, ITEMS_OUT_OF_STOCK, ITEMS_STAT, ITEM_CATEGORY, LOGIN, SIGN_UP, STORE, STOREUP_API, TRANSACTION } from '../constants/apis.constant';
 import { StorageService } from './storage.service';
 
 @Injectable({
@@ -227,6 +227,15 @@ export class ApiService {
     );
   }
 
+  // update item by id
+
+  updateStoreById(id: string, data: {}){
+    return this.http.patch(
+      `${STOREUP_API}${STORE}${id}`,
+      data
+    );
+  }
+
   // get items stat
 
   getItemsStats(){
@@ -234,13 +243,36 @@ export class ApiService {
       `${STOREUP_API}${ITEMS_STAT}`,
     );
   }
-  
+
   // get transaction stats by year
 
   getTransactionStatsByYear(year: string){
     return this.http.get(
       `${STOREUP_API}${GET_TRANSACTION_STAT}${year}`,
     );
+  }
+
+  // get transaction stats by year
+
+  getStore(){
+    return this.http.get(
+      `${STOREUP_API}${STORE}`,
+    );
+  }
+
+  //create store
+
+  createStore(data, token){
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${token}`
+    })
+    return this.http.post(
+      `${STOREUP_API}${STORE}`,
+      data,
+      {
+        headers
+      }
+    )
   }
 
 }

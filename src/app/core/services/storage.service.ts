@@ -14,7 +14,6 @@ export class StorageService {
 
   getString(key: string) {
     return localStorage.getItem(key);
-    localStorage.getItem(key);
       // return (await Storage.get({ key }));
   }
 
