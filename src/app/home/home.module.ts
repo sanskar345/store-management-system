@@ -15,7 +15,6 @@ import { DashboardComponent } from "./dashboard/dashboard.component";
 import { HomeRoutingModule } from "./home-routing.module";
 import { HomeComponent } from "./home.component";
 import { FontAwesomeModule } from "@fortawesome/angular-fontawesome";
-import { ModalsModule } from "../modals/modals.module";
 import { HomeHeaderComponent } from './home-header/home-header.component';
 import { SettingsComponent } from './settings/settings.component';
 import { MatGridListModule } from '@angular/material/grid-list';
@@ -71,7 +70,6 @@ import { InfoComponent } from './info/info.component';
     MatSnackBarModule,
     MatIconModule,
     FontAwesomeModule,
-    ModalsModule,
     MatGridListModule,
     MatCardModule,
     MatPaginatorModule,
