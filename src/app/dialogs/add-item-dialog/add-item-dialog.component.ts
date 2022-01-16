@@ -1,10 +1,12 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { AbstractControl, FormBuilder, FormControl, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import {MatDialog, MatDialogConfig, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
+import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ONLY_NUMBERS } from 'src/app/core/constants/regex.constant';
 import { ApiService } from 'src/app/core/services/api.service';
 import { UiService } from 'src/app/core/services/ui.service';
+import { AddItemCategoryDialogComponent } from '../add-item-category-dialog/add-item-category-dialog.component';
 import { DialogsService } from '../dialogs.service';
 
 @Component({
@@ -13,6 +15,8 @@ import { DialogsService } from '../dialogs.service';
   styleUrls: ['./add-item-dialog.component.css']
 })
 export class AddItemDialogComponent implements OnInit {
+
+  faPlus = faPlus;
 
   passedData: any = {
     showModal1: false,
@@ -158,6 +162,19 @@ export class AddItemDialogComponent implements OnInit {
 
   get formControls1(){
     return this.addItemForm1.controls;
+  }
+
+  openAddItemCategoryDialog() {
+    const dialogConfig = new MatDialogConfig();
+
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
+
+    let dialog = this.dialog.open(AddItemCategoryDialogComponent, {
+      width: '40vw',
+      data : {
+      }
+    });
   }
 
 

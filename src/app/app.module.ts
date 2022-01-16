@@ -14,12 +14,16 @@ import { SharedModule } from './shared/shared.module';
 import { TitleCasePipe } from '@angular/common';
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { MatIconModule } from '@angular/material/icon';
+import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
+import { ResetPasswordComponent } from './reset-password/reset-password.component';
 
 
 @NgModule({
   declarations: [
     AppComponent,
     AuthComponent,
+    ForgotPasswordComponent,
+    ResetPasswordComponent,
 
   ],
   imports: [

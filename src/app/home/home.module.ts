@@ -14,7 +14,6 @@ import { MatIconModule } from "@angular/material/icon";
 import { DashboardComponent } from "./dashboard/dashboard.component";
 import { HomeRoutingModule } from "./home-routing.module";
 import { HomeComponent } from "./home.component";
-import { TestComponent } from "./test/test.component";
 import { FontAwesomeModule } from "@fortawesome/angular-fontawesome";
 import { ModalsModule } from "../modals/modals.module";
 import { HomeHeaderComponent } from './home-header/home-header.component';
@@ -40,11 +39,12 @@ import {MatBottomSheetModule} from '@angular/material/bottom-sheet';
 import { BottomSheetsModule } from "../bottom-sheets/bottom-sheets.module";
 import { NgxSpinnerModule } from "ngx-spinner";
 import {MatSlideToggleModule} from '@angular/material/slide-toggle';
+import { MatListModule } from "@angular/material/list";
+import { InfoComponent } from './info/info.component';
 
 @NgModule({
   declarations: [
     HomeComponent,
-    TestComponent,
     DashboardComponent,
     HomeHeaderComponent,
     SettingsComponent,
@@ -54,6 +54,7 @@ import {MatSlideToggleModule} from '@angular/material/slide-toggle';
     CreditsComponent,
     ReportsComponent,
     AlertsComponent,
+    InfoComponent,
 
   ],
   imports: [
@@ -86,7 +87,8 @@ import {MatSlideToggleModule} from '@angular/material/slide-toggle';
     MatBottomSheetModule,
     BottomSheetsModule,
     NgxSpinnerModule,
-    MatSlideToggleModule
+    MatSlideToggleModule,
+    MatListModule
   ],
   providers: [
      MatPaginatorIntl,

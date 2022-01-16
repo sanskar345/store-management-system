@@ -4,6 +4,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import { ApiService } from 'src/app/core/services/api.service';
 import { UiService } from 'src/app/core/services/ui.service';
 import { ChangePictureDialogComponent } from 'src/app/dialogs/change-picture-dialog/change-picture-dialog.component';
+import { CreateInvoiceDialogComponent } from 'src/app/dialogs/create-invoice-dialog/create-invoice-dialog.component';
 
 @Component({
   selector: 'app-sidebar',
@@ -54,6 +55,31 @@ export class SidebarComponent implements OnInit {
         this.spinner.hide('mainSpinner');
         this.uiService.openSnackBar(error.error.message, 'Close');
       })
+  }
+
+  // open crete invoice dialog
+
+  openCreateInvoiceDialog() {
+    const dialogConfig = new MatDialogConfig();
+
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
+
+    let dialog = this.dialog.open(CreateInvoiceDialogComponent, {
+      width: '100vw',
+      data : {
+        showModal1: true,
+        showModal2: false
+      }
+    });
+
+    // const dialogRef = this.dialog.open(AlertDialogComponent);
+
+    dialog.afterClosed().subscribe(
+      (d) => {}
+    );
+
+
   }
 
 }

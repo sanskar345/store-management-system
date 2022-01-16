@@ -38,9 +38,7 @@
                 </div>
                 <button
                 class="btn btn-info inform-btn"
-                data-bs-toggle="modal"
-                data-bs-target="#addCustomerModal"
-                data-bs-whatever="@mdo"><fa-icon [icon]="faUser" style="color: darkgray; margin-right: 0.5em;" class="mr-10"></fa-icon>Add New Customer</button>
+                (click)="openAddCustomerDialog()"><fa-icon [icon]="faUser" style="color: darkgray; margin-right: 0.5em;" class="mr-10"></fa-icon>Add New Customer</button>
               </div>
 
 
@@ -130,6 +128,7 @@
             <div class="col-lg-9 col-md-12 item-btn-wrapper" *ngIf = "itemSuggestions.length === 0">
               <p class="alert alert-warning pt-2 pb-2">No Items Available With This Name</p>
               <button
+              (click)="openAddItemDialog()"
               class="btn btn-info"><fa-icon [icon]="faSquare" style="color: darkgray; margin-right: 0.5em;" class="mr-10"></fa-icon>Add Item</button>
             </div>
           </div>

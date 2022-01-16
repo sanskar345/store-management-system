@@ -12,6 +12,8 @@ import { UNIQUE_NUMBER } from 'src/app/core/constants/storage.constant';
 import { StorageService } from 'src/app/core/services/storage.service';
 import { TitleCasePipe } from '@angular/common';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { AddCustomerDialogComponent } from '../add-customer-dialog/add-customer-dialog.component';
+import { AddItemDialogComponent } from '../add-item-dialog/add-item-dialog.component';
 
 @Component({
   selector: 'app-create-invoice-dialog',
@@ -813,6 +815,52 @@ export class CreateInvoiceDialogComponent implements OnInit {
         this.spinner.hide('mainSpinner');
         this.uiService.openSnackBar(error.error.message, 'Close');
       })
+  }
+
+  openAddCustomerDialog() {
+    const dialogConfig = new MatDialogConfig();
+
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
+
+    let dialog = this.dialog.open(AddCustomerDialogComponent, {
+      width: '40vw',
+      data : {
+      }
+    });
+
+    // const dialogRef = this.dialog.open(AlertDialogComponent);
+
+    dialog.afterClosed().subscribe(
+      () => {}
+    );
+
+
+  }
+
+  //open Add item dialog
+
+  openAddItemDialog() {
+    const dialogConfig = new MatDialogConfig();
+
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
+
+    let dialog = this.dialog.open(AddItemDialogComponent, {
+      width: '40vw',
+      data : {
+        showModal1: true,
+        showModal2: false
+      }
+    });
+
+    // const dialogRef = this.dialog.open(AlertDialogComponent);
+
+    dialog.afterClosed().subscribe(
+        () => {}
+    );
+
+
   }
 
 }

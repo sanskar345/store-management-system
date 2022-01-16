@@ -137,6 +137,24 @@
           </div>
         </mat-card>
       </mat-card>
+      <mat-card *ngIf="!transactions.length" class="alert alert-secondary">
+        <div class="geting-started-i">
+          <h2 class="ml-2">Getting Started :</h2>
+          <h4>The "StoreUp“  a Store Management System is all about Customer Management, Invoice Generation, Transactions, Customer Credit, Inventory Management, Business Reports, Stock Alerts. Served with great utilities.
+            Through this app, We aim to provide user a medium where one can manage all the Store related things and can have a proper control over the Store.
+          </h4>
+        </div>
+        <mat-list>
+          <mat-list-item><fa-icon class="dot-icon" [icon]="faCircle"></fa-icon> You can start with creating Customer.</mat-list-item>
+          <mat-list-item><fa-icon class="dot-icon" [icon]="faCircle"></fa-icon> Creating new Item Category.</mat-list-item>
+          <mat-list-item><fa-icon class="dot-icon" [icon]="faCircle"></fa-icon> Creating new Items.</mat-list-item>
+          <mat-list-item><fa-icon class="dot-icon" [icon]="faCircle"></fa-icon> And then creating new Invoice</mat-list-item>
+          <mat-list-item><fa-icon class="dot-icon" [icon]="faCircle"></fa-icon> You can try Payment In and Payment Out.</mat-list-item>
+          <mat-list-item><fa-icon class="dot-icon" [icon]="faCircle"></fa-icon> You can manage your Customers, Credits and Items by clicking on side bar options.</mat-list-item>
+          <mat-list-item><fa-icon class="dot-icon" [icon]="faCircle"></fa-icon> Can see Alerts and Reports.</mat-list-item>
+         </mat-list>
+
+      </mat-card>
     </div>
   </div>
   </div>

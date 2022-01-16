@@ -69,6 +69,10 @@ export class HeaderComponent implements OnInit {
 
   }
 
+  onHelp(){
+    this.router.navigate(['home/help']);
+  }
+
 
 
 }

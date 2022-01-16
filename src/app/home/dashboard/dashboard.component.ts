@@ -2,7 +2,7 @@ import { AfterContentInit, AfterViewInit, ChangeDetectionStrategy, ChangeDetecto
 import { MatBottomSheet } from '@angular/material/bottom-sheet';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
-import { faHome, faUser, faSquare, faEllipsisV, faFileInvoice, faMoneyBillWave, faMoneyBill, faHandHolding, faMoneyBillWaveAlt, faRupeeSign } from '@fortawesome/free-solid-svg-icons';
+import { faHome, faUser, faSquare, faEllipsisV, faFileInvoice, faMoneyBillWave, faMoneyBill, faHandHolding, faMoneyBillWaveAlt, faRupeeSign, faCircle } from '@fortawesome/free-solid-svg-icons';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { Subject } from 'rxjs';
 import { TransactionDetailsBottomSheetComponent } from 'src/app/bottom-sheets/transaction-details-bottom-sheet/transaction-details-bottom-sheet.component';
@@ -38,6 +38,7 @@ export class DashboardComponent implements OnInit {
   faMoneyBill = faMoneyBill;
   faMoneyBillWaveAlt = faMoneyBillWaveAlt;
   faRupeeSign = faRupeeSign;
+  faCircle = faCircle;
 
   number = [12, 3];
 
@@ -101,7 +102,7 @@ export class DashboardComponent implements OnInit {
   //open Add item dialog
 
   openAddItemDialog() {
-    this.getItemCategories();
+    // this.getItemCategories();
     const dialogConfig = new MatDialogConfig();
 
     dialogConfig.disableClose = true;

@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
-import { EMAIL_REGEX, MOBILE_REGEX, ONLY_LETTERS } from '../core/constants/regex.constant';
+import { EMAIL_REGEX, MOBILE_REGEX, ONLY_LETTERS, ONLY_NUMBERS, OTP_REGEX } from '../core/constants/regex.constant';
 import { ApiService } from '../core/services/api.service';
 import { FormService } from '../core/services/form.service';
 import { StorageService } from '../core/services/storage.service';
@@ -18,11 +18,19 @@ export class AuthComponent implements OnInit {
 
   showRegister = false;
   showRegister1 = true;
+  showRegister2 = false;
+  showRegister3 = false;
   authenticationForm: FormGroup;
   signUpForm1: FormGroup;
   signUpForm2: FormGroup;
+  signUpForm3: FormGroup;
   showPasswordForLogin = false;
   showPasswordForRegister = false;
+
+  resendOtpTimer: any;
+  resendOtpCounter = 120;
+
+  token: string;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -45,13 +53,17 @@ export class AuthComponent implements OnInit {
   }
 
   switchMode(){
-    if(this.showRegister){
-      this.showRegister1 = true;
-    }
     this.showRegister = !this.showRegister;
     this.authenticationForm.reset();
     this.signUpForm1.reset();
     this.signUpForm2.reset();
+    this.signUpForm3.reset();
+    if(this.showRegister){
+      this.showRegister1 = true;
+      this.showRegister2 = false;
+      this.showRegister3 = false;
+    }
+    this.stopResendOtpTimer();
   };
 
   buildForms(){
@@ -73,6 +85,10 @@ export class AuthComponent implements OnInit {
     }, {
       validator: this.formService.MustMatch('password', 'confirmPassword')
     });
+
+    this.signUpForm3 = this.formBuilder.group({
+      otp: ['', [Validators.required, Validators.pattern(ONLY_NUMBERS), Validators.minLength(6), Validators.maxLength(6)]]
+    })
   };
 
   verifyLogin(){
@@ -152,6 +168,21 @@ export class AuthComponent implements OnInit {
   onNext(){
     this.showRegister = true;
     this.showRegister1 = false;
+    this.showRegister2 = true;
+    this.showRegister3 = false;
+  }
+
+  onSendOtp(){
+    this.showRegister = true;
+    this.showRegister1 = false;
+    this.showRegister2 = false;
+    this.showRegister3 = true;
+    this.startResendOtpTimer();
+    this.generateOtp({email: this.signUpForm2.get('email').value, name: this.signUpForm1.get('name').value});
+  }
+
+  onVerifyOtp(){
+    this.verifyOtp({token: this.token, otp: (this.signUpForm3.get('otp').value).toString(), check: this.signUpForm2.get('email').value});
   }
 
   get authenticationControls(){
@@ -166,11 +197,102 @@ export class AuthComponent implements OnInit {
     return this.signUpForm2.controls;
   }
 
+  get register3Controls(){
+    return this.signUpForm3.controls;
+  }
+
   toggleShowPasswordForLogin(){
     this.showPasswordForLogin = !this.showPasswordForLogin;
   }
 
   toggleShowPasswordForRegister(){
     this.showPasswordForRegister = !this.showPasswordForRegister;
+  }
+
+  resetBools(){
+    this.showPasswordForLogin = false;
+    this.showPasswordForRegister = false;
+    this.showRegister = false;
+    this.showRegister1 = true;
+    this.showRegister2 = false;
+    this.showRegister3 = false;
+    this.stopResendOtpTimer();
+    this.signUpForm1.reset();
+    this.signUpForm2.reset();
+    this.signUpForm3.reset();
+    this.authenticationForm.reset();
+  }
+
+  changeEmail(){
+    this.showPasswordForLogin = false;
+    this.showPasswordForRegister = false;
+    this.showRegister = true;
+    this.showRegister1 = true;
+    this.showRegister2 = false;
+    this.showRegister3 = false;
+    this.signUpForm1.reset();
+    this.signUpForm2.reset();
+    this.signUpForm3.reset();
+    this.authenticationForm.reset();
+    this.stopResendOtpTimer();
+  }
+
+  startResendOtpTimer(){
+    this.resendOtpCounter = 120;
+    this.resendOtpTimer = setInterval(() => {
+
+      if(this.resendOtpCounter > 0){
+        this.resendOtpCounter--;
+      }else{
+        this.stopResendOtpTimer();
+      }
+    }, 1000)
+  }
+
+  stopResendOtpTimer(){
+    clearInterval(this.resendOtpTimer);
+  };
+
+  onResendOTP(){
+    this.stopResendOtpTimer();
+    this.generateOtp({email: this.signUpForm2.get('email').value, name: this.signUpForm1.get('name').value});
+    this.startResendOtpTimer();
+  }
+
+  generateOtp(data: {}){
+    this.spinner.show('otpSpinner');
+    this.apiService.generateOtp(data)
+      .subscribe((response: any) => {
+        this.spinner.hide('otpSpinner');
+        if(response){
+          this.token = response.details;
+        }
+      }, error => {
+        this.spinner.hide('otpSpinner');
+        this.uiService.openSnackBar(error.error.message, 'Close');
+      });
+  }
+
+  verifyOtp(data: {}){
+    this.spinner.show('signUpSpinner');
+    this.apiService.verifyOtp(data)
+      .subscribe((response: any) => {
+        this.spinner.hide('signUpSpinner');
+        if(response.status === 'success'){
+          this.stopResendOtpTimer();
+          this.onSignUp();
+        }
+      }, error => {
+        this.spinner.hide('signUpSpinner');
+        if(((error.error.message).toString()).includes('expired')){
+          this.uiService.openSnackBar('OTP time expired please click on resend OTP', 'Close');
+        }else{
+          this.uiService.openSnackBar(error.error.message, 'Close');
+        }
+      });
+  }
+
+  onForgotPassword(){
+    this.router.navigate(['forgot-password']);
   }
 }
