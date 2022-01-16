@@ -1,11 +1,16 @@
 import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
+import { UiService } from './ui.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class StorageService {
 
-  constructor() { }
+  constructor(
+    private router: Router,
+    private uiService: UiService
+  ) { }
 
   setString(key: string, value: string) {
     localStorage.setItem(key, value);
@@ -17,9 +22,25 @@ export class StorageService {
       // return (await Storage.get({ key }));
   }
 
+  removeString(key: string){
+    localStorage.removeItem(key);
+  }
+
   getAdminIdFk(){
     const user = JSON.parse(this.getString('user'));
-    return user.id;
+    if(user){
+      if(user.id){
+        return user.id;
+      }else{
+        this.clear();
+        this.uiService.openSnackBar('Unsecure Activity Please Login Again','Close');
+        this.router.navigate(['']);
+      }
+    }else{
+      this.clear();
+      this.uiService.openSnackBar('Unsecure Activity Please Login Again','Close');
+      this.router.navigate(['']);
+    }
   }
 
   // async setObject(key: string, value: any) {
@@ -43,6 +64,19 @@ export class StorageService {
 
   loggedIn() {
     return !!localStorage.getItem('token');
+  }
+
+  resetPassowrdIsTrue(){
+    const rP = localStorage.getItem('resetPassword');
+    if(rP){
+      if(rP === '1'){
+        return true;
+      }else{
+        return false;
+      }
+    }else{
+      return false;
+    }
   }
 
 }

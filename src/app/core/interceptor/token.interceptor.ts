@@ -55,10 +55,15 @@ export class TokenInterceptorService implements HttpInterceptor {
               this.uiService.openSnackBar('Unauthorized Access Please Login','Close');
               this.router.navigate(['']);
 
-          } else if (error.status === 0) {
+          }
+          else if (error.status === 0) {
               alert('Internet connection error');
-              console.log('no internet');
 
+          }
+          else if(error.status === 429){
+            this.storageService.clear();
+            this.router.navigate(['']);
+            return throwError({error: {message: 'Too many requests from this IP, please try again in an hour!'}});
           }
           return throwError(error);
       }),

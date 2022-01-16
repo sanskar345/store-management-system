@@ -4,26 +4,24 @@ section {
 
 .btn-area {
   /* background-color: blue; */
-  padding:  0 0 20px 16px;
+  padding: 0 0 20px 16px;
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-
 }
 
 .btn-area span button {
   margin: 7px;
 }
 
-.collapsing{
+.collapsing {
   -webkit-transition: none;
-        transition: none;
+  transition: none;
 }
 
 .modal {
   position: relative;
   top: 10%;
-
 }
 
 .section-content {
@@ -57,10 +55,9 @@ fa-icon {
 
 /* transaction card */
 
-
 .transaction-card {
   /* border: 2px solid #007BFF; */
-  border: 1.5px solid #E2E3E5;
+  border: 1.5px solid #e2e3e5;
   margin-top: 15px;
   font-size: 15px;
   font-weight: 500;
@@ -84,20 +81,25 @@ fa-icon {
   margin-right: 10px;
 }
 
-.transaction-card .inside .right .red{
+.transaction-card .inside .right .red {
   color: red;
 }
 
-.transaction-card .inside .right .green{
+.transaction-card .inside .right .green {
   color: green;
 }
 
-.transaction-card .inside .left span{
+.transaction-card .inside .left span {
   margin-left: 10px;
 }
 
 .warn {
   color: #ffc107;
+}
+
+.dot-icon {
+  color: #0b5ed7;
+  font-size: 12px;
 }
 
 .stats-para {
@@ -106,4 +108,8 @@ fa-icon {
   text-overflow: ellipsis;
   text-align: center;
   margin-bottom: 0;
+}
+
+.geting-started-i {
+  margin-left: 16px;
 }

@@ -55,7 +55,7 @@
           <div
           class="d-flex justify-content-around align-items-center mb-4">
 
-            <a href="#!">Forgot password?</a>
+            <a class="cursor-pointer" (click)="onForgotPassword()">Forgot password?</a>
           </div>
         </form>
 
@@ -97,7 +97,7 @@
             <label class="form-label" for="form1Example13">Mobile Number</label>
             <input
             [ngClass]="{'invalid-control': register1Controls.mobileNumber.invalid && register1Controls.mobileNumber.touched}"
-            type="number"
+            type="tel"
             autocomplete="off"
             class="form-control form-control-lg"
             formControlName = "mobileNumber"
@@ -115,7 +115,7 @@
           </div> -->
         </form>
 
-        <form [formGroup] = "signUpForm2" *ngIf = "showRegister && !showRegister1">
+        <form [formGroup] = "signUpForm2" *ngIf = "showRegister && showRegister2">
 
           <div class="form-outline mb-4">
             <label class="form-label" for="form1Example13">Email</label>
@@ -179,6 +179,32 @@
             <a href="#!">Forgot password?</a>
           </div> -->
         </form>
+        <form [formGroup] = "signUpForm3" *ngIf = "showRegister && showRegister3">
+
+          <div class="form-outline mb-4">
+            <label class="form-label" for="form1Example13">Enter 6 digit OTP</label>
+            <input
+            [ngClass]="{'invalid-control': register3Controls.otp.invalid && register3Controls.otp.touched}"
+            type="text"
+            class="form-control form-control-lg"
+            formControlName = "otp"
+            name = "Name"
+            autocomplete="off"
+            />
+            <div class="invalid-detail" *ngIf="register3Controls.otp.invalid && register3Controls.otp.touched">
+              OTP must be of six digits.
+            </div>
+          </div>
+
+          <div class="otp-down">
+
+            <a class="cursor-pointer" (click)="changeEmail()">Change Email?</a>
+            <a class="cursor-pointer" *ngIf="resendOtpCounter !== 0">Resend OTP in {{resendOtpCounter}} seconds</a>
+            <a class="cursor-pointer" *ngIf="resendOtpCounter === 0" (click)="onResendOTP()">Resend OTP</a>
+          </div>
+
+
+        </form>
 
           <!-- Submit button -->
           <div class="d-grid gap-2">
@@ -196,9 +222,15 @@
           >Next</button>
           <button
           class="btn btn-primary btn-lg btn-block"
-          *ngIf = "showRegister && !showRegister1"
+          *ngIf = "showRegister && showRegister2"
           [disabled] = "!signUpForm2.valid"
-          (click)="onSignUp()"
+          (click)="onSendOtp()"
+          >Send OTP to Email</button>
+          <button
+          class="btn btn-primary btn-lg btn-block"
+          *ngIf = "showRegister && showRegister3"
+          [disabled] = "!signUpForm3.valid"
+          (click)="onVerifyOtp()"
           >Sign Up</button>
 
           <div class="divider d-flex align-items-center my-4">

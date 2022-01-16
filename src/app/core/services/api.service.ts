@@ -1,6 +1,6 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { ADD_CUSTOMER, ADD_ITEM_CATEGORY, CUSTOMER, GET_CUSTOMER_STAT, GET_CUSTOMER_STAT_FOR_CREDIT, GET_TODAY_TRANSACTION_STAT, GET_TRANSACTION_STAT, ITEMS, ITEMS_OUT_OF_STOCK, ITEMS_STAT, ITEM_CATEGORY, LOGIN, SIGN_UP, STORE, STOREUP_API, TRANSACTION } from '../constants/apis.constant';
+import { ADD_CUSTOMER, ADD_ITEM_CATEGORY, CUSTOMER, FORGOT_PASSWORD, GET_CUSTOMER_STAT, GET_CUSTOMER_STAT_FOR_CREDIT, GET_TODAY_TRANSACTION_STAT, GET_TRANSACTION_STAT, ITEMS, ITEMS_OUT_OF_STOCK, ITEMS_STAT, ITEM_CATEGORY, LOGIN, OTP_GENERATE, OTP_VERIFY, RESET_PASSWORD, SIGN_UP, STORE, STOREUP_API, TRANSACTION } from '../constants/apis.constant';
 import { StorageService } from './storage.service';
 
 @Injectable({
@@ -34,7 +34,7 @@ export class ApiService {
     credit: Number,
     dob: string
   }){
-    data = Object.assign(data, {adminIdFk: this.storageService.getAdminIdFk()});
+    // data = Object.assign(data, {adminIdFk: this.storageService.getAdminIdFk()});
     return this.http.post(
       `${STOREUP_API}${ADD_CUSTOMER}`,
       data
@@ -42,7 +42,7 @@ export class ApiService {
   };
 
   addItemCategory(data: { name: string }){
-    data = Object.assign(data, {adminIdFk: this.storageService.getAdminIdFk()});
+    // data = Object.assign(data, {adminIdFk: this.storageService.getAdminIdFk()});
     return this.http.post(
       `${STOREUP_API}${ADD_ITEM_CATEGORY}`,
       data
@@ -50,7 +50,7 @@ export class ApiService {
   }
 
   addItem(data: any){
-    data = Object.assign(data, {adminIdFk: this.storageService.getAdminIdFk()});
+    // data = Object.assign(data, {adminIdFk: this.storageService.getAdminIdFk()});
     return this.http.post(
       `${STOREUP_API}${ITEMS}`,
       data
@@ -94,7 +94,7 @@ export class ApiService {
   // create transaction
 
   createTransaction(data: any){
-    data = Object.assign(data, {adminIdFk: this.storageService.getAdminIdFk()});
+    // data = Object.assign(data, {adminIdFk: this.storageService.getAdminIdFk()});
     return this.http.post(
       `${STOREUP_API}${TRANSACTION}`,
       data
@@ -272,6 +272,43 @@ export class ApiService {
       {
         headers
       }
+    )
+  }
+
+  //generate otp
+
+
+  generateOtp(data: {}){
+    return this.http.post(
+      `${STOREUP_API}${OTP_GENERATE}`,
+      data
+    );
+  }
+
+  // otp verify
+
+  verifyOtp(data: {}){
+    return this.http.post(
+      `${STOREUP_API}${OTP_VERIFY}`,
+      data
+    );
+  }
+
+  // forgot password
+
+  forgotPassword(data: {}){
+    return this.http.post(
+      `${STOREUP_API}${FORGOT_PASSWORD}`,
+      data
+    );
+  }
+
+  // reset password
+
+  resetPassword(token: string, data: {}){
+    return this.http.patch(
+      `${STOREUP_API}${RESET_PASSWORD}${token}`,
+      data
     )
   }
 
