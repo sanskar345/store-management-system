@@ -16,8 +16,6 @@ import { DialogsService } from 'src/app/dialogs/dialogs.service';
 import { GivePaymentDialogComponent } from 'src/app/dialogs/give-payment-dialog/give-payment-dialog.component';
 import { ReceiveCustomerCreditDialogComponent } from 'src/app/dialogs/receive-customer-credit-dialog/receive-customer-credit-dialog.component';
 import { ReceivePaymentDialogComponent } from 'src/app/dialogs/receive-payment-dialog/receive-payment-dialog.component';
-import { ModalsModule } from 'src/app/modals/modals.module';
-import { ModalsService } from 'src/app/modals/modals.service';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
