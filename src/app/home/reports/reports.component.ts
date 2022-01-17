@@ -78,7 +78,6 @@ export class ReportsComponent implements OnInit {
   }
 
   changeChart(event) {
-    console.log(event.value);
     // this.barChartType = event.value;
     this.barChartOptions = {
       responsive: true,
@@ -113,7 +112,6 @@ export class ReportsComponent implements OnInit {
 
       }, error => {
         this.spinner.hide('mainSpinner');
-        console.log(error);
         this.uiService.openSnackBar(error.error.message, 'Close');
       });
   }
@@ -183,7 +181,6 @@ export class ReportsComponent implements OnInit {
 
       }, error => {
         this.spinner.hide('mainSpinner');
-        console.log(error);
         this.uiService.openSnackBar(error.error.message, 'Close');
       });
   }
@@ -197,7 +194,6 @@ export class ReportsComponent implements OnInit {
           this.totalCustomers = response.data.stats[0].totalCustomers;
         }
       }, error => {
-        console.log(error);
         this.spinner.hide('mainSpinner');
         this.uiService.openSnackBar(error.error.message, 'Close');
       })

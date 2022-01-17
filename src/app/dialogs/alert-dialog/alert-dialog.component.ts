@@ -21,7 +21,6 @@ export class AlertDialogComponent implements OnInit {
   ngOnInit(): void {
 
     this.passedData = this.data;
-    console.log(this.passedData);
 
   }
 

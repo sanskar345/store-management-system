@@ -131,7 +131,6 @@ export class CreateInvoiceDialogComponent implements OnInit {
       };
     }
     // this.buildForms();
-    console.log(this.passedData);
 
 
     this.today = new Date;
@@ -193,7 +192,7 @@ export class CreateInvoiceDialogComponent implements OnInit {
     // const dialogRef = this.dialog.open(AlertDialogComponent);
 
     dialog.afterClosed().subscribe(
-        data => console.log("Dialog output:", data)
+        data => {}
     );
 
 
@@ -212,7 +211,6 @@ export class CreateInvoiceDialogComponent implements OnInit {
   };
 
   suggest(event){
-    // console.log(event.target.value);
 
     this.suggestions = this.searchAndFilterData(event, this.customers)
   }
@@ -232,10 +230,7 @@ export class CreateInvoiceDialogComponent implements OnInit {
   };
 
   addCustomerToInvoiceDetail(index){
-    console.log(this.invoiceDetail['customer']);
     this.invoiceDetail['customer'] = this.suggestions[index];
-    console.log(this.suggestions[index]);
-    console.log(this.invoiceDetail['customer']);
 
 
   }
@@ -393,11 +388,9 @@ export class CreateInvoiceDialogComponent implements OnInit {
   toggleInstantPayment(){
     this.instantPayment = !this.instantPayment;
     if(!this.instantPayment){
-      console.log(' true');
       this.invoiceForm.controls.paymentMode.disable();
       this.invoiceForm.controls.paymentMode.clearValidators();
     }else{
-      console.log('not true');
       this.invoiceForm.get('paymentMode').setValidators([Validators.required]);
       this.invoiceForm.controls.paymentMode.enable();
     }
@@ -575,7 +568,6 @@ export class CreateInvoiceDialogComponent implements OnInit {
   //.......
 
   onGoToSecondModal(){
-    console.log('in', this.invoiceDetail);
 
     if(this.instantPayment === true){
       this.openSecondDialog(this.invoiceForm.value, this.invoiceTotalAmountByTotalItems, this.invoiceDetail, this.invoiceTotalAmountByTotalItems, this.instantPayment, this.invoiceTotalMrpByTotalItems, this.discountInAmount);
@@ -593,13 +585,11 @@ export class CreateInvoiceDialogComponent implements OnInit {
     this.apiService.getCustomers()
       .subscribe((response: any) => {
         this.spinner.hide('mainSpinner');
-        console.log('customers', response);
         this.customers = response.data;
         this.suggestions = this.customers.slice(0, 2);
 
       }, error => {
         this.spinner.hide('mainSpinner');
-        console.log(error);
 
       });
   }
@@ -610,12 +600,10 @@ export class CreateInvoiceDialogComponent implements OnInit {
     this.spinner.show('mainSpinner');
     this.apiService.getItemsByParams({'quantity[gt]': 0}).subscribe((response: any) => {
       this.spinner.hide('mainSpinner');
-      console.log('items', response);
       this.itemsData = response.data;
       this.itemSuggestions = this.itemsData.slice(0,5);
     }, error => {
       this.spinner.hide('mainSpinner');
-      console.log(error);
 
     })
   }
@@ -646,7 +634,6 @@ export class CreateInvoiceDialogComponent implements OnInit {
     }, error => {
       this.spinner.hide('mainSpinner');
       this.uiService.openSnackBar(error.error.message, 'Close');
-      console.log(error);
 
     });
   }
@@ -654,10 +641,6 @@ export class CreateInvoiceDialogComponent implements OnInit {
   // create invoice
 
   createInvoice(){
-    console.log('invoicePreviewData',this.invoicePreviewData);
-    console.log('this.paymentReceived', this.paymentReceived);
-    console.log('this.invoiceDetail', this.invoiceDetail);
-    console.log('thi', this.invoicePreviewData.items);
 
     let profit = 0;
     this.invoicePreviewData.items.forEach((item) => {
@@ -730,7 +713,6 @@ export class CreateInvoiceDialogComponent implements OnInit {
       .subscribe((response: any) => {
         this.spinner.hide('mainSpinner');
         this.transactionStats = response.data.stats[0];
-        console.log('stats: ', this.transactionStats);
         if(this.transactionStats?.totalTransactions){
           this.invoiceForm.patchValue({ invoiceNumber: this.transactionStats.totalTransactions + UNIQUE_NUMBER + 1 });
         }else{
@@ -738,7 +720,6 @@ export class CreateInvoiceDialogComponent implements OnInit {
         }
       }, error => {
         this.spinner.hide('mainSpinner');
-        console.log(error);
         this.uiService.openSnackBar(error.error.message, 'Close');
       });
   }
@@ -748,11 +729,9 @@ export class CreateInvoiceDialogComponent implements OnInit {
     this.apiService.updateItemWithId(data, id)
       .subscribe((response) => {
         this.spinner.hide('mainSpinner');
-        console.log(response);
 
       }, error => {
         this.spinner.hide('mainSpinner');
-        console.log(error);
         this.uiService.openSnackBar(error.error.message, 'Close');
       });
   }
@@ -763,13 +742,11 @@ export class CreateInvoiceDialogComponent implements OnInit {
       .subscribe((response) => {
         this.spinner.hide('mainSpinner');
         if(response){
-          console.log('updated customer',response);
           this.uiService.openSnackBar('Transaction done on CREDIT is successful', 'Close');
           this.generatePDF();
         }
       }, error => {
         this.spinner.hide('mainSpinner');
-        console.log(error);
         this.uiService.openSnackBar(error.error.message, 'Close');
       });
   }
@@ -806,12 +783,10 @@ export class CreateInvoiceDialogComponent implements OnInit {
       .subscribe((response: any) => {
         this.spinner.hide('mainSpinner');
         if(response){
-          console.log(response);
 
           this.store = response.data[0]
         }
       }, error => {
-        console.log(error);
         this.spinner.hide('mainSpinner');
         this.uiService.openSnackBar(error.error.message, 'Close');
       })

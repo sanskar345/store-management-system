@@ -140,7 +140,6 @@ export class CustomersComponent implements OnInit {
     this.apiService.getCustomersWithQueryParams(params)
       .subscribe((response: any) => {
         this.spinner.hide('mainSpinner');
-        console.log('customers', response);
         if(f === 'customersBySearch'){
           this.customersBySearch = response.data;
         }
@@ -153,7 +152,6 @@ export class CustomersComponent implements OnInit {
       }, error => {
         this.spinner.hide('mainSpinner');
         this.uiService.openSnackBar(error.error.message, 'Close');
-        console.log(error);
 
       });
   }
@@ -163,12 +161,10 @@ export class CustomersComponent implements OnInit {
     this.apiService.getCustomersWithQueryParams(params)
       .subscribe((response: any) => {
         this.spinner.hide('searchSpinner');
-        console.log('customers', response);
         this.customersBySearch = response.data;
       }, error => {
         this.spinner.hide('searchSpinner');
         this.uiService.openSnackBar(error.error.message, 'Close');
-        console.log(error);
 
       });
   }
@@ -182,8 +178,6 @@ export class CustomersComponent implements OnInit {
             debounceTime(1100),
             distinctUntilChanged(),
             tap((event:KeyboardEvent) => {
-              // console.log(event)
-              console.log(this.input1.nativeElement.value)
               if(this.input1.nativeElement.value.length > 3){
                 if(this.searchByName){
                   this.customersBySearch = this.getCustomersBySearch({'name': (this.input1.nativeElement.value).toLowerCase()});
@@ -197,7 +191,6 @@ export class CustomersComponent implements OnInit {
   }
 
   onPaginate(event): any{
-    console.log(event);
     this.getCustomers({'page': event.pageIndex + 1, 'limit': event.pageSize}, 'customers');
   }
 
@@ -214,7 +207,6 @@ export class CustomersComponent implements OnInit {
           this.paginationLength = response.data.stats[0].totalCustomers;
         }
       }, error => {
-        console.log(error);
         this.spinner.hide('mainSpinner');
         this.uiService.openSnackBar(error.error.message, 'Close');
       })
@@ -228,7 +220,6 @@ export class CustomersComponent implements OnInit {
         this.onStart();
         this.uiService.openSnackBar('Customer Deleted Successfully.', 'Close');
       }, error => {
-        console.log(error);
         this.spinner.hide('mainSpinner');
         this.uiService.openSnackBar(error.error.message, 'Close');
       });

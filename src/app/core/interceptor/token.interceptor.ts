@@ -58,6 +58,7 @@ export class TokenInterceptorService implements HttpInterceptor {
           }
           else if (error.status === 0) {
               alert('Internet connection error');
+              return throwError({error: {message: 'Internet Connection Error'}});
 
           }
           else if(error.status === 429){

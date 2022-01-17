@@ -26,7 +26,6 @@ export class SelectDialogComponent implements OnInit {
   ngOnInit(): void {
     this.buildForms();
     this.passedData = this.data;
-    console.log(this.passedData);
 
   }
 

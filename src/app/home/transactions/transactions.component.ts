@@ -69,13 +69,11 @@ export class TransactionsComponent implements OnInit {
     this.apiService.getTransactions(params)
       .subscribe((response: any) => {
         if(response){
-          console.log('transactions',response);
           this.transactions = response.data;
         }
         this.spinner.hide('mainSpinner');
       }, error => {
         this.spinner.hide('mainSpinner');
-        console.log(error);
         this.uiService.openSnackBar(error.error.message, 'Close');
       })
   }
@@ -85,13 +83,11 @@ export class TransactionsComponent implements OnInit {
     this.apiService.getTransactions(params)
       .subscribe((response: any) => {
         if(response){
-          console.log('transactions',response);
           this.transactions = response.data;
         }
         this.spinner.hide('searchSpinner');
       }, error => {
         this.spinner.hide('searchSpinner');
-        console.log(error);
         this.uiService.openSnackBar(error.error.message, 'Close');
       })
   }
@@ -104,8 +100,6 @@ export class TransactionsComponent implements OnInit {
             debounceTime(1100),
             distinctUntilChanged(),
             tap((event:KeyboardEvent) => {
-              // console.log(event)
-              console.log(this.input1.nativeElement.value)
               if(this.input1.nativeElement.value.length > 0){
                 this.showClearSearchBtn = true;
                 if(this.searchInputFormControls.Bill_Number.valid  && this.searchType === 'Bill_Number'){
@@ -125,8 +119,6 @@ export class TransactionsComponent implements OnInit {
             debounceTime(1100),
             distinctUntilChanged(),
             tap((event:KeyboardEvent) => {
-              // console.log(event)
-              console.log(this.input2.nativeElement.value)
               if(this.input2.nativeElement.value.length > 0){
                 this.showClearSearchBtn = true;
                 if(this.searchInputFormControls.Customer_Mobile_Number.valid && this.searchType === 'Customer_Mobile_Number'){
@@ -146,8 +138,6 @@ export class TransactionsComponent implements OnInit {
             debounceTime(1100),
             distinctUntilChanged(),
             tap((event:KeyboardEvent) => {
-              // console.log(event)
-              console.log(this.input3.nativeElement.value)
               if(this.input3.nativeElement.value.length > 0){
                 this.showClearSearchBtn = true;
                 if(this.searchInputFormControls.Customer_Name.valid && this.searchType === 'Customer_Name'){
@@ -161,7 +151,6 @@ export class TransactionsComponent implements OnInit {
   }
 
   onPaginate(event): any{
-    console.log(event);
     this.getTransactions({'page': event.pageIndex + 1, 'limit': event.pageSize});
   }
 
@@ -171,13 +160,11 @@ export class TransactionsComponent implements OnInit {
       .subscribe((response: any) => {
         this.spinner.hide('mainSpinner');
         const transactionStats = response.data.stats[0];
-        console.log('stats: ', transactionStats);
         if(transactionStats?.totalTransactions){
           this.paginationLength = transactionStats.totalTransactions;
         }
       }, error => {
         this.spinner.hide('mainSpinner');
-        console.log(error);
         this.uiService.openSnackBar(error.error.message, 'Close');
       });
   }
@@ -229,7 +216,6 @@ export class TransactionsComponent implements OnInit {
     this.showClearSearchBtn = false;
     this.searchInputForm.reset();
     const hasPreviousPage =  this.paginator.hasPreviousPage();
-    console.log(hasPreviousPage);
     if(hasPreviousPage){
       this.paginator.firstPage();
     }else{
@@ -246,7 +232,6 @@ export class TransactionsComponent implements OnInit {
     });
 
     bottomSheetRef.afterDismissed().subscribe(() => {
-      console.log('Bottom sheet has been dismissed.:');
     });
 
   }
