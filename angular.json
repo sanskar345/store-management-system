@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "store-management-system": {
+    "StoreUp": {
       "projectType": "application",
       "schematics": {},
       "root": "",
@@ -13,7 +13,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/store-management-system",
+            "outputPath": "dist/StoreUp",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
@@ -66,10 +66,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "store-management-system:build:production"
+              "browserTarget": "StoreUp:build:production"
             },
             "development": {
-              "browserTarget": "store-management-system:build:development"
+              "browserTarget": "StoreUp:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -77,7 +77,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "store-management-system:build"
+            "browserTarget": "StoreUp:build"
           }
         },
         "test": {
@@ -101,5 +101,5 @@
       }
     }
   },
-  "defaultProject": "store-management-system"
+  "defaultProject": "StoreUp"
 }
