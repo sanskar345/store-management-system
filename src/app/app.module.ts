@@ -11,7 +11,7 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { TokenInterceptorService } from './core/interceptor/token.interceptor';
 import { SharedModule } from './shared/shared.module';
-import { TitleCasePipe } from '@angular/common';
+import { HashLocationStrategy, LocationStrategy, TitleCasePipe } from '@angular/common';
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { MatIconModule } from '@angular/material/icon';
 import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
@@ -40,6 +40,7 @@ import { ResetPasswordComponent } from './reset-password/reset-password.componen
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptorService, multi: true },
+    { provide: LocationStrategy, useClass: HashLocationStrategy},
     TitleCasePipe
   ],
   bootstrap: [AppComponent]
