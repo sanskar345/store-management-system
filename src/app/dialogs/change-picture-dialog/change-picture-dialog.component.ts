@@ -20,7 +20,6 @@ export class ChangePictureDialogComponent implements OnInit {
   ngOnInit(): void {
 
     this.passedData = this.data;
-    console.log(this.passedData);
 
   }
 
@@ -33,7 +32,6 @@ export class ChangePictureDialogComponent implements OnInit {
     const reader = new FileReader();
     reader.readAsDataURL(event.target.files[0]);
     reader.onload = ((e) => {
-      console.log(e);
 
     });
 

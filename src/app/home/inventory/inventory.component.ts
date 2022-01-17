@@ -102,8 +102,6 @@ export class InventoryComponent implements OnInit {
             debounceTime(1100),
             distinctUntilChanged(),
             tap((event:KeyboardEvent) => {
-              // console.log(event)
-              console.log(this.input1.nativeElement.value)
               if(this.input1.nativeElement.value.length > 3){
                 this.getItemsBySearch({name: (this.input1.nativeElement.value).toLowerCase()})
               }
@@ -118,7 +116,6 @@ export class InventoryComponent implements OnInit {
     this.spinner.show('mainSpinner');
     this.apiService.getItemsByParams(params).subscribe((response: any) => {
       this.spinner.hide('mainSpinner');
-      console.log('items', response);
       if(f === 'itemsBySearch'){
         this.itemsBySearch = response.data;
       }
@@ -130,7 +127,6 @@ export class InventoryComponent implements OnInit {
       }
     }, error => {
       this.spinner.hide('mainSpinner');
-      console.log(error);
       this.uiService.openSnackBar(error.error.message, 'Close');
     })
   }
@@ -139,16 +135,12 @@ export class InventoryComponent implements OnInit {
     this.spinner.show('searchSpinner');
     this.apiService.getItemsByParams(params).subscribe((response: any) => {
       this.spinner.hide('searchSpinner');
-      console.log(params);
-
-      console.log('items', response);
 
       this.itemsBySearch = response.data;
 
 
     }, error => {
       this.spinner.hide('searchSpinner');
-      console.log(error);
       this.uiService.openSnackBar(error.error.message, 'Close');
     })
   }
@@ -163,7 +155,6 @@ export class InventoryComponent implements OnInit {
         }
       }, error => {
         this.spinner.hide('mainSpinner');
-        console.log(error);
         this.uiService.openSnackBar(error.error.message, 'Close');
       })
   }
@@ -275,7 +266,6 @@ export class InventoryComponent implements OnInit {
         this.onStart();
       }, error => {
         this.spinner.hide('mainSpinner');
-        console.log(error);
         this.uiService.openSnackBar(error.error.message, 'Close');
       });
   }

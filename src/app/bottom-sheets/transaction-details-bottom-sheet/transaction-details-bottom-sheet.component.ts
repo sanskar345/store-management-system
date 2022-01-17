@@ -17,7 +17,6 @@ export class TransactionDetailsBottomSheetComponent implements OnInit {
 
   ngOnInit(): void {
     this.transaction = this.data.transaction;
-    console.log(this.transaction);
 
   }
 

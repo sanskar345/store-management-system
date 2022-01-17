@@ -39,7 +39,6 @@ export class AddCustomerDialogComponent implements OnInit {
         credit: 0
       }).subscribe((response) => {
         this.spinner.hide('mainSpinner');
-        console.log(response);
         if(response){
           this.uiService.openSnackBar('Customer added successfully.', 'Close');
           this.close();

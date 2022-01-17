@@ -90,7 +90,6 @@ export class ReceiveCustomerCreditDialogComponent implements OnInit {
       this.invoiceDetail = this.passedData.invoiceDetail;
       this.particularTransaction = this.passedData.particularTransaction;
     }
-    console.log('passedData',this.passedData);
   }
 
   close(){
@@ -127,14 +126,13 @@ export class ReceiveCustomerCreditDialogComponent implements OnInit {
     // const dialogRef = this.dialog.open(AlertDialogComponent);
 
     dialog.afterClosed().subscribe(
-        data => console.log("Dialog output:", data)
+        data => {}
     );
 
 
   }
 
   suggest(event){
-    // console.log(event.target.value);
 
     this.suggestions = this.searchAndFilterData(event, this.customers)
   }
@@ -154,10 +152,7 @@ export class ReceiveCustomerCreditDialogComponent implements OnInit {
   };
 
   addCustomerToInvoiceDetail(index){
-    console.log(this.invoiceDetail['customer']);
     this.invoiceDetail['customer'] = this.suggestions[index];
-    console.log(this.suggestions[index]);
-    console.log(this.invoiceDetail['customer']);
     this.pushTransactionInArray();
 
   }
@@ -177,7 +172,6 @@ export class ReceiveCustomerCreditDialogComponent implements OnInit {
     this.creditTransactionArray.forEach((transaction) => {
       this.totalCredit += transaction.transaction.creditAmount;
     })
-    console.log(this.totalCredit);
 
   }
 
@@ -208,14 +202,12 @@ export class ReceiveCustomerCreditDialogComponent implements OnInit {
     this.apiService.getCustomers()
       .subscribe((response: any) => {
         this.spinner.hide('mainSpinner');
-        console.log('customers', response);
         this.customers = response.data;
         this.suggestions = this.customers.slice(0, 2);
 
       }, error => {
         this.spinner.hide('mainSpinner');
         this.uiService.openSnackBar(error.error.message, 'Close');
-        console.log(error);
 
       });
   }
@@ -227,13 +219,11 @@ export class ReceiveCustomerCreditDialogComponent implements OnInit {
         this.spinner.hide('mainSpinner');
         if(response){
           this.creditTransactionArray.push(response.data);
-          console.log('array:', this.creditTransactionArray);
           this.getTotalCredit();
         }
       }, error => {
         this.spinner.hide('mainSpinner');
         this.uiService.openSnackBar(error.error.message, 'Close');
-        console.log(error);
       });
   }
 
@@ -247,7 +237,6 @@ export class ReceiveCustomerCreditDialogComponent implements OnInit {
       .subscribe((response: any) => {
         this.spinner.hide('mainSpinner');
         if(response){
-          console.log(response);
           const id = response.data.updatedTransaction._id;
           const paymentAmount = response.data.updatedTransaction.totalAmount;
           let billsWithCreditArray = this.invoiceDetail.customer.billsWithCredit;
@@ -264,7 +253,6 @@ export class ReceiveCustomerCreditDialogComponent implements OnInit {
         }
       }, error => {
         this.spinner.hide('mainSpinner');
-        console.log(error);
         this.uiService.openSnackBar(error.error.message, 'Close');
       })
   }
@@ -293,13 +281,11 @@ export class ReceiveCustomerCreditDialogComponent implements OnInit {
       .subscribe((response) => {
         this.spinner.hide('mainSpinner');
         if(response){
-          console.log('updated customer',response);
           this.uiService.openSnackBar('Transaction done successfully', 'Close');
           this.generatePDF();
         }
       }, error => {
         this.spinner.hide('mainSpinner');
-        console.log(error);
         this.uiService.openSnackBar(error.error.message, 'Close');
       });
   }
@@ -489,7 +475,6 @@ export class ReceiveCustomerCreditDialogComponent implements OnInit {
       });
 
       bottomSheetRef.afterDismissed().subscribe(() => {
-        console.log('Bottom sheet has been dismissed.:');
       });
 
     }
@@ -500,12 +485,10 @@ export class ReceiveCustomerCreditDialogComponent implements OnInit {
         .subscribe((response: any) => {
           this.spinner.hide('mainSpinner');
           if(response){
-            console.log(response);
 
             this.store = response.data[0]
           }
         }, error => {
-          console.log(error);
           this.spinner.hide('mainSpinner');
           this.uiService.openSnackBar(error.error.message, 'Close');
         })

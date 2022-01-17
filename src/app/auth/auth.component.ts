@@ -44,7 +44,6 @@ export class AuthComponent implements OnInit {
 
   ngOnInit() {
     this.buildForms();
-    console.log(window.screen.availWidth,window.screen.availHeight );
 
     if( window.screen.availWidth < 1350  || window.screen.availHeight < 750){
       alert("This Web App is made for Desktop Size Screens!\n Please Use Bigger Screen.");
@@ -97,7 +96,6 @@ export class AuthComponent implements OnInit {
         "email": this.authenticationForm.get('email').value,
         "password": this.authenticationForm.get('password').value
     }).subscribe((response: {[key: string]: any}) => {
-      console.log(response);
 
       if(response.status === 'success'){
         this.router.navigate(['/home']);
@@ -109,7 +107,6 @@ export class AuthComponent implements OnInit {
       this.spinner.hide('loginSpinner');
     }, error => {
       this.spinner.hide('loginSpinner');
-      console.log(error);
       this.uiService.openSnackBar(error.error.message, 'Close');
       this.authenticationForm.reset();
     })
@@ -126,9 +123,7 @@ export class AuthComponent implements OnInit {
       confirmPassword: this.signUpForm2.get('confirmPassword').value
     }).subscribe((response: any) => {
 
-      console.log(response);
       this.switchMode();
-      console.log(this.signUpForm1);
 
       let data = {
         name: storeName,
@@ -143,7 +138,6 @@ export class AuthComponent implements OnInit {
           this.spinner.hide('signUpSpinner');
         }
       }, error => {
-        console.log(error);
         this.uiService.openSnackBar(error.error.message, 'Close');
         this.spinner.hide('signUpSpinner');
       })
@@ -151,7 +145,6 @@ export class AuthComponent implements OnInit {
 
     }, (error) => {
       this.spinner.hide('signUpSpinner');
-      console.log(error);
       if(((error.error.message).toString()).includes('Duplicate')){
         this.uiService.openSnackBar('User Already Exists', 'Close');
         this.signUpForm1.reset();

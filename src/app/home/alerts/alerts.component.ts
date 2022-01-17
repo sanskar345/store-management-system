@@ -36,17 +36,14 @@ export class AlertsComponent implements OnInit {
     this.spinner.show('mainSpinner');
     this.apiService.getItemsByParams(params).subscribe((response: any) => {
       this.spinner.hide('mainSpinner');
-      console.log('items', response);
       this.items = response.data;
     }, error => {
       this.spinner.hide('mainSpinner');
-      console.log(error);
       this.uiService.openSnackBar(error.error.message, 'Close');
     })
   }
 
   onFilter(event){
-    console.log(event);
 
     if(event == 1){
       this.getItems({'quantity[lt]': 10});

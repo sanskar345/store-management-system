@@ -45,13 +45,10 @@ export class SidebarComponent implements OnInit {
       .subscribe((response: any) => {
         this.spinner.hide('mainSpinner');
         if(response){
-          console.log(response);
-
           const store = response.data[0];
           this.storeName = store.name;
         }
       }, error => {
-        console.log(error);
         this.spinner.hide('mainSpinner');
         this.uiService.openSnackBar(error.error.message, 'Close');
       })

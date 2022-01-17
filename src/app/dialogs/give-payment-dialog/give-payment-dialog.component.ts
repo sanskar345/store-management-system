@@ -66,7 +66,6 @@ export class GivePaymentDialogComponent implements OnInit {
       this.buildForms();
     }
     this.getTransactionStat();
-    console.log(this.passedData);
   }
 
   close(){
@@ -108,7 +107,7 @@ export class GivePaymentDialogComponent implements OnInit {
     // const dialogRef = this.dialog.open(AlertDialogComponent);
 
     dialog.afterClosed().subscribe(
-        data => console.log("Dialog output:", data)
+        data => {}
     );
 
 
@@ -125,7 +124,6 @@ export class GivePaymentDialogComponent implements OnInit {
       .subscribe((response: any) => {
         this.spinner.hide('mainSpinner');
         this.transactionStats = response.data.stats[0];
-        console.log('stats: ', this.transactionStats);
         if(this.transactionStats?.totalTransactions){
           this.givepaymentForm.patchValue({ billNumber: this.transactionStats.totalTransactions + UNIQUE_NUMBER + 1 });
         }else{
@@ -133,7 +131,6 @@ export class GivePaymentDialogComponent implements OnInit {
         }
       }, error => {
         this.spinner.hide('mainSpinner');
-        console.log(error);
         this.uiService.openSnackBar(error.error.message, 'Close');
       });
   }
@@ -176,7 +173,6 @@ export class GivePaymentDialogComponent implements OnInit {
     }, error => {
       this.spinner.hide('mainSpinner');
       this.uiService.openSnackBar(error.error.message, 'Close');
-      console.log(error);
 
     });
   }
@@ -316,12 +312,10 @@ export class GivePaymentDialogComponent implements OnInit {
       .subscribe((response: any) => {
         this.spinner.hide('mainSpinner');
         if(response){
-          console.log(response);
 
           this.store = response.data[0]
         }
       }, error => {
-        console.log(error);
         this.spinner.hide('mainSpinner');
         this.uiService.openSnackBar(error.error.message, 'Close');
       })

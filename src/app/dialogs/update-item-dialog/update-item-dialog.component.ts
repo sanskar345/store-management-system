@@ -82,7 +82,6 @@ export class UpdateItemDialogComponent implements OnInit {
 
       }, error => {
         this.spinner.hide('mainSpinner');
-        console.log(error);
         this.uiService.openSnackBar(error.error.message, 'Close');
       })
   }

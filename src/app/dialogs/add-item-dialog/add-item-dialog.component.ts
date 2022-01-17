@@ -42,7 +42,6 @@ export class AddItemDialogComponent implements OnInit {
     this.passedData = this.data;
     this.buildForms();
     this.getItemCategories();
-    console.log(this.passedData);
   }
 
   close(){
@@ -55,7 +54,6 @@ export class AddItemDialogComponent implements OnInit {
       .subscribe((response: {[key: string]: any}) => {
         this.spinner.hide('mainSpinner');
         if(response){
-          console.log('itemCategory', response.data);
 
           this.itemCategories = response.data;
         }
@@ -109,7 +107,7 @@ export class AddItemDialogComponent implements OnInit {
     // const dialogRef = this.dialog.open(AlertDialogComponent);
 
     dialog.afterClosed().subscribe(
-        data => console.log("Dialog output:", data)
+        data => {}
     );
 
 
@@ -125,7 +123,6 @@ export class AddItemDialogComponent implements OnInit {
 
     Object.assign(data, this.passedData?.form1Data);
 
-    console.log(data);
 
     if(this.addItemForm2.get('expiryDate').value !== '' || this.addItemForm2.get('expiryDate').value !== null){
       Object.assign(data, {"expiryDate": this.addItemForm2.get('expiryDate').value});

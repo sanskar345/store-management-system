@@ -75,7 +75,6 @@ export class CreditsComponent implements OnInit {
   }
 
   onSearch(event){
-    console.log(this.search);
     if(this.search.length === 10){
       this.filterCustomers(this.search);
     }
@@ -93,13 +92,11 @@ export class CreditsComponent implements OnInit {
     this.apiService.getCustomersWithQueryParams(params)
       .subscribe((response: any) => {
         this.spinner.hide('mainSpinner');
-        console.log('customers', response);
         this.customers = response.data;
         this.customerSuggestion = response.data;
       }, error => {
         this.spinner.hide('mainSpinner');
         this.uiService.openSnackBar(error.error.message, 'Close');
-        console.log(error);
 
       });
   }
@@ -109,13 +106,11 @@ export class CreditsComponent implements OnInit {
     this.apiService.getCustomersWithQueryParams(params)
       .subscribe((response: any) => {
         this.spinner.hide('searchSpinner');
-        console.log('customers', response);
         this.customers = response.data;
         this.customerSuggestion = response.data;
       }, error => {
         this.spinner.hide('searchSpinner');
         this.uiService.openSnackBar(error.error.message, 'Close');
-        console.log(error);
 
       });
   }
@@ -147,14 +142,13 @@ export class CreditsComponent implements OnInit {
     // const dialogRef = this.dialog.open(AlertDialogComponent);
 
     dialog.afterClosed().subscribe(
-        data => console.log("Dialog output:", data)
+        data => {}
     );
 
 
   }
 
   onPaginate(event): any{
-    console.log(event);
     this.getCustomers({'credit[gt]': 0, 'page': event.pageIndex + 1, 'limit': event.pageSize});
   }
 
@@ -167,7 +161,6 @@ export class CreditsComponent implements OnInit {
 
       }, error => {
         this.spinner.hide('mainSpinner');
-        console.log(error);
         this.uiService.openSnackBar(error.error.message, 'Close');
       });
   }
@@ -222,8 +215,6 @@ export class CreditsComponent implements OnInit {
             debounceTime(1100),
             distinctUntilChanged(),
             tap((event:KeyboardEvent) => {
-              // console.log(event)
-              console.log(this.input2.nativeElement.value)
               if(this.input2.nativeElement.value.length > 0){
                 this.showClearSearchBtn = true;
                 if(this.searchInputFormControls.Customer_Mobile_Number.valid && this.searchType === 'Customer_Mobile_Number'){
@@ -243,8 +234,6 @@ export class CreditsComponent implements OnInit {
             debounceTime(1100),
             distinctUntilChanged(),
             tap((event:KeyboardEvent) => {
-              // console.log(event)
-              console.log(this.input3.nativeElement.value)
               if(this.input3.nativeElement.value.length > 0){
                 this.showClearSearchBtn = true;
                 if(this.searchInputFormControls.Customer_Name.valid && this.searchType === 'Customer_Name'){

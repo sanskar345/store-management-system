@@ -71,7 +71,6 @@ export class SettingsComponent implements OnInit {
     this.spinner.show('mainSpinner');
     this.apiService.updateStoreById(id, data)
       .subscribe((response) => {
-        console.log(response);
         if(response){
           this.showStoreContactChange = false;
           this.showStoreNameChange = false;
@@ -81,7 +80,6 @@ export class SettingsComponent implements OnInit {
         this.spinner.hide('mainSpinner');
 
       }, error => {
-        console.log(error);
         this.spinner.hide('mainSpinner');
         this.uiService.openSnackBar(error.error.message, 'Close');
       });
@@ -100,14 +98,12 @@ export class SettingsComponent implements OnInit {
       .subscribe((response: any) => {
         this.spinner.hide('mainSpinner');
         if(response){
-          console.log(response);
 
           this.store = response.data[0];
           this.storeName = this.store.name;
           this.storeContact = this.store.storeContactNumber;
         }
       }, error => {
-        console.log(error);
         this.spinner.hide('mainSpinner');
         this.uiService.openSnackBar(error.error.message, 'Close');
       })
