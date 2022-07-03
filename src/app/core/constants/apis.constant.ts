@@ -1,10 +1,4 @@
-<<<<<<< HEAD
-// export const STOREUP_API = 'http://localhost:3000/api/v1/';
 export const STOREUP_API = 'https://storeup-b.herokuapp.com/api/v1/';
-// export const STOREUP_API = 'http://184.72.118.39:3000/api/v1/';
-=======
-export const STOREUP_API = 'https://storeup-b.herokuapp.com/api/v1/';
->>>>>>> badf95181dd4d11b36584c3fa454ee96aaffdea9
 export const SIGN_UP = 'users/signup/';
 export const LOGIN = 'users/login/';
 export const ADD_CUSTOMER = 'customers/';
